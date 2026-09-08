@@ -50,6 +50,29 @@ class AuroraTypography {
         numberLg = AuroraTypographyTokens.numberLg,
         numberMd = AuroraTypographyTokens.numberMd,
         numberSm = AuroraTypographyTokens.numberSm;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is AuroraTypography &&
+        runtimeType == other.runtimeType &&
+        display == other.display &&
+        title == other.title &&
+        section == other.section &&
+        body == other.body &&
+        label == other.label &&
+        caption == other.caption &&
+        overline == other.overline &&
+        numberLg == other.numberLg &&
+        numberMd == other.numberMd &&
+        numberSm == other.numberSm;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        display, title, section, body, label,
+        caption, overline, numberLg, numberMd, numberSm,
+      );
 }
 
 @immutable
@@ -95,6 +118,25 @@ class AuroraTheme extends ThemeExtension<AuroraTheme> {
     if (other is! AuroraTheme) return this;
     return t < 0.5 ? this : other;
   }
+
+  /// `ThemeData.==` сравнивает `extensions` по значению. Без равенства здесь
+  /// каждая пересборка `MaterialApp(theme: auroraThemeData(...))` — а это
+  /// идиоматическое место вызова, внутри `build` — давала бы новый, не равный
+  /// предыдущему `ThemeData`, `Theme.updateShouldNotify` возвращал бы `true`,
+  /// и перестраивался бы каждый зависящий от `Theme.of` виджет. На одном
+  /// экране это незаметно; на карте с двадцатью компонентами §9 — нет.
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is AuroraTheme &&
+        runtimeType == other.runtimeType &&
+        brand == other.brand &&
+        colors == other.colors &&
+        typography == other.typography;
+  }
+
+  @override
+  int get hashCode => Object.hash(brand, colors, typography);
 }
 
 /// Ноль подъёма для всех состояний кнопки: Material 3 держит `ElevatedButton`

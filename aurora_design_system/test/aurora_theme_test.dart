@@ -94,4 +94,59 @@ void main() {
       expect(data.colorScheme.surfaceTint, Colors.transparent);
     }
   });
+
+  test('структурно одинаковые темы равны', () {
+    final a = AuroraTheme.forBrand(AuroraBrand.aurora, Brightness.light);
+    final b = AuroraTheme.forBrand(AuroraBrand.aurora, Brightness.light);
+    expect(identical(a, b), isFalse, reason: 'иначе проверка равенства вырождается');
+    expect(a, equals(b));
+    expect(a.hashCode, equals(b.hashCode));
+    expect(a, isNot(equals(AuroraTheme.forBrand(AuroraBrand.mts, Brightness.light))));
+    expect(a, isNot(equals(AuroraTheme.forBrand(AuroraBrand.aurora, Brightness.dark))));
+  });
+
+  test('типографика сравнивается по значению, а не по ссылке', () {
+    const a = AuroraTypography.standard();
+    final b = AuroraTypography(
+      display: AuroraTypographyTokens.display,
+      title: AuroraTypographyTokens.title,
+      section: AuroraTypographyTokens.section,
+      body: AuroraTypographyTokens.body,
+      label: AuroraTypographyTokens.label,
+      caption: AuroraTypographyTokens.caption,
+      overline: AuroraTypographyTokens.overline,
+      numberLg: AuroraTypographyTokens.numberLg,
+      numberMd: AuroraTypographyTokens.numberMd,
+      numberSm: AuroraTypographyTokens.numberSm,
+    );
+    expect(a, equals(b));
+    expect(a.hashCode, equals(b.hashCode));
+    final c = AuroraTypography(
+      display: AuroraTypographyTokens.title,
+      title: AuroraTypographyTokens.title,
+      section: AuroraTypographyTokens.section,
+      body: AuroraTypographyTokens.body,
+      label: AuroraTypographyTokens.label,
+      caption: AuroraTypographyTokens.caption,
+      overline: AuroraTypographyTokens.overline,
+      numberLg: AuroraTypographyTokens.numberLg,
+      numberMd: AuroraTypographyTokens.numberMd,
+      numberSm: AuroraTypographyTokens.numberSm,
+    );
+    expect(a, isNot(equals(c)));
+  });
+
+  // Симптом, ради которого всё это: ThemeData сравнивает extensions по
+  // значению, и без равенства на AuroraTheme два одинаково собранных
+  // ThemeData расходились бы на каждой пересборке.
+  test('два одинаково собранных ThemeData равны', () {
+    expect(
+      auroraThemeData(AuroraBrand.aurora, Brightness.light),
+      equals(auroraThemeData(AuroraBrand.aurora, Brightness.light)),
+    );
+    expect(
+      auroraThemeData(AuroraBrand.aurora, Brightness.light),
+      isNot(equals(auroraThemeData(AuroraBrand.mts, Brightness.light))),
+    );
+  });
 }

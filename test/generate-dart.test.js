@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { root } from '../tools/load.js';
+import { root, loadSemantic } from '../tools/load.js';
 import { camelize, dartColor, generateDart } from '../tools/generate-dart.js';
 
 test('camelize превращает точечное имя в camelCase', () => {
@@ -95,4 +95,22 @@ test('закоммиченный tokens.g.dart совпадает с генер�
     committed, dart,
     'tokens.g.dart в репозитории отличается от генерации. Запустите `npm run build` и закоммитьте результат.',
   );
+});
+
+// Равенство по значению должно покрывать все поля, а не те, что вспомнил автор:
+// забытое поле — это тема, которая считает себя равной другой теме.
+test('AuroraColorTokens сравнивается по значению, и в сравнении участвуют все поля', () => {
+  const fields = Object.keys(loadSemantic()).map(camelize);
+  const body = /class AuroraColorTokens \{([\s\S]*?)\n\}/.exec(dart)[1];
+  assert.match(body, /bool operator ==\(Object other\)/);
+  assert.match(body, /int get hashCode => Object\.hashAll/);
+  const eq = /return other is AuroraColorTokens &&([\s\S]*?);/.exec(body)[1];
+  const hash = /Object\.hashAll\(<Object\?>\[([\s\S]*?)\]\)/.exec(body)[1];
+  for (const f of fields) {
+    assert.ok(eq.includes(`${f} == other.${f}`), `${f} не участвует в operator ==`);
+    assert.ok(hash.includes(`\n        ${f},`), `${f} не участвует в hashCode`);
+  }
+  // runtimeType плюс по одному сравнению на поле — ни больше, ни меньше.
+  assert.equal(eq.split('&&').length, fields.length + 1);
+  assert.equal(hash.trim().split(/\s*\n\s*/).length, fields.length);
 });

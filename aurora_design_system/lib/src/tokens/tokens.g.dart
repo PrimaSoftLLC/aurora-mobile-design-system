@@ -79,6 +79,85 @@ class AuroraColorTokens {
     required this.geofenceRed,
     required this.geofenceYellow,
   });
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is AuroraColorTokens &&
+        runtimeType == other.runtimeType &&
+        surfaceContent == other.surfaceContent &&
+        surfaceChrome == other.surfaceChrome &&
+        surfaceSelected == other.surfaceSelected &&
+        surfaceOverlay == other.surfaceOverlay &&
+        borderHairline == other.borderHairline &&
+        borderStrong == other.borderStrong &&
+        textPrimary == other.textPrimary &&
+        textSecondary == other.textSecondary &&
+        textDisabled == other.textDisabled &&
+        textOnBrand == other.textOnBrand &&
+        actionPrimary == other.actionPrimary &&
+        actionPressed == other.actionPressed &&
+        actionSubtle == other.actionSubtle &&
+        focusIndicator == other.focusIndicator &&
+        statusMoving == other.statusMoving &&
+        statusParked == other.statusParked &&
+        statusWarning == other.statusWarning &&
+        statusAlarm == other.statusAlarm &&
+        statusOffline == other.statusOffline &&
+        mapTrackDefault == other.mapTrackDefault &&
+        mapTrackSpeeding == other.mapTrackSpeeding &&
+        mapTrackSelected == other.mapTrackSelected &&
+        mapMarkerFill == other.mapMarkerFill &&
+        mapMarkerStroke == other.mapMarkerStroke &&
+        mapClusterFill == other.mapClusterFill &&
+        mapClusterText == other.mapClusterText &&
+        geofenceAqua == other.geofenceAqua &&
+        geofenceBlue == other.geofenceBlue &&
+        geofenceGray == other.geofenceGray &&
+        geofenceGreen == other.geofenceGreen &&
+        geofenceOrange == other.geofenceOrange &&
+        geofencePurple == other.geofencePurple &&
+        geofenceRed == other.geofenceRed &&
+        geofenceYellow == other.geofenceYellow;
+  }
+
+  @override
+  int get hashCode => Object.hashAll(<Object?>[
+        surfaceContent,
+        surfaceChrome,
+        surfaceSelected,
+        surfaceOverlay,
+        borderHairline,
+        borderStrong,
+        textPrimary,
+        textSecondary,
+        textDisabled,
+        textOnBrand,
+        actionPrimary,
+        actionPressed,
+        actionSubtle,
+        focusIndicator,
+        statusMoving,
+        statusParked,
+        statusWarning,
+        statusAlarm,
+        statusOffline,
+        mapTrackDefault,
+        mapTrackSpeeding,
+        mapTrackSelected,
+        mapMarkerFill,
+        mapMarkerStroke,
+        mapClusterFill,
+        mapClusterText,
+        geofenceAqua,
+        geofenceBlue,
+        geofenceGray,
+        geofenceGreen,
+        geofenceOrange,
+        geofencePurple,
+        geofenceRed,
+        geofenceYellow,
+      ]);
 }
 
 const AuroraColorTokens _auroraLight = AuroraColorTokens(

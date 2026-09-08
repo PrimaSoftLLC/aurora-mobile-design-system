@@ -75,6 +75,26 @@ export function generateDart() {
   lines.push('  const AuroraColorTokens({');
   for (const f of fields) lines.push(`    required this.${f},`);
   lines.push('  });');
+  lines.push('');
+  // ThemeData.== сравнивает extensions по значению. Без этого две структурно
+  // одинаковые темы не равны, MaterialApp(theme: auroraThemeData(...)) внутри
+  // build выдаёт на каждой перестройке новый ThemeData, и перерисовывается
+  // каждый Theme.of-зависимый виджет на экране. Поля генерируются, поэтому и
+  // равенство генерируется: рукописное разъехалось бы с первым новым токеном.
+  lines.push('  @override');
+  lines.push('  bool operator ==(Object other) {');
+  lines.push('    if (identical(this, other)) return true;');
+  lines.push('    return other is AuroraColorTokens &&');
+  lines.push('        runtimeType == other.runtimeType &&');
+  for (const [i, f] of fields.entries()) {
+    lines.push(`        ${f} == other.${f}${i === fields.length - 1 ? ';' : ' &&'}`);
+  }
+  lines.push('  }');
+  lines.push('');
+  lines.push('  @override');
+  lines.push('  int get hashCode => Object.hashAll(<Object?>[');
+  for (const f of fields) lines.push(`        ${f},`);
+  lines.push('      ]);');
   lines.push('}');
   lines.push('');
 
