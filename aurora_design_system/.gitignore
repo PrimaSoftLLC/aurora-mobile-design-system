@@ -1,0 +1,7 @@
+.dart_tool/
+.packages
+build/
+
+# This is a library package: consumers resolve their own versions,
+# so the lockfile is not checked in (https://dart.dev/guides/libraries/private-files).
+pubspec.lock
