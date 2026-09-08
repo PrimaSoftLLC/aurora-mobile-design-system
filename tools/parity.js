@@ -12,6 +12,30 @@ const CANONICAL_STEPS = {
   brand: ['50','100','200','300','400','500','600','700','800','900'],
 };
 
+/**
+ * `seed` — не генератор шкалы, а запись о том, откуда шкала растёт (§4.1).
+ * Раз он ничего не производит, единственное, что удерживает его от превращения
+ * в мёртвое поле, — требование, чтобы он буквально встречался в собственной
+ * шкале бренда. Ступень при этом не фиксируется: у Aurora seed стоит на 600, у
+ * МТС фирменный красный — это 500, а 600 у них затемнённый вариант, который
+ * несёт контраст. Требовать одинаковую ступень значило бы сломать МТС.
+ */
+export function checkSeedInOwnRamp(brand) {
+  const id = brand?.id ?? '(без id)';
+  const seed = brand?.seed;
+  if (typeof seed !== 'string') {
+    return [`${id}: нет поля "seed" — метаданные бренда неполны`];
+  }
+  const ramp = brand?.color?.brand ?? {};
+  const hit = Object.entries(ramp).find(([, hex]) => String(hex).toUpperCase() === seed.toUpperCase());
+  if (hit) return [];
+  return [
+    `${id}: seed ${seed} не встречается в собственной шкале brand ` +
+    `[${Object.values(ramp).join(', ')}]. Шкалы рисует дизайнер, но seed обязан ` +
+    `указывать на одну из её ступеней, иначе он ничего не описывает.`,
+  ];
+}
+
 export function checkBrandParity() {
   const brands = listBrands();
   const violations = [];
@@ -35,6 +59,10 @@ export function checkBrandParity() {
       violations.push(`${id}: color содержит шкалы [${scales}], ожидались brand и neutral`);
       brandsWithMissingScales.add(id);
     }
+  }
+
+  for (const id of brands) {
+    violations.push(...checkSeedInOwnRamp(loadBrand(id)));
   }
 
   // Абсолютная проверка против эталонных ступеней.
