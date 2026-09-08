@@ -2,6 +2,7 @@ import { validateAll } from './validate.js';
 import { checkBrandParity } from './parity.js';
 import { writeDart } from './generate-dart.js';
 import { writeFigma } from './generate-figma.js';
+import { writePreview } from './generate-preview.js';
 
 const problems = [...validateAll(), ...checkBrandParity()];
 
@@ -14,3 +15,4 @@ if (problems.length > 0) {
 
 console.log('Записан:', writeDart());
 console.log('Записан:', writeFigma());
+console.log('Записан:', writePreview());
