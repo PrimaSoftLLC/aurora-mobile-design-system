@@ -4,26 +4,11 @@ import { listBrands, loadBrand, loadPrimitives, loadSemantic, root } from './loa
 import { resolveColors } from './resolve.js';
 import { contrastRatio } from './color.js';
 import { CONTRAST_PAIRS } from './validate.js';
+import { cssCurve } from './curves.js';
 
 const THEMES = ['light', 'dark'];
 /** Короткие подписи для переключателя; для неизвестного бренда берётся appName. */
 const BRAND_LABEL = { aurora: 'Aurora', mts: 'МТС', irissoft: 'Irissoft' };
-
-/**
- * Контрольные точки кривых Flutter (`Curves.easeOutCubic` = Cubic(0.215,
- * 0.61, 0.355, 1.0)). Превью анимирует той же кривой, что и код; кривая
- * без записи здесь останавливает сборку, а не тихо подменяется на `ease`.
- */
-const CURVE_BEZIER = {
-  easeOutCubic: '.215,.61,.355,1',
-  easeInCubic: '.55,.055,.675,.19',
-};
-
-function cssCurve(name) {
-  const bezier = CURVE_BEZIER[name];
-  if (!bezier) throw new Error(`generate-preview: нет cubic-bezier для кривой "${name}"`);
-  return `cubic-bezier(${bezier})`;
-}
 
 /** Экранирование для текстовых узлов и значений атрибутов. */
 export function esc(s) {
