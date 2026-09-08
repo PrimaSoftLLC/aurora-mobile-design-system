@@ -1,5 +1,7 @@
+import { existsSync } from 'node:fs';
+import path from 'node:path';
 import { hue } from './color.js';
-import { listBrands, loadBrand } from './load.js';
+import { listBrands, loadBrand, root } from './load.js';
 
 /** Ключи бренд-файла, которым разрешено различаться визуально. */
 export const BRAND_ALLOWED_KEYS = ['color', 'logo', 'wordmark'];
@@ -44,6 +46,27 @@ export function checkBrandId(fileId, brand) {
   }
   if (brand?.id !== fileId) {
     errors.push(`${fileId}: поле "id" (${JSON.stringify(brand?.id)}) не совпадает с именем файла.`);
+  }
+  return errors;
+}
+
+/**
+ * `logo` и `wordmark` — две из четырёх визуальных осей бренда, и их легко
+ * забыть: новый бренд уехал бы в релиз с чужим знаком. Файлы обязаны лежать
+ * в `assets/brand/` под именами из бренд-файла.
+ */
+export function checkBrandAssets(brand, assetsDir = path.join(root, 'assets', 'brand')) {
+  const id = brand?.id ?? '(без id)';
+  const errors = [];
+  for (const key of ['logo', 'wordmark']) {
+    const name = brand?.[key];
+    if (typeof name !== 'string' || name === '') {
+      errors.push(`${id}: нет поля "${key}" — бренд без знака`);
+      continue;
+    }
+    if (!existsSync(path.join(assetsDir, name))) {
+      errors.push(`${id}: ${key} "${name}" не найден в assets/brand/`);
+    }
   }
   return errors;
 }
@@ -121,6 +144,7 @@ export function checkBrandParity() {
       violations.push(`${id}: color содержит шкалы [${scales}], ожидались brand и neutral`);
     }
 
+    violations.push(...checkBrandAssets(brand));
     violations.push(...checkSeedInOwnRamp(brand));
     violations.push(...checkNeutralHue(brand));
 

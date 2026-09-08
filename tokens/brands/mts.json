@@ -1,8 +1,8 @@
 {
   "id": "mts",
   "appName": "MTS Automonitoring",
-  "logo": "mts.svg",
-  "wordmark": "mts-wordmark.svg",
+  "logo": "mts.png",
+  "wordmark": "mts-wordmark.png",
   "baseUrl": "https://api.aurora.mts.by/",
   "defaultLocale": "ru",
   "neutralHue": 28,

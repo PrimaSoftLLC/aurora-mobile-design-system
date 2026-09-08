@@ -1,8 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { checkBrandParity, checkSeedInOwnRamp, checkBrandId, checkNeutralHue, BRAND_ALLOWED_KEYS } from '../tools/parity.js';
+import path from 'node:path';
+import { checkBrandParity, checkSeedInOwnRamp, checkBrandId, checkNeutralHue, checkBrandAssets, BRAND_ALLOWED_KEYS } from '../tools/parity.js';
 import { resolveColors } from '../tools/resolve.js';
-import { listBrands, loadBrand } from '../tools/load.js';
+import { listBrands, loadBrand, root } from '../tools/load.js';
 
 test('бренды различаются только разрешёнными ключами', () => {
   const violations = checkBrandParity();
@@ -88,4 +89,17 @@ test('оторвавшийся neutralHue ловится, серая шкала 
   const wrap = { id: 'x', neutralHue: 358, color: { neutral: { 500: '#FF0008' } } };
   assert.deepEqual(checkNeutralHue(wrap), []);
   assert.match(checkNeutralHue({ id: 'x', color: { neutral: { 500: '#666C85' } } })[0], /neutralHue/);
+});
+
+test('логотип и вордмарк каждого бренда лежат в assets/brand', () => {
+  for (const id of listBrands()) {
+    assert.deepEqual(checkBrandAssets(loadBrand(id)), [], `${id}: знак не найден`);
+  }
+});
+
+test('бренд без знака или с несуществующим файлом ловится', () => {
+  const dir = path.join(root, 'assets', 'brand');
+  assert.match(checkBrandAssets({ id: 'x', logo: 'nope.svg', wordmark: 'aurora-wordmark.svg' }, dir)[0], /nope\.svg/);
+  assert.match(checkBrandAssets({ id: 'x', logo: 'aurora.svg' }, dir)[0], /"wordmark"/);
+  assert.deepEqual(checkBrandAssets({ id: 'x', logo: 'aurora.svg', wordmark: 'aurora-wordmark.svg' }, dir), []);
 });
