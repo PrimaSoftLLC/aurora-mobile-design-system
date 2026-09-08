@@ -83,3 +83,15 @@ test('движение уезжает в Figma: длительности и кр
   assert.equal(m.variables['curve.enter'], 'easeOutCubic');
   assert.equal(m.variables['curve.exit'], 'easeInCubic');
 });
+
+test('регистр роли уезжает в Figma: overline — капителью, остальные нет', () => {
+  const t = doc.collections.typography.variables;
+  assert.equal(t['role.overline.uppercase'], true);
+  assert.equal(t['role.label.uppercase'], false);
+});
+
+test('полупрозрачный scrim приходит в Figma как #RRGGBBAA', () => {
+  const v = doc.collections.semantic.variables['surface.scrim'];
+  assert.equal(v['aurora/light'], '#10122066');
+  assert.equal(v['aurora/dark'], '#10122099');
+});

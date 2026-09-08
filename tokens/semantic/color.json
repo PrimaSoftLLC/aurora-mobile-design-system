@@ -3,6 +3,7 @@
   "surface.chrome":    { "light": "{color.neutral.50}",  "dark": "{color.neutral.900}" },
   "surface.selected":  { "light": "mix({color.neutral.0}, {color.brand.600}, 0.04)", "dark": "{color.neutral.850}" },
   "surface.overlay":   { "light": "{color.neutral.0}",   "dark": "{color.neutral.900}" },
+  "surface.scrim":     { "light": "alpha({color.neutral.1000}, 0.4)", "dark": "alpha({color.neutral.1000}, 0.6)" },
   "border.hairline":   { "light": "{color.neutral.100}", "dark": "{color.neutral.850}" },
   "border.strong":     { "light": "{color.neutral.200}", "dark": "{color.neutral.800}" },
   "text.primary":      { "light": "{color.neutral.950}", "dark": "{color.neutral.50}" },

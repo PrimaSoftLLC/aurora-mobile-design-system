@@ -51,6 +51,9 @@ export function generateFigma() {
     typographyVars[`role.${name}.tracking`] = r.tracking;
     typographyVars[`role.${name}.letterSpacing`] = Number(letterSpacingPx(r));
     typographyVars[`role.${name}.tabular`] = r.tabular === true;
+    // Верхний регистр — часть роли (overline), а не оформление конкретного
+    // текста: без флага дизайнер нарисует overline строчными.
+    typographyVars[`role.${name}.uppercase`] = r.uppercase === true;
   }
 
   const motionVars = {};
@@ -63,7 +66,8 @@ export function generateFigma() {
       direction: 'JSON → Figma. Обратный импорт не поддерживается намеренно.',
       note:
         'Коллекции component нет намеренно: §4.3 спека запрещает заводить этот ' +
-        'слой на всякий случай. Цвета геозон приходят как #RRGGBBAA.',
+        'слой на всякий случай. Полупрозрачные цвета (геозоны, surface.scrim) ' +
+        'приходят как #RRGGBBAA.',
     },
     collections: {
       semantic: { modes, variables: semanticVars },

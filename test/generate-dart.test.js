@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { root, loadSemantic } from '../tools/load.js';
+import { root, loadSemantic, loadPrimitives } from '../tools/load.js';
 import { camelize, dartColor, generateDart } from '../tools/generate-dart.js';
 
 test('camelize превращает точечное имя в camelCase', () => {
@@ -113,4 +113,29 @@ test('AuroraColorTokens сравнивается по значению, и в с
   // runtimeType плюс по одному сравнению на поле — ни больше, ни меньше.
   assert.equal(eq.split('&&').length, fields.length + 1);
   assert.equal(hash.trim().split(/\s*\n\s*/).length, fields.length);
+});
+
+// Тот же аргумент, что и для цветов: набор ролей генерируется, и равенство
+// генерируется, иначе рукописный класс молча отстаёт от JSON.
+test('AuroraTypography сгенерирован из ролей JSON и сравнивается по всем полям', () => {
+  const roles = Object.keys(loadPrimitives().role);
+  const body = /class AuroraTypography \{([\s\S]*?)\n\}/.exec(dart)[1];
+  for (const r of roles) {
+    assert.ok(body.includes(`final TextStyle ${r};`), `${r} не является полем AuroraTypography`);
+    assert.ok(body.includes(`${r} = AuroraTypographyTokens.${r}`), `${r} не входит в .standard()`);
+  }
+  const eq = /return other is AuroraTypography &&([\s\S]*?);/.exec(body)[1];
+  assert.equal(eq.split('&&').length, roles.length + 1);
+});
+
+test('каждая роль несёт арабский фолбэк', () => {
+  const styles = dart.match(/static const TextStyle \w+ = TextStyle\([\s\S]*?\);/g);
+  assert.equal(styles.length, Object.keys(loadPrimitives().role).length);
+  for (const s of styles) assert.match(s, /fontFamilyFallback: fontFamilyFallback,/);
+  assert.match(dart, /fontFamilyFallback = <String>\[fontFamilyArabic\]/);
+});
+
+test('surface.scrim полупрозрачен и в Dart несёт альфу впереди', () => {
+  assert.match(dart, /surfaceScrim: Color\(0x66101220\)/);
+  assert.match(dart, /surfaceScrim: Color\(0x99101220\)/);
 });

@@ -12,6 +12,7 @@ class AuroraColorTokens {
   final Color surfaceChrome;
   final Color surfaceSelected;
   final Color surfaceOverlay;
+  final Color surfaceScrim;
   final Color borderHairline;
   final Color borderStrong;
   final Color textPrimary;
@@ -48,6 +49,7 @@ class AuroraColorTokens {
     required this.surfaceChrome,
     required this.surfaceSelected,
     required this.surfaceOverlay,
+    required this.surfaceScrim,
     required this.borderHairline,
     required this.borderStrong,
     required this.textPrimary,
@@ -89,6 +91,7 @@ class AuroraColorTokens {
         surfaceChrome == other.surfaceChrome &&
         surfaceSelected == other.surfaceSelected &&
         surfaceOverlay == other.surfaceOverlay &&
+        surfaceScrim == other.surfaceScrim &&
         borderHairline == other.borderHairline &&
         borderStrong == other.borderStrong &&
         textPrimary == other.textPrimary &&
@@ -127,6 +130,7 @@ class AuroraColorTokens {
         surfaceChrome,
         surfaceSelected,
         surfaceOverlay,
+        surfaceScrim,
         borderHairline,
         borderStrong,
         textPrimary,
@@ -165,6 +169,7 @@ const AuroraColorTokens _auroraLight = AuroraColorTokens(
   surfaceChrome: Color(0xFFF4F6FA),
   surfaceSelected: Color(0xFFF5F9FC),
   surfaceOverlay: Color(0xFFFFFFFF),
+  surfaceScrim: Color(0x66101220),
   borderHairline: Color(0xFFEFF1F6),
   borderStrong: Color(0xFFE0E3EC),
   textPrimary: Color(0xFF141624),
@@ -202,6 +207,7 @@ const AuroraColorTokens _auroraDark = AuroraColorTokens(
   surfaceChrome: Color(0xFF191C2E),
   surfaceSelected: Color(0xFF20243A),
   surfaceOverlay: Color(0xFF191C2E),
+  surfaceScrim: Color(0x99101220),
   borderHairline: Color(0xFF20243A),
   borderStrong: Color(0xFF292D42),
   textPrimary: Color(0xFFF4F6FA),
@@ -239,6 +245,7 @@ const AuroraColorTokens _mtsLight = AuroraColorTokens(
   surfaceChrome: Color(0xFFF7F6F5),
   surfaceSelected: Color(0xFFFDF5F5),
   surfaceOverlay: Color(0xFFFFFFFF),
+  surfaceScrim: Color(0x66161514),
   borderHairline: Color(0xFFF1EFED),
   borderStrong: Color(0xFFE6E3E1),
   textPrimary: Color(0xFF1B1A19),
@@ -276,6 +283,7 @@ const AuroraColorTokens _mtsDark = AuroraColorTokens(
   surfaceChrome: Color(0xFF201E1D),
   surfaceSelected: Color(0xFF272423),
   surfaceOverlay: Color(0xFF201E1D),
+  surfaceScrim: Color(0x99161514),
   borderHairline: Color(0xFF272423),
   borderStrong: Color(0xFF302D2B),
   textPrimary: Color(0xFFF7F6F5),
@@ -360,77 +368,174 @@ class AuroraTypographyTokens {
   const AuroraTypographyTokens._();
   static const String fontFamilySans = 'Inter';
   static const String fontFamilyArabic = 'Noto Sans Arabic';
+
+  /// Арабский — один из языков приложения, а у Inter арабских глифов нет.
+  /// Фолбэк стоит в каждой роли, чтобы стиль работал и вне ThemeData.
+  static const List<String> fontFamilyFallback = <String>[fontFamilyArabic];
+
   static const TextStyle display = TextStyle(
     fontFamily: fontFamilySans,
+    fontFamilyFallback: fontFamilyFallback,
     fontSize: 28,
     height: 1.2143,
     fontWeight: FontWeight.w600,
     letterSpacing: -0.4200,
   );
+
   static const TextStyle title = TextStyle(
     fontFamily: fontFamilySans,
+    fontFamilyFallback: fontFamilyFallback,
     fontSize: 20,
     height: 1.3000,
     fontWeight: FontWeight.w600,
     letterSpacing: -0.2000,
   );
+
   static const TextStyle section = TextStyle(
     fontFamily: fontFamilySans,
+    fontFamilyFallback: fontFamilyFallback,
     fontSize: 15,
     height: 1.3333,
     fontWeight: FontWeight.w600,
     letterSpacing: 0.0000,
   );
+
   static const TextStyle body = TextStyle(
     fontFamily: fontFamilySans,
+    fontFamilyFallback: fontFamilyFallback,
     fontSize: 15,
     height: 1.4667,
     fontWeight: FontWeight.w400,
     letterSpacing: 0.0000,
   );
+
   static const TextStyle label = TextStyle(
     fontFamily: fontFamilySans,
+    fontFamilyFallback: fontFamilyFallback,
     fontSize: 13,
     height: 1.3846,
     fontWeight: FontWeight.w600,
     letterSpacing: 0.0000,
   );
+
   static const TextStyle caption = TextStyle(
     fontFamily: fontFamilySans,
+    fontFamilyFallback: fontFamilyFallback,
     fontSize: 11,
     height: 1.3636,
     fontWeight: FontWeight.w400,
     letterSpacing: 0.0000,
   );
+
+  /// В спеке набирается верхним регистром. У Flutter нет text-transform,
+  /// поэтому регистр применяет компонент (`Text(value.toUpperCase())`), не токен.
   static const TextStyle overline = TextStyle(
     fontFamily: fontFamilySans,
+    fontFamilyFallback: fontFamilyFallback,
     fontSize: 9,
     height: 1.3333,
     fontWeight: FontWeight.w700,
     letterSpacing: 0.7200,
   );
+
   static const TextStyle numberLg = TextStyle(
     fontFamily: fontFamilySans,
+    fontFamilyFallback: fontFamilyFallback,
     fontSize: 20,
     height: 1.2000,
     fontWeight: FontWeight.w600,
     letterSpacing: 0.0000,
     fontFeatures: <FontFeature>[FontFeature.tabularFigures()],
   );
+
   static const TextStyle numberMd = TextStyle(
     fontFamily: fontFamilySans,
+    fontFamilyFallback: fontFamilyFallback,
     fontSize: 14,
     height: 1.2857,
     fontWeight: FontWeight.w600,
     letterSpacing: 0.0000,
     fontFeatures: <FontFeature>[FontFeature.tabularFigures()],
   );
+
   static const TextStyle numberSm = TextStyle(
     fontFamily: fontFamilySans,
+    fontFamilyFallback: fontFamilyFallback,
     fontSize: 11,
     height: 1.2727,
     fontWeight: FontWeight.w600,
     letterSpacing: 0.0000,
     fontFeatures: <FontFeature>[FontFeature.tabularFigures()],
   );
+}
+
+class AuroraTypography {
+  final TextStyle display;
+  final TextStyle title;
+  final TextStyle section;
+  final TextStyle body;
+  final TextStyle label;
+  final TextStyle caption;
+  final TextStyle overline;
+  final TextStyle numberLg;
+  final TextStyle numberMd;
+  final TextStyle numberSm;
+
+  const AuroraTypography({
+    required this.display,
+    required this.title,
+    required this.section,
+    required this.body,
+    required this.label,
+    required this.caption,
+    required this.overline,
+    required this.numberLg,
+    required this.numberMd,
+    required this.numberSm,
+  });
+
+  /// Роли из `AuroraTypographyTokens`. Руками здесь ничего не задаётся:
+  /// иначе шкала в JSON и шкала в коде разъедутся.
+  const AuroraTypography.standard()
+      : display = AuroraTypographyTokens.display,
+        title = AuroraTypographyTokens.title,
+        section = AuroraTypographyTokens.section,
+        body = AuroraTypographyTokens.body,
+        label = AuroraTypographyTokens.label,
+        caption = AuroraTypographyTokens.caption,
+        overline = AuroraTypographyTokens.overline,
+        numberLg = AuroraTypographyTokens.numberLg,
+        numberMd = AuroraTypographyTokens.numberMd,
+        numberSm = AuroraTypographyTokens.numberSm;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is AuroraTypography &&
+        runtimeType == other.runtimeType &&
+        display == other.display &&
+        title == other.title &&
+        section == other.section &&
+        body == other.body &&
+        label == other.label &&
+        caption == other.caption &&
+        overline == other.overline &&
+        numberLg == other.numberLg &&
+        numberMd == other.numberMd &&
+        numberSm == other.numberSm;
+  }
+
+  @override
+  int get hashCode => Object.hashAll(<Object?>[
+        display,
+        title,
+        section,
+        body,
+        label,
+        caption,
+        overline,
+        numberLg,
+        numberMd,
+        numberSm,
+      ]);
 }

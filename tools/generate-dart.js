@@ -12,8 +12,8 @@ export function camelize(dotted) {
 
 /**
  * Принимает `#RRGGBB` и `#RRGGBBAA`; Dart хочет ARGB, поэтому альфа
- * переезжает вперёд. Полупрозрачны только цвета геозон — это
- * пользовательские данные поверх карты, а не оформление.
+ * переезжает вперёд. Полупрозрачны цвета геозон (пользовательские данные
+ * поверх карты) и `surface.scrim` (затемнение под диалогом и шторкой).
  */
 export function dartColor(hex) {
   const h = hex.replace('#', '').toUpperCase();
@@ -52,10 +52,36 @@ function capitalize(s) {
   return s[0].toUpperCase() + s.slice(1);
 }
 
+/**
+ * Равенство по значению для класса с перечисленными полями. `ThemeData.==`
+ * сравнивает extensions по значению; без этого две структурно одинаковые
+ * темы не равны, `MaterialApp(theme: auroraThemeData(...))` внутри build
+ * выдаёт на каждой перестройке новый ThemeData, и перерисовывается каждый
+ * Theme.of-зависимый виджет. Поля генерируются, поэтому и равенство
+ * генерируется: рукописное разъехалось бы с первым новым полем.
+ */
+function pushValueEquality(lines, className, fields) {
+  lines.push('  @override');
+  lines.push('  bool operator ==(Object other) {');
+  lines.push('    if (identical(this, other)) return true;');
+  lines.push(`    return other is ${className} &&`);
+  lines.push('        runtimeType == other.runtimeType &&');
+  for (const [i, f] of fields.entries()) {
+    lines.push(`        ${f} == other.${f}${i === fields.length - 1 ? ';' : ' &&'}`);
+  }
+  lines.push('  }');
+  lines.push('');
+  lines.push('  @override');
+  lines.push('  int get hashCode => Object.hashAll(<Object?>[');
+  for (const f of fields) lines.push(`        ${f},`);
+  lines.push('      ]);');
+}
+
 export function generateDart() {
   const brands = listBrands();
   const primitives = loadPrimitives();
   const fields = Object.keys(loadSemantic()).map(camelize);
+  const roles = Object.keys(primitives.role);
 
   const lines = [];
   lines.push('// GENERATED — не редактировать руками.');
@@ -76,25 +102,7 @@ export function generateDart() {
   for (const f of fields) lines.push(`    required this.${f},`);
   lines.push('  });');
   lines.push('');
-  // ThemeData.== сравнивает extensions по значению. Без этого две структурно
-  // одинаковые темы не равны, MaterialApp(theme: auroraThemeData(...)) внутри
-  // build выдаёт на каждой перестройке новый ThemeData, и перерисовывается
-  // каждый Theme.of-зависимый виджет на экране. Поля генерируются, поэтому и
-  // равенство генерируется: рукописное разъехалось бы с первым новым токеном.
-  lines.push('  @override');
-  lines.push('  bool operator ==(Object other) {');
-  lines.push('    if (identical(this, other)) return true;');
-  lines.push('    return other is AuroraColorTokens &&');
-  lines.push('        runtimeType == other.runtimeType &&');
-  for (const [i, f] of fields.entries()) {
-    lines.push(`        ${f} == other.${f}${i === fields.length - 1 ? ';' : ' &&'}`);
-  }
-  lines.push('  }');
-  lines.push('');
-  lines.push('  @override');
-  lines.push('  int get hashCode => Object.hashAll(<Object?>[');
-  for (const f of fields) lines.push(`        ${f},`);
-  lines.push('      ]);');
+  pushValueEquality(lines, 'AuroraColorTokens', fields);
   lines.push('}');
   lines.push('');
 
@@ -165,18 +173,51 @@ export function generateDart() {
   lines.push('  const AuroraTypographyTokens._();');
   lines.push(`  static const String fontFamilySans = '${primitives.fontFamily.sans}';`);
   lines.push(`  static const String fontFamilyArabic = '${primitives.fontFamily.arabic}';`);
+  lines.push('');
+  lines.push('  /// Арабский — один из языков приложения, а у Inter арабских глифов нет.');
+  lines.push('  /// Фолбэк стоит в каждой роли, чтобы стиль работал и вне ThemeData.');
+  lines.push('  static const List<String> fontFamilyFallback = <String>[fontFamilyArabic];');
   for (const [name, r] of Object.entries(primitives.role)) {
+    lines.push('');
+    if (r.uppercase) {
+      lines.push('  /// В спеке набирается верхним регистром. У Flutter нет text-transform,');
+      lines.push('  /// поэтому регистр применяет компонент (`Text(value.toUpperCase())`), не токен.');
+    }
     lines.push(`  static const TextStyle ${name} = TextStyle(`);
-    lines.push(`    fontFamily: fontFamilySans,`);
+    lines.push('    fontFamily: fontFamilySans,');
+    lines.push('    fontFamilyFallback: fontFamilyFallback,');
     lines.push(`    fontSize: ${r.size},`);
     lines.push(`    height: ${lineHeightRatio(r)},`);
     lines.push(`    fontWeight: ${dartWeight(r.weight)},`);
     lines.push(`    letterSpacing: ${letterSpacingPx(r)},`);
     if (r.tabular) {
-      lines.push(`    fontFeatures: <FontFeature>[FontFeature.tabularFigures()],`);
+      lines.push('    fontFeatures: <FontFeature>[FontFeature.tabularFigures()],');
     }
     lines.push('  );');
   }
+  lines.push('}');
+  lines.push('');
+
+  // Набор ролей как значение темы: то, что видит компонент через
+  // AuroraTheme.of(context).typography. Поля — те же роли, что и статики
+  // выше; класс генерируется, чтобы новая роль в JSON не могла до него
+  // не доехать.
+  lines.push('class AuroraTypography {');
+  for (const r of roles) lines.push(`  final TextStyle ${r};`);
+  lines.push('');
+  lines.push('  const AuroraTypography({');
+  for (const r of roles) lines.push(`    required this.${r},`);
+  lines.push('  });');
+  lines.push('');
+  lines.push('  /// Роли из `AuroraTypographyTokens`. Руками здесь ничего не задаётся:');
+  lines.push('  /// иначе шкала в JSON и шкала в коде разъедутся.');
+  lines.push('  const AuroraTypography.standard()');
+  for (const [i, r] of roles.entries()) {
+    const sep = i === 0 ? ':' : ' ';
+    lines.push(`      ${sep} ${r} = AuroraTypographyTokens.${r}${i === roles.length - 1 ? ';' : ','}`);
+  }
+  lines.push('');
+  pushValueEquality(lines, 'AuroraTypography', roles);
   lines.push('}');
   lines.push('');
 

@@ -3,82 +3,21 @@ import 'package:flutter/material.dart';
 import '../tokens/tokens.g.dart';
 
 export '../tokens/tokens.g.dart'
-    show AuroraBrand, AuroraColorTokens, AuroraDimensions, AuroraMotionTokens, AuroraTypographyTokens;
-
-/// Типографические роли из спека §6. Моноширинного шрифта нет:
-/// числовые роли — тот же Inter с табличными цифрами.
-@immutable
-class AuroraTypography {
-  final TextStyle display;
-  final TextStyle title;
-  final TextStyle section;
-  final TextStyle body;
-  final TextStyle label;
-  final TextStyle caption;
-  final TextStyle overline;
-  final TextStyle numberLg;
-  final TextStyle numberMd;
-  final TextStyle numberSm;
-
-  const AuroraTypography({
-    required this.display,
-    required this.title,
-    required this.section,
-    required this.body,
-    required this.label,
-    required this.caption,
-    required this.overline,
-    required this.numberLg,
-    required this.numberMd,
-    required this.numberSm,
-  });
-
-  /// Значения приходят из сгенерированного `tokens.g.dart`. Руками здесь
-  /// ничего не задаётся: иначе шкала в JSON и шкала в коде разъедутся.
-  ///
-  /// Роль `overline` в спеке набирается капителью, но у Flutter нет
-  /// text-transform — верхний регистр применяет компонент
-  /// (`Text(value.toUpperCase())`), а не токен.
-  const AuroraTypography.standard()
-      : display = AuroraTypographyTokens.display,
-        title = AuroraTypographyTokens.title,
-        section = AuroraTypographyTokens.section,
-        body = AuroraTypographyTokens.body,
-        label = AuroraTypographyTokens.label,
-        caption = AuroraTypographyTokens.caption,
-        overline = AuroraTypographyTokens.overline,
-        numberLg = AuroraTypographyTokens.numberLg,
-        numberMd = AuroraTypographyTokens.numberMd,
-        numberSm = AuroraTypographyTokens.numberSm;
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is AuroraTypography &&
-        runtimeType == other.runtimeType &&
-        display == other.display &&
-        title == other.title &&
-        section == other.section &&
-        body == other.body &&
-        label == other.label &&
-        caption == other.caption &&
-        overline == other.overline &&
-        numberLg == other.numberLg &&
-        numberMd == other.numberMd &&
-        numberSm == other.numberSm;
-  }
-
-  @override
-  int get hashCode => Object.hash(
-        display, title, section, body, label,
-        caption, overline, numberLg, numberMd, numberSm,
-      );
-}
+    show
+        AuroraBrand,
+        AuroraColorTokens,
+        AuroraDimensions,
+        AuroraMotionTokens,
+        AuroraTypography,
+        AuroraTypographyTokens;
 
 @immutable
 class AuroraTheme extends ThemeExtension<AuroraTheme> {
   final AuroraBrand brand;
   final AuroraColorTokens colors;
+
+  /// Роли §6. Класс генерируется вместе с токенами: моноширинного шрифта
+  /// нет, числовые роли — тот же Inter с табличными цифрами.
   final AuroraTypography typography;
 
   const AuroraTheme({
@@ -144,6 +83,30 @@ class AuroraTheme extends ThemeExtension<AuroraTheme> {
 /// умолчания фреймворка, а не через токены.
 const WidgetStatePropertyAll<double> _noElevation = WidgetStatePropertyAll<double>(0);
 
+const WidgetStatePropertyAll<Color> _noShadow = WidgetStatePropertyAll<Color>(Colors.transparent);
+
+/// Роли §6 в слотах Material, чтобы `AppBar`, `ListTile`, кнопки и поля
+/// ввода брали шкалу системы, а не размеры Material по умолчанию. Слотов
+/// у Material пятнадцать, ролей десять: соседние слоты делят роль.
+/// Цвета сюда не входят — их подставит `ThemeData` из `colorScheme`.
+const TextTheme _textTheme = TextTheme(
+  displayLarge: AuroraTypographyTokens.display,
+  displayMedium: AuroraTypographyTokens.display,
+  displaySmall: AuroraTypographyTokens.display,
+  headlineLarge: AuroraTypographyTokens.display,
+  headlineMedium: AuroraTypographyTokens.title,
+  headlineSmall: AuroraTypographyTokens.title,
+  titleLarge: AuroraTypographyTokens.title, // заголовок AppBar и диалога
+  titleMedium: AuroraTypographyTokens.section,
+  titleSmall: AuroraTypographyTokens.label,
+  bodyLarge: AuroraTypographyTokens.body, // ListTile.title, текст в поле ввода
+  bodyMedium: AuroraTypographyTokens.body,
+  bodySmall: AuroraTypographyTokens.caption,
+  labelLarge: AuroraTypographyTokens.label, // подпись кнопки
+  labelMedium: AuroraTypographyTokens.label,
+  labelSmall: AuroraTypographyTokens.overline,
+);
+
 /// Собирает [ThemeData] так, чтобы Material-компоненты подчинялись токенам.
 ///
 /// Теней нет нигде — это принцип системы, а не настройка. Поверхности
@@ -154,6 +117,12 @@ const WidgetStatePropertyAll<double> _noElevation = WidgetStatePropertyAll<doubl
 /// без явного значения падает на `primary` — и всё поднятое получает
 /// брендовую подкраску M3. Поэтому здесь и глобальный запрет тени, и
 /// поимённое обнуление подтем.
+///
+/// Вторая ловушка — фолбэки `ColorScheme`. Незаданный `outline` падает на
+/// `onSurface`, `onSurfaceVariant` тоже, а все `surfaceContainer*` на
+/// `surface`. Без явных значений рамка поля ввода рисуется цветом
+/// `text.primary`, а диалог и шторка ложатся на `surface.content` вместо
+/// `surface.overlay`, и в тёмной теме лист перестаёт отличаться от контента.
 ThemeData auroraThemeData(AuroraBrand brand, Brightness brightness) {
   final aurora = AuroraTheme.forBrand(brand, brightness);
   final c = aurora.colors;
@@ -162,6 +131,8 @@ ThemeData auroraThemeData(AuroraBrand brand, Brightness brightness) {
     useMaterial3: true,
     brightness: brightness,
     fontFamily: AuroraTypographyTokens.fontFamilySans,
+    fontFamilyFallback: AuroraTypographyTokens.fontFamilyFallback,
+    textTheme: _textTheme,
     scaffoldBackgroundColor: c.surfaceContent,
     shadowColor: Colors.transparent,
     colorScheme: ColorScheme(
@@ -172,6 +143,20 @@ ThemeData auroraThemeData(AuroraBrand brand, Brightness brightness) {
       onSecondary: c.textPrimary,
       surface: c.surfaceContent,
       onSurface: c.textPrimary,
+      onSurfaceVariant: c.textSecondary,
+      outline: c.borderStrong,
+      outlineVariant: c.borderHairline,
+      // Лист, диалог и меню — на overlay (§5.4); «самая высокая» ступень
+      // M3 (заливка поля ввода, filled Card) — на chrome, как один шаг тона
+      // от контента в той же теме.
+      surfaceContainerLowest: c.surfaceContent,
+      surfaceContainerLow: c.surfaceOverlay,
+      surfaceContainer: c.surfaceOverlay,
+      surfaceContainerHigh: c.surfaceOverlay,
+      surfaceContainerHighest: c.surfaceChrome,
+      scrim: c.surfaceScrim,
+      // Ошибка формы пока красится тревогой объекта; отдельного токена нет
+      // (спек, приложение Б).
       error: c.statusAlarm,
       onError: c.textOnBrand,
       shadow: Colors.transparent,
@@ -196,8 +181,13 @@ ThemeData auroraThemeData(AuroraBrand brand, Brightness brightness) {
       backgroundColor: c.surfaceContent,
       foregroundColor: c.textPrimary,
     ),
+    // Поле ввода — радиус 8 (§7). Цвета состояний M3 берёт из colorScheme:
+    // покой — outline, фокус — primary, ошибка — error.
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(AuroraDimensions.radiusMd)),
+    ),
     elevatedButtonTheme: const ElevatedButtonThemeData(
-      style: ButtonStyle(elevation: _noElevation, shadowColor: WidgetStatePropertyAll<Color>(Colors.transparent)),
+      style: ButtonStyle(elevation: _noElevation, shadowColor: _noShadow),
     ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       elevation: 0,
@@ -206,15 +196,36 @@ ThemeData auroraThemeData(AuroraBrand brand, Brightness brightness) {
       highlightElevation: 0,
       disabledElevation: 0,
     ),
-    dialogTheme: const DialogThemeData(elevation: 0),
-    bottomSheetTheme: const BottomSheetThemeData(elevation: 0, modalElevation: 0),
-    snackBarTheme: const SnackBarThemeData(elevation: 0),
-    drawerTheme: const DrawerThemeData(elevation: 0),
-    popupMenuTheme: const PopupMenuThemeData(elevation: 0),
-    menuTheme: const MenuThemeData(
-      style: MenuStyle(elevation: _noElevation, shadowColor: WidgetStatePropertyAll<Color>(Colors.transparent)),
+    dialogTheme: DialogThemeData(
+      elevation: 0,
+      backgroundColor: c.surfaceOverlay,
+      barrierColor: c.surfaceScrim,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AuroraDimensions.radiusLg)),
     ),
-    navigationBarTheme: const NavigationBarThemeData(elevation: 0),
+    bottomSheetTheme: BottomSheetThemeData(
+      elevation: 0,
+      modalElevation: 0,
+      backgroundColor: c.surfaceOverlay,
+      modalBarrierColor: c.surfaceScrim,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AuroraDimensions.radiusXl)),
+      ),
+    ),
+    snackBarTheme: const SnackBarThemeData(elevation: 0),
+    drawerTheme: DrawerThemeData(
+      elevation: 0,
+      backgroundColor: c.surfaceOverlay,
+      scrimColor: c.surfaceScrim,
+    ),
+    popupMenuTheme: PopupMenuThemeData(elevation: 0, color: c.surfaceOverlay),
+    menuTheme: MenuThemeData(
+      style: MenuStyle(
+        elevation: _noElevation,
+        shadowColor: _noShadow,
+        backgroundColor: WidgetStatePropertyAll<Color>(c.surfaceOverlay),
+      ),
+    ),
+    navigationBarTheme: NavigationBarThemeData(elevation: 0, backgroundColor: c.surfaceChrome),
     extensions: <ThemeExtension<dynamic>>[aurora],
   );
 }

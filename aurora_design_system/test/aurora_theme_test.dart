@@ -107,7 +107,7 @@ void main() {
 
   test('типографика сравнивается по значению, а не по ссылке', () {
     const a = AuroraTypography.standard();
-    final b = AuroraTypography(
+    const b = AuroraTypography(
       display: AuroraTypographyTokens.display,
       title: AuroraTypographyTokens.title,
       section: AuroraTypographyTokens.section,
@@ -121,7 +121,7 @@ void main() {
     );
     expect(a, equals(b));
     expect(a.hashCode, equals(b.hashCode));
-    final c = AuroraTypography(
+    const c = AuroraTypography(
       display: AuroraTypographyTokens.title,
       title: AuroraTypographyTokens.title,
       section: AuroraTypographyTokens.section,
@@ -148,5 +148,92 @@ void main() {
       auroraThemeData(AuroraBrand.aurora, Brightness.light),
       isNot(equals(auroraThemeData(AuroraBrand.mts, Brightness.light))),
     );
+  });
+
+  // Фолбэки ColorScheme: outline → onSurface, surfaceContainer* → surface.
+  // Незаданное поле не пустое, оно молча берёт соседний токен, и рамка поля
+  // ввода становится text.primary. Проверяются именно те поля, которые
+  // Material читает для рамок, подсказок, диалогов, листов и затемнения.
+  test('ColorScheme не оставляет Material на фолбэках', () {
+    for (final brightness in Brightness.values) {
+      final c = AuroraTheme.forBrand(AuroraBrand.aurora, brightness).colors;
+      final s = auroraThemeData(AuroraBrand.aurora, brightness).colorScheme;
+      expect(s.outline, c.borderStrong);
+      expect(s.outlineVariant, c.borderHairline);
+      expect(s.onSurfaceVariant, c.textSecondary);
+      expect(s.surfaceContainerLow, c.surfaceOverlay);
+      expect(s.surfaceContainerHigh, c.surfaceOverlay);
+      expect(s.scrim, c.surfaceScrim);
+    }
+  });
+
+  // Тёмная тема: там overlay (neutral.900) и content (neutral.1000) — разные
+  // ступени, и подмена одного другим видна. В светлой обе белые, и проверка
+  // ничего бы не доказала.
+  testWidgets('диалог и шторка лежат на surface.overlay, под ними surface.scrim', (tester) async {
+    final c = AuroraTheme.forBrand(AuroraBrand.aurora, Brightness.dark).colors;
+    expect(c.surfaceOverlay, isNot(c.surfaceContent), reason: 'иначе проверка вырождается');
+
+    late BuildContext ctx;
+    await tester.pumpWidget(MaterialApp(
+      theme: auroraThemeData(AuroraBrand.aurora, Brightness.dark),
+      home: Scaffold(
+        body: Builder(builder: (context) {
+          ctx = context;
+          return const SizedBox();
+        }),
+      ),
+    ));
+
+    showDialog<void>(context: ctx, builder: (_) => const AlertDialog(title: Text('Диалог')));
+    await tester.pumpAndSettle();
+    final dialog = tester.widget<Material>(
+      find.descendant(of: find.byType(Dialog), matching: find.byType(Material)).first,
+    );
+    expect(dialog.color, c.surfaceOverlay);
+    expect(
+      tester.widget<AnimatedModalBarrier>(find.byType(AnimatedModalBarrier)).color.value,
+      c.surfaceScrim,
+    );
+    Navigator.of(ctx, rootNavigator: true).pop();
+    await tester.pumpAndSettle();
+
+    showModalBottomSheet<void>(context: ctx, builder: (_) => const SizedBox(height: 100));
+    await tester.pumpAndSettle();
+    final sheet = tester.widget<Material>(
+      find.descendant(of: find.byType(BottomSheet), matching: find.byType(Material)).first,
+    );
+    expect(sheet.color, c.surfaceOverlay);
+    expect(
+      tester.widget<AnimatedModalBarrier>(find.byType(AnimatedModalBarrier)).color.value,
+      c.surfaceScrim,
+    );
+  });
+
+  testWidgets('поле ввода берёт скруглённую рамку радиуса 8', (tester) async {
+    await tester.pumpWidget(MaterialApp(
+      theme: auroraThemeData(AuroraBrand.aurora, Brightness.light),
+      home: const Scaffold(body: TextField()),
+    ));
+    final decorator = tester.widget<InputDecorator>(find.byType(InputDecorator));
+    final border = decorator.decoration.border;
+    expect(border, isA<OutlineInputBorder>());
+    expect(
+      (border! as OutlineInputBorder).borderRadius,
+      BorderRadius.circular(AuroraDimensions.radiusMd),
+    );
+  });
+
+  test('слоты Material берут роли §6, и у всех есть арабский фолбэк', () {
+    final t = auroraThemeData(AuroraBrand.aurora, Brightness.light).textTheme;
+    expect(t.titleLarge!.fontSize, AuroraTypographyTokens.title.fontSize);
+    expect(t.bodyMedium!.fontSize, AuroraTypographyTokens.body.fontSize);
+    expect(t.labelLarge!.fontWeight, AuroraTypographyTokens.label.fontWeight);
+    expect(t.labelSmall!.fontSize, AuroraTypographyTokens.overline.fontSize);
+    for (final style in [t.displayLarge, t.titleLarge, t.bodyMedium, t.labelLarge, t.bodySmall]) {
+      expect(style!.fontFamily, AuroraTypographyTokens.fontFamilySans);
+      expect(style.fontFamilyFallback, contains(AuroraTypographyTokens.fontFamilyArabic));
+    }
+    expect(AuroraTypographyTokens.numberSm.fontFamilyFallback, contains('Noto Sans Arabic'));
   });
 }
