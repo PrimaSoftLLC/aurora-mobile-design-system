@@ -811,6 +811,12 @@ export const BRAND_ALLOWED_KEYS = ['color', 'logo', 'wordmark'];
 /** Ключи, различие которых визуально нейтрально (метаданные и конфигурация). */
 const METADATA_KEYS = ['id', 'appName', 'baseUrl', 'defaultLocale', 'neutralHue', 'seed'];
 
+/** Канонические ступени из спека §5.1 и §5.2. Абсолютный эталон, не относительный. */
+const CANONICAL_STEPS = {
+  neutral: ['0', '50', '100', '200', '300', '400', '500', '600', '700', '800', '850', '900', '950', '1000'],
+  brand: ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900'],
+};
+
 export function checkBrandParity() {
   const brands = listBrands();
   const violations = [];
@@ -834,15 +840,36 @@ export function checkBrandParity() {
     }
   }
 
-  // Шкалы должны иметь одинаковый набор ступеней во всех брендах.
+  // Абсолютная проверка: ступени сверяются с каноническим набором из спека §5.1,
+  // а не только друг с другом. Иначе согласованный дрейф — оба бренда теряют
+  // ступень 850 — проходит незамеченным, а 850 существует ровно затем, чтобы
+  // тёмная волосяная граница не сливалась с фоном панели.
+  for (const id of brands) {
+    const brand = loadBrand(id);
+    for (const [scale, canonical] of Object.entries(CANONICAL_STEPS)) {
+      const actual = Object.keys(brand.color?.[scale] ?? {});
+      if (actual.length === 0) continue; // уже сообщено проверкой набора шкал выше
+      const missing = canonical.filter((s) => !actual.includes(s));
+      const unexpected = actual.filter((s) => !canonical.includes(s));
+      if (missing.length || unexpected.length) {
+        violations.push(
+          `${id}: шкала "${scale}" разошлась с каноном` +
+          (missing.length ? `, не хватает [${missing}]` : '') +
+          (unexpected.length ? `, лишние [${unexpected}]` : '')
+        );
+      }
+    }
+  }
+
+  // Относительная проверка: указывает, относительно какого бренда разошлось.
   const [first, ...rest] = brands;
   const reference = loadBrand(first);
   for (const id of rest) {
     const brand = loadBrand(id);
-    for (const scale of ['neutral', 'brand']) {
-      const a = Object.keys(reference.color[scale]).sort().join(',');
-      const b = Object.keys(brand.color[scale]).sort().join(',');
-      if (a !== b) {
+    for (const scale of Object.keys(CANONICAL_STEPS)) {
+      const a = Object.keys(reference.color?.[scale] ?? {}).sort().join(',');
+      const b = Object.keys(brand.color?.[scale] ?? {}).sort().join(',');
+      if (a && b && a !== b) {
         violations.push(`${id}: ступени шкалы "${scale}" не совпадают с ${first}`);
       }
     }
