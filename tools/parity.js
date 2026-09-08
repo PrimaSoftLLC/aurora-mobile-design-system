@@ -70,7 +70,10 @@ export function checkBrandParity() {
     const brand = loadBrand(id);
     for (const [scale, canonicalSteps] of Object.entries(CANONICAL_STEPS)) {
       const brandSteps = Object.keys(brand.color?.[scale] ?? {}).sort();
-      const canonical = canonicalSteps.sort();
+      // Копия: `sort()` сортирует на месте и иначе переупорядочил бы сам
+      // CANONICAL_STEPS. Сегодня это безобидно (сортировка идемпотентна), но
+      // модульная константа, которую мутирует проверка, — ловушка.
+      const canonical = [...canonicalSteps].sort();
 
       const missing = canonical.filter(s => !brandSteps.includes(s));
       const unexpected = brandSteps.filter(s => !canonical.includes(s));

@@ -20,12 +20,12 @@ test('dartColor переставляет альфу вперёд для вось
   assert.throws(() => dartColor('#FFF'), /6 или 8/);
 });
 
+const dart = generateDart();
+
 test('геозоны попали в вывод полупрозрачными', () => {
   assert.match(dart, /geofenceRed: Color\(0x40FF0000\)/);
   assert.match(dart, /geofenceRed: Color\(0x59FF0000\)/);
 });
-
-const dart = generateDart();
 
 test('файл помечен как сгенерированный', () => {
   assert.match(dart, /GENERATED/);
@@ -52,7 +52,7 @@ test('размеры и движение вынесены отдельно и н
   assert.match(dart, /class AuroraDimensions/);
   assert.match(dart, /static const double radiusLg = 12/);
   assert.match(dart, /static const double rowDefault = 52/);
-  assert.match(dart, /static const int durationBase = 200/);
+  assert.match(dart, /static const Duration durationBase = Duration\(milliseconds: 200\);/);
 });
 
 test('кривые движения попали в вывод', () => {

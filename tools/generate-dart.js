@@ -149,8 +149,10 @@ export function generateDart() {
   // Движение
   lines.push('class AuroraMotionTokens {');
   lines.push('  const AuroraMotionTokens._();');
+  // Duration, а не int: иначе двадцать компонентов §9 напишут
+  // `Duration(milliseconds: AuroraMotionTokens.durationBase)` каждый у себя.
   for (const [k, v] of Object.entries(primitives.duration)) {
-    lines.push(`  static const int duration${capitalize(k)} = ${v};`);
+    lines.push(`  static const Duration duration${capitalize(k)} = Duration(milliseconds: ${v});`);
   }
   for (const [k, v] of Object.entries(primitives.curve)) {
     lines.push(`  static const Curve curve${capitalize(k)} = Curves.${v};`);

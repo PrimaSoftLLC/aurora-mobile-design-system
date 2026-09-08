@@ -14,7 +14,10 @@ export function toHex({ r, g, b }) {
 }
 
 export function mix(hexA, hexB, amount) {
-  if (amount < 0 || amount > 1) throw new Error(`mix: amount вне 0..1: ${amount}`);
+  // Отрицание, а не два сравнения: NaN проваливает оба, и `mix(a, b, NaN)`
+  // молча возвращал «#NANNANNAN», который падал ниже по конвейеру с
+  // «Некорректный hex» и не называл ни одного токена.
+  if (!(amount >= 0 && amount <= 1)) throw new Error(`mix: amount вне 0..1: ${amount}`);
   const a = parseHex(hexA);
   const b = parseHex(hexB);
   return toHex({

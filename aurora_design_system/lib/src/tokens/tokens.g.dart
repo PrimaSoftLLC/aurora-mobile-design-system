@@ -348,10 +348,10 @@ class AuroraDimensions {
 
 class AuroraMotionTokens {
   const AuroraMotionTokens._();
-  static const int durationFast = 120;
-  static const int durationBase = 200;
-  static const int durationSlow = 320;
-  static const int durationDataInterp = 500;
+  static const Duration durationFast = Duration(milliseconds: 120);
+  static const Duration durationBase = Duration(milliseconds: 200);
+  static const Duration durationSlow = Duration(milliseconds: 320);
+  static const Duration durationDataInterp = Duration(milliseconds: 500);
   static const Curve curveEnter = Curves.easeOutCubic;
   static const Curve curveExit = Curves.easeInCubic;
 }
