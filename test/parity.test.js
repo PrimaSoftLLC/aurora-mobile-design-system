@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { checkBrandParity, checkSeedInOwnRamp, BRAND_ALLOWED_KEYS } from '../tools/parity.js';
+import { checkBrandParity, checkSeedInOwnRamp, checkBrandId, checkNeutralHue, BRAND_ALLOWED_KEYS } from '../tools/parity.js';
 import { resolveColors } from '../tools/resolve.js';
 import { listBrands, loadBrand } from '../tools/load.js';
 
@@ -60,4 +60,32 @@ test('оторвавшийся seed ловится', () => {
   assert.equal(checkSeedInOwnRamp(broken).length, 1);
   assert.match(checkSeedInOwnRamp(broken)[0], /#123456/);
   assert.equal(checkSeedInOwnRamp({ id: 'ghost', color: { brand: {} } }).length, 1);
+});
+
+test('id бренда совпадает с именем файла и годится в идентификаторы', () => {
+  for (const id of listBrands()) {
+    assert.deepEqual(checkBrandId(id, loadBrand(id)), []);
+  }
+  assert.match(checkBrandId('mts', { id: 'aurora' })[0], /не совпадает с именем файла/);
+  assert.match(checkBrandId('my-brand', { id: 'my-brand' })[0], /идентификатором/);
+  assert.match(checkBrandId('Mts', { id: 'Mts' })[0], /идентификатором/);
+});
+
+test('neutralHue каждого бренда совпадает с оттенком его neutral.500', () => {
+  for (const id of listBrands()) {
+    assert.deepEqual(checkNeutralHue(loadBrand(id)), [], `${id}: neutralHue оторвался от шкалы`);
+  }
+});
+
+test('оторвавшийся neutralHue ловится, серая шкала тоже', () => {
+  const cold = { id: 'x', neutralHue: 232, color: { neutral: { 500: '#666C85' } } };
+  assert.deepEqual(checkNeutralHue(cold), []);
+  const wrong = { ...cold, neutralHue: 28 };
+  assert.match(checkNeutralHue(wrong)[0], /расходится/);
+  const grey = { ...cold, color: { neutral: { 500: '#777777' } } };
+  assert.match(checkNeutralHue(grey)[0], /без оттенка/);
+  // Допуск считается по кругу: 358° и 2° — соседи, а не противоположности.
+  const wrap = { id: 'x', neutralHue: 358, color: { neutral: { 500: '#FF0008' } } };
+  assert.deepEqual(checkNeutralHue(wrap), []);
+  assert.match(checkNeutralHue({ id: 'x', color: { neutral: { 500: '#666C85' } } })[0], /neutralHue/);
 });

@@ -54,3 +54,21 @@ export function contrastRatio(hexA, hexB) {
   const lo = Math.min(la, lb);
   return (hi + 0.05) / (lo + 0.05);
 }
+
+/**
+ * Оттенок в градусах HSL, 0..360. Для серого (все каналы равны) возвращает
+ * `null`: у него оттенка нет, и сравнивать его с `neutralHue` бессмысленно.
+ */
+export function hue(hex) {
+  const { r, g, b } = parseHex(hex);
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const d = max - min;
+  if (d === 0) return null;
+  let h;
+  if (max === r) h = ((g - b) / d) % 6;
+  else if (max === g) h = (b - r) / d + 2;
+  else h = (r - g) / d + 4;
+  h *= 60;
+  return h < 0 ? h + 360 : h;
+}

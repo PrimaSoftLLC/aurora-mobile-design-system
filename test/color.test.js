@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { parseHex, toHex, mix, withAlpha, relativeLuminance, contrastRatio } from '../tools/color.js';
+import { parseHex, toHex, mix, withAlpha, relativeLuminance, contrastRatio, hue } from '../tools/color.js';
 
 test('parseHex читает шестизначный hex', () => {
   assert.deepEqual(parseHex('#0066B8'), { r: 0, g: 102, b: 184 });
@@ -68,4 +68,13 @@ test('mix отвергает NaN, а не возвращает мусор', () =
 
 test('withAlpha отвергает NaN так же', () => {
   assert.throws(() => withAlpha('#FF0000', NaN), /вне 0\.\.1/);
+});
+
+test('hue даёт оттенок в градусах, для серого — null', () => {
+  assert.equal(hue('#FF0000'), 0);
+  assert.equal(hue('#00FF00'), 120);
+  assert.equal(hue('#0000FF'), 240);
+  assert.equal(Math.round(hue('#666C85')), 228);
+  assert.equal(hue('#777777'), null);
+  assert.equal(hue('#FFFFFF'), null);
 });
