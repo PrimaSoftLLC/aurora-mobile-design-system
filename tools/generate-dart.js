@@ -24,10 +24,28 @@ export function dartColor(hex) {
 
 /**
  * У Flutter FontWeight идёт шагом 100, поэтому 550 из спека непредставим
- * в статичном Inter и округляется к ближайшей сотне — до w600.
+ * в статичном Inter и округляется к ближайшей сотне — до 600. Дизайнер,
+ * рисующий 550, обязан видеть, что код нарисует 600, поэтому округление
+ * вынесено отдельно: тот же расчёт уезжает и в Figma-документ.
  */
+export function renderedWeight(weight) {
+  return Math.round(weight / 100) * 100;
+}
+
 export function dartWeight(weight) {
-  return `FontWeight.w${Math.round(weight / 100) * 100}`;
+  return `FontWeight.w${renderedWeight(weight)}`;
+}
+
+/**
+ * Строки, а не числа: Dart и Figma обязаны получить ровно одну и ту же
+ * округлённую величину, а `toFixed` — единственное место, где она берётся.
+ */
+export function lineHeightRatio(role) {
+  return (role.lineHeight / role.size).toFixed(4);
+}
+
+export function letterSpacingPx(role) {
+  return (role.tracking * role.size).toFixed(4);
 }
 
 function capitalize(s) {
@@ -129,9 +147,9 @@ export function generateDart() {
     lines.push(`  static const TextStyle ${name} = TextStyle(`);
     lines.push(`    fontFamily: fontFamilySans,`);
     lines.push(`    fontSize: ${r.size},`);
-    lines.push(`    height: ${(r.lineHeight / r.size).toFixed(4)},`);
+    lines.push(`    height: ${lineHeightRatio(r)},`);
     lines.push(`    fontWeight: ${dartWeight(r.weight)},`);
-    lines.push(`    letterSpacing: ${(r.tracking * r.size).toFixed(4)},`);
+    lines.push(`    letterSpacing: ${letterSpacingPx(r)},`);
     if (r.tabular) {
       lines.push(`    fontFeatures: <FontFeature>[FontFeature.tabularFigures()],`);
     }

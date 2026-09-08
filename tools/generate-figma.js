@@ -2,6 +2,7 @@ import { writeFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { listBrands, loadPrimitives, loadSemantic, root } from './load.js';
 import { resolveColors } from './resolve.js';
+import { renderedWeight, lineHeightRatio, letterSpacingPx } from './generate-dart.js';
 
 export function generateFigma() {
   const brands = listBrands();
@@ -30,14 +31,45 @@ export function generateFigma() {
   dimensionVars['activeBarWidth'] = p.activeBarWidth;
   dimensionVars['hairlineWidth'] = p.hairlineWidth;
 
+  // Типографика и движение — те же числа, что уезжают в Dart. Без них
+  // дизайнер набивает десять текстовых стилей в Figma руками из таблицы
+  // спека, то есть воспроизводит на стороне Figma ровно то расхождение,
+  // ради предотвращения которого типографика вообще генерируется.
+  const typographyVars = {
+    'fontFamily.sans': p.fontFamily.sans,
+    'fontFamily.arabic': p.fontFamily.arabic,
+  };
+  for (const [name, r] of Object.entries(p.role)) {
+    typographyVars[`role.${name}.size`] = r.size;
+    typographyVars[`role.${name}.lineHeight`] = r.lineHeight;
+    typographyVars[`role.${name}.lineHeightRatio`] = Number(lineHeightRatio(r));
+    // Авторский вес и вес, который реально нарисует код: у Flutter FontWeight
+    // идёт шагом 100, поэтому 550 у роли `label` рендерится как 600. Дизайнер
+    // должен видеть это расхождение в том инструменте, где он рисует.
+    typographyVars[`role.${name}.weight`] = r.weight;
+    typographyVars[`role.${name}.weightRendered`] = renderedWeight(r.weight);
+    typographyVars[`role.${name}.tracking`] = r.tracking;
+    typographyVars[`role.${name}.letterSpacing`] = Number(letterSpacingPx(r));
+    typographyVars[`role.${name}.tabular`] = r.tabular === true;
+  }
+
+  const motionVars = {};
+  for (const [k, v] of Object.entries(p.duration)) motionVars[`duration.${k}`] = v;
+  for (const [k, v] of Object.entries(p.curve)) motionVars[`curve.${k}`] = v;
+
   return {
     $meta: {
       generatedBy: 'design-system/tools/generate-figma.js',
       direction: 'JSON → Figma. Обратный импорт не поддерживается намеренно.',
+      note:
+        'Коллекции component нет намеренно: §4.3 спека запрещает заводить этот ' +
+        'слой на всякий случай. Цвета геозон приходят как #RRGGBBAA.',
     },
     collections: {
       semantic: { modes, variables: semanticVars },
       dimension: { modes: [], variables: dimensionVars },
+      typography: { modes: [], variables: typographyVars },
+      motion: { modes: [], variables: motionVars },
     },
   };
 }
