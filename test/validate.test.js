@@ -22,11 +22,19 @@ const EXPECTED_PAIRS = [
   { fg: 'text.onBrand',   bg: 'action.primary',  min: 4.5, note: 'подпись кнопки' },
   { fg: 'action.primary', bg: 'surface.content', min: 3.0, note: 'ссылка и полоса активного' },
   { fg: 'status.moving',  bg: 'surface.content', min: 3.0, note: 'статусная точка' },
+  { fg: 'status.parked',  bg: 'surface.content', min: 3.0, note: 'статусная точка' },
   { fg: 'status.warning', bg: 'surface.content', min: 3.0, note: 'статусная точка' },
   { fg: 'status.alarm',   bg: 'surface.content', min: 3.0, note: 'статусная точка' },
+  { fg: 'status.offline', bg: 'surface.content', min: 3.0, note: 'статусная точка: «нет связи» — состояние, а не отсутствие состояния' },
   { fg: 'map.trackDefault',  bg: 'surface.content', min: 3.0, note: 'трек на светлой подложке' },
   { fg: 'map.trackSelected', bg: 'surface.content', min: 3.0, note: 'выбранный трек' },
   { fg: 'border.strong',  bg: 'surface.content', min: 1.2, note: 'граница секции различима' },
+  // Порог = сегодняшний минимум по брендам и темам, округлённый вниз до сотых.
+  // Это храповик: он не даёт шкалам сплющиться дальше. Поднимать его — решение
+  // дизайнера, и оно требует правки нейтральных шкал, а не порога.
+  { fg: 'border.hairline', bg: 'surface.content', min: 1.13, note: 'волосяная граница строки: без теней это единственный разделитель' },
+  { fg: 'border.hairline', bg: 'surface.chrome',  min: 1.04, note: 'волосяная граница внутри хрома: без теней это единственный разделитель' },
+  { fg: 'surface.chrome',  bg: 'surface.content', min: 1.07, note: 'ступень тона между хромом и контентом: без теней это единственный разделитель' },
 ];
 
 test('состав пар и пороги зафиксированы — ослабление порога должно ломать тест', () => {
