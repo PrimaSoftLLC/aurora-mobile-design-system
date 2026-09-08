@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { listBrands, loadBrand, loadPrimitives } from '../tools/load.js';
+import { listBrands, loadBrand, loadPrimitives, loadSemantic } from '../tools/load.js';
 import { resolveColors } from '../tools/resolve.js';
 
 test('listBrands находит оба бренда', () => {
@@ -58,5 +58,75 @@ test('неизвестная ссылка бросает с указанием �
   assert.throws(
     () => resolveColors('aurora', 'light', { 'bad.token': { light: '{color.neutral.999}', dark: '{color.neutral.0}' } }),
     /bad\.token/
+  );
+});
+
+// Алиас обязан быть ссылкой, а не совпадением. Проверка «focus.indicator
+// равен action.primary» на плоских значениях проходит вхолостую: она
+// одинаково зелена и когда алиас работает, и когда оба токена независимо
+// указывают на brand.600. Поэтому семантическая карта подменяется так, чтобы
+// цель алиаса разошлась с исходным примитивом — если ссылку не разворачивают,
+// focus.indicator останется на brand.600 и тест упадёт.
+test('focus.indicator идёт по ссылке на action.primary, а не дублирует его', () => {
+  const override = {
+    ...loadSemantic(),
+    'action.primary': { light: '{color.brand.900}', dark: '{color.brand.50}' },
+  };
+  const c = resolveColors('aurora', 'light', override);
+  assert.equal(c['action.primary'], '#143253');
+  assert.equal(c['focus.indicator'], '#143253');
+  assert.notEqual(c['focus.indicator'], '#0066B8');
+});
+
+test('треки и маркер карты тоже алиасы, а не копии', () => {
+  const override = {
+    ...loadSemantic(),
+    'action.primary': { light: '{color.brand.900}', dark: '{color.brand.50}' },
+    'text.primary': { light: '{color.neutral.600}', dark: '{color.neutral.0}' },
+    'surface.overlay': { light: '{color.neutral.300}', dark: '{color.neutral.0}' },
+  };
+  const c = resolveColors('aurora', 'light', override);
+  assert.equal(c['map.trackDefault'], '#143253');
+  assert.equal(c['map.trackSelected'], '#4A5069');
+  assert.equal(c['map.markerStroke'], '#4A5069');
+  assert.equal(c['map.clusterText'], '#4A5069');
+  assert.equal(c['map.clusterFill'], '#C4C9D8');
+});
+
+test('цикл в семантическом слое бросает с именем токена, а не зацикливается', () => {
+  assert.throws(
+    () => resolveColors('aurora', 'light', {
+      'a.one': { light: '{semantic.b.two}', dark: '{color.neutral.0}' },
+      'b.two': { light: '{semantic.a.one}', dark: '{color.neutral.0}' },
+    }),
+    /цикл.*a\.one|a\.one.*цикл/,
+  );
+});
+
+test('ссылка на несуществующий семантический токен бросает', () => {
+  assert.throws(
+    () => resolveColors('aurora', 'light', {
+      'a.one': { light: '{semantic.nope.here}', dark: '{color.neutral.0}' },
+    }),
+    /nope\.here/,
+  );
+});
+
+test('геозоны — общая палитра из восьми с альфой, разной по темам', () => {
+  const names = ['aqua', 'blue', 'gray', 'green', 'orange', 'purple', 'red', 'yellow'];
+  for (const brand of ['aurora', 'mts']) {
+    const light = resolveColors(brand, 'light');
+    const dark = resolveColors(brand, 'dark');
+    for (const n of names) {
+      assert.match(light[`geofence.${n}`], /^#[0-9A-F]{8}$/, `geofence.${n} должен нести альфу`);
+      assert.equal(light[`geofence.${n}`].slice(0, 7), dark[`geofence.${n}`].slice(0, 7));
+      assert.notEqual(light[`geofence.${n}`], dark[`geofence.${n}`]);
+    }
+    assert.equal(light['geofence.red'], '#FF000040');
+  }
+  assert.equal(
+    resolveColors('aurora', 'light')['geofence.blue'],
+    resolveColors('mts', 'light')['geofence.blue'],
+    'геозоны — пользовательские данные, они не перекрашиваются брендом',
   );
 });

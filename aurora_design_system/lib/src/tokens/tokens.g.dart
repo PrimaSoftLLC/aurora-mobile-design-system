@@ -32,6 +32,16 @@ class AuroraColorTokens {
   final Color mapTrackSelected;
   final Color mapMarkerFill;
   final Color mapMarkerStroke;
+  final Color mapClusterFill;
+  final Color mapClusterText;
+  final Color geofenceAqua;
+  final Color geofenceBlue;
+  final Color geofenceGray;
+  final Color geofenceGreen;
+  final Color geofenceOrange;
+  final Color geofencePurple;
+  final Color geofenceRed;
+  final Color geofenceYellow;
 
   const AuroraColorTokens({
     required this.surfaceContent,
@@ -58,6 +68,16 @@ class AuroraColorTokens {
     required this.mapTrackSelected,
     required this.mapMarkerFill,
     required this.mapMarkerStroke,
+    required this.mapClusterFill,
+    required this.mapClusterText,
+    required this.geofenceAqua,
+    required this.geofenceBlue,
+    required this.geofenceGray,
+    required this.geofenceGreen,
+    required this.geofenceOrange,
+    required this.geofencePurple,
+    required this.geofenceRed,
+    required this.geofenceYellow,
   });
 }
 
@@ -86,6 +106,16 @@ const AuroraColorTokens _auroraLight = AuroraColorTokens(
   mapTrackSelected: Color(0xFF141624),
   mapMarkerFill: Color(0xFFFFFFFF),
   mapMarkerStroke: Color(0xFF141624),
+  mapClusterFill: Color(0xFFFFFFFF),
+  mapClusterText: Color(0xFF141624),
+  geofenceAqua: Color(0x4000FFFF),
+  geofenceBlue: Color(0x400000FF),
+  geofenceGray: Color(0x407F7F7F),
+  geofenceGreen: Color(0x4000FF00),
+  geofenceOrange: Color(0x40FF9200),
+  geofencePurple: Color(0x40932092),
+  geofenceRed: Color(0x40FF0000),
+  geofenceYellow: Color(0x40FFFF00),
 );
 
 const AuroraColorTokens _auroraDark = AuroraColorTokens(
@@ -113,6 +143,16 @@ const AuroraColorTokens _auroraDark = AuroraColorTokens(
   mapTrackSelected: Color(0xFFF4F6FA),
   mapMarkerFill: Color(0xFF101220),
   mapMarkerStroke: Color(0xFFF4F6FA),
+  mapClusterFill: Color(0xFF191C2E),
+  mapClusterText: Color(0xFFF4F6FA),
+  geofenceAqua: Color(0x5900FFFF),
+  geofenceBlue: Color(0x590000FF),
+  geofenceGray: Color(0x597F7F7F),
+  geofenceGreen: Color(0x5900FF00),
+  geofenceOrange: Color(0x59FF9200),
+  geofencePurple: Color(0x59932092),
+  geofenceRed: Color(0x59FF0000),
+  geofenceYellow: Color(0x59FFFF00),
 );
 
 const AuroraColorTokens _mtsLight = AuroraColorTokens(
@@ -140,6 +180,16 @@ const AuroraColorTokens _mtsLight = AuroraColorTokens(
   mapTrackSelected: Color(0xFF1B1A19),
   mapMarkerFill: Color(0xFFFFFFFF),
   mapMarkerStroke: Color(0xFF1B1A19),
+  mapClusterFill: Color(0xFFFFFFFF),
+  mapClusterText: Color(0xFF1B1A19),
+  geofenceAqua: Color(0x4000FFFF),
+  geofenceBlue: Color(0x400000FF),
+  geofenceGray: Color(0x407F7F7F),
+  geofenceGreen: Color(0x4000FF00),
+  geofenceOrange: Color(0x40FF9200),
+  geofencePurple: Color(0x40932092),
+  geofenceRed: Color(0x40FF0000),
+  geofenceYellow: Color(0x40FFFF00),
 );
 
 const AuroraColorTokens _mtsDark = AuroraColorTokens(
@@ -167,6 +217,16 @@ const AuroraColorTokens _mtsDark = AuroraColorTokens(
   mapTrackSelected: Color(0xFFF7F6F5),
   mapMarkerFill: Color(0xFF161514),
   mapMarkerStroke: Color(0xFFF7F6F5),
+  mapClusterFill: Color(0xFF201E1D),
+  mapClusterText: Color(0xFFF7F6F5),
+  geofenceAqua: Color(0x5900FFFF),
+  geofenceBlue: Color(0x590000FF),
+  geofenceGray: Color(0x597F7F7F),
+  geofenceGreen: Color(0x5900FF00),
+  geofenceOrange: Color(0x59FF9200),
+  geofencePurple: Color(0x59932092),
+  geofenceRed: Color(0x59FF0000),
+  geofenceYellow: Color(0x59FFFF00),
 );
 
 AuroraColorTokens auroraColorTokens(AuroraBrand brand, Brightness brightness) {

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { parseHex, toHex, mix, relativeLuminance, contrastRatio } from '../tools/color.js';
+import { parseHex, toHex, mix, withAlpha, relativeLuminance, contrastRatio } from '../tools/color.js';
 
 test('parseHex читает шестизначный hex', () => {
   assert.deepEqual(parseHex('#0066B8'), { r: 0, g: 102, b: 184 });
@@ -43,4 +43,15 @@ test('contrastRatio симметричен', () => {
   const a = contrastRatio('#0066B8', '#FFFFFF');
   const b = contrastRatio('#FFFFFF', '#0066B8');
   assert.equal(a, b);
+});
+
+test('withAlpha добавляет альфу в конец, как в CSS', () => {
+  assert.equal(withAlpha('#FF0000', 0.25), '#FF000040');
+  assert.equal(withAlpha('#00FFFF', 0.35), '#00FFFF59');
+  assert.equal(withAlpha('#7F7F7F', 1), '#7F7F7FFF');
+  assert.equal(withAlpha('#7F7F7F', 0), '#7F7F7F00');
+});
+
+test('parseHex не принимает восьмизначный hex — контраст поверх альфы посчитать нельзя', () => {
+  assert.throws(() => parseHex('#FF000040'), /Некорректный hex/);
 });

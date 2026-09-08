@@ -24,6 +24,17 @@ export function mix(hexA, hexB, amount) {
   });
 }
 
+/**
+ * Возвращает `#RRGGBBAA`. Восьмизначный hex сознательно не принимается
+ * `parseHex`: контрастные расчёты над полупрозрачным цветом бессмысленны без
+ * подложки, и лучше упасть, чем посчитать неправду.
+ */
+export function withAlpha(hex, amount) {
+  if (!(amount >= 0 && amount <= 1)) throw new Error(`withAlpha: amount вне 0..1: ${amount}`);
+  const a = Math.round(amount * 255).toString(16).padStart(2, '0').toUpperCase();
+  return `${toHex(parseHex(hex))}${a}`;
+}
+
 export function relativeLuminance(hex) {
   const { r, g, b } = parseHex(hex);
   const ch = (v) => {

@@ -1,0 +1,12 @@
+{
+  "geofence": {
+    "aqua":   "#00FFFF",
+    "blue":   "#0000FF",
+    "gray":   "#7F7F7F",
+    "green":  "#00FF00",
+    "orange": "#FF9200",
+    "purple": "#932092",
+    "red":    "#FF0000",
+    "yellow": "#FFFF00"
+  }
+}

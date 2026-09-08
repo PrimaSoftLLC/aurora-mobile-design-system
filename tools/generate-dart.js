@@ -10,8 +10,16 @@ export function camelize(dotted) {
     .join('');
 }
 
+/**
+ * Принимает `#RRGGBB` и `#RRGGBBAA`; Dart хочет ARGB, поэтому альфа
+ * переезжает вперёд. Полупрозрачны только цвета геозон — это
+ * пользовательские данные поверх карты, а не оформление.
+ */
 export function dartColor(hex) {
-  return `Color(0xFF${hex.replace('#', '').toUpperCase()})`;
+  const h = hex.replace('#', '').toUpperCase();
+  if (h.length === 8) return `Color(0x${h.slice(6, 8)}${h.slice(0, 6)})`;
+  if (h.length === 6) return `Color(0xFF${h})`;
+  throw new Error(`dartColor: ожидался hex из 6 или 8 знаков, получено "${hex}"`);
 }
 
 /**

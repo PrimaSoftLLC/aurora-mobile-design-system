@@ -15,6 +15,16 @@ test('dartColor даёт литерал Color с непрозрачной аль
   assert.equal(dartColor('#0066B8'), 'Color(0xFF0066B8)');
 });
 
+test('dartColor переставляет альфу вперёд для восьмизначного hex', () => {
+  assert.equal(dartColor('#FF000040'), 'Color(0x40FF0000)');
+  assert.throws(() => dartColor('#FFF'), /6 или 8/);
+});
+
+test('геозоны попали в вывод полупрозрачными', () => {
+  assert.match(dart, /geofenceRed: Color\(0x40FF0000\)/);
+  assert.match(dart, /geofenceRed: Color\(0x59FF0000\)/);
+});
+
 const dart = generateDart();
 
 test('файл помечен как сгенерированный', () => {
