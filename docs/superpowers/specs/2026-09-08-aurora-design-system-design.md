@@ -154,7 +154,7 @@ Figma-библиотеку, и разработчику, который буде
 |---|---|---|
 | `surface.content` | `neutral.0` | `neutral.1000` |
 | `surface.chrome` | `neutral.50` | `neutral.900` |
-| `surface.selected` | `neutral.50` смешан с `brand.600` 4% | `neutral.850` |
+| `surface.selected` | `neutral.0` смешан с `brand.600` 4% | `neutral.850` |
 | `surface.overlay` | `neutral.0` | `neutral.900` |
 | `border.hairline` | `neutral.100` | `neutral.850` |
 | `border.strong` | `neutral.200` | `neutral.800` |
@@ -166,6 +166,13 @@ Figma-библиотеку, и разработчику, который буде
 | `action.pressed` | `brand.700` | `brand.500` |
 | `action.subtle` | `brand.50` | `brand.900` |
 | `focus.indicator` | `action.primary` | `action.primary` |
+
+`surface.selected` подмешивается к `surface.content`, а не к хрому: строка
+списка лежит на `content`, и выделенная строка — это та же строка с подсветкой.
+Замес от `neutral.50` делал выбранную строку темнее той, которую она
+подсвечивает, и уводил `text.secondary` на ней под AA в светлой теме МТС
+(4.23 при пороге 4.5). После пересадки на `neutral.0`: Aurora `#F5F9FC` — 4.90,
+МТС `#FDF5F5` — 4.57.
 
 В тёмной теме порядок поверхностей инвертируется: `surface.content` в светлой —
 самый светлый, в тёмной — самый тёмный. Строки списка лежат на `content`,
@@ -355,9 +362,18 @@ Figma-файл содержит: переменные, компоненты с �
 - **Noto Sans Arabic** рядом с Inter: совпадение оптического размера и высоты
   строки в смешанной вёрстке.
 - ~~**Контраст** всех пар `text.*` / `surface.*` по WCAG AA.~~ **Сделано и
-  автоматизировано:** `design-system/tools/validate.js` проверяет 12 пар × 2
-  бренда × 2 темы на каждом `npm test` и на каждой сборке. Шкалы из §5.1 и
-  §5.2 проходят без правок.
+  автоматизировано, но не для всех мыслимых пар:** гейт проверяет **16 пар**
+  × 2 бренда × 2 темы на каждом `npm test` и на каждой сборке. Полный список
+  перечислен в `design-system/tools/validate.js` (`CONTRAST_PAIRS`) — он и
+  есть источник истины о покрытии, этот документ его только пересказывает.
+
+  Из 16 комбинаций `text.*` × `surface.*` под порогом AA 4.5 стоят восемь:
+  `text.primary` и `text.secondary` против `surface.content`, `surface.chrome`,
+  `surface.selected` и `surface.overlay`. Не проверяются `text.disabled`
+  (по определению не обязан проходить AA) и `text.onBrand` на нейтральных
+  поверхностях (на них он не появляется — он живёт на `action.primary`, и
+  эта пара проверяется отдельно). Остальные восемь пар — не `text.*`/`surface.*`:
+  действие, статусы, треки карты и граница секции.
 
   **Самая узкая пара — `text.secondary` на `surface.chrome` в светлой теме
   МТС: 4.54 при пороге 4.5.** Запас 0.04. Это значит, что `neutral.500`

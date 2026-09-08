@@ -27,7 +27,7 @@ test('mix с единицей возвращает второй цвет', () =>
 });
 
 test('mix 4% даёт подкрашенный фон выделенной строки', () => {
-  assert.equal(mix('#F4F6FA', '#0066B8', 0.04), '#EAF0F7');
+  assert.equal(mix('#FFFFFF', '#0066B8', 0.04), '#F5F9FC');
 });
 
 test('relativeLuminance: белый 1, чёрный 0', () => {

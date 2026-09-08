@@ -64,7 +64,7 @@ class AuroraColorTokens {
 const AuroraColorTokens _auroraLight = AuroraColorTokens(
   surfaceContent: Color(0xFFFFFFFF),
   surfaceChrome: Color(0xFFF4F6FA),
-  surfaceSelected: Color(0xFFEAF0F7),
+  surfaceSelected: Color(0xFFF5F9FC),
   surfaceOverlay: Color(0xFFFFFFFF),
   borderHairline: Color(0xFFEFF1F6),
   borderStrong: Color(0xFFE0E3EC),
@@ -118,7 +118,7 @@ const AuroraColorTokens _auroraDark = AuroraColorTokens(
 const AuroraColorTokens _mtsLight = AuroraColorTokens(
   surfaceContent: Color(0xFFFFFFFF),
   surfaceChrome: Color(0xFFF7F6F5),
-  surfaceSelected: Color(0xFFF5ECEC),
+  surfaceSelected: Color(0xFFFDF5F5),
   surfaceOverlay: Color(0xFFFFFFFF),
   borderHairline: Color(0xFFF1EFED),
   borderStrong: Color(0xFFE6E3E1),

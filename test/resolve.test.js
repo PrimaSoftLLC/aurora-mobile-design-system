@@ -34,7 +34,11 @@ test('resolveColors разворачивает тёмную тему', () => {
 });
 
 test('resolveColors разворачивает mix()', () => {
-  assert.equal(resolveColors('aurora', 'light')['surface.selected'], '#EAF0F7');
+  // Выделенная строка подмешивается к surface.content (neutral.0), а не к хрому:
+  // выбранная строка — это та же строка списка с подсветкой, и она обязана
+  // остаться светлее хрома, иначе вторичный текст на ней уходит под AA.
+  assert.equal(resolveColors('aurora', 'light')['surface.selected'], '#F5F9FC');
+  assert.equal(resolveColors('mts', 'light')['surface.selected'], '#FDF5F5');
 });
 
 test('resolveColors берёт шкалу бренда, а не Aurora', () => {

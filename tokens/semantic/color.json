@@ -1,7 +1,7 @@
 {
   "surface.content":   { "light": "{color.neutral.0}",   "dark": "{color.neutral.1000}" },
   "surface.chrome":    { "light": "{color.neutral.50}",  "dark": "{color.neutral.900}" },
-  "surface.selected":  { "light": "mix({color.neutral.50}, {color.brand.600}, 0.04)", "dark": "{color.neutral.850}" },
+  "surface.selected":  { "light": "mix({color.neutral.0}, {color.brand.600}, 0.04)", "dark": "{color.neutral.850}" },
   "surface.overlay":   { "light": "{color.neutral.0}",   "dark": "{color.neutral.900}" },
   "border.hairline":   { "light": "{color.neutral.100}", "dark": "{color.neutral.850}" },
   "border.strong":     { "light": "{color.neutral.200}", "dark": "{color.neutral.800}" },
