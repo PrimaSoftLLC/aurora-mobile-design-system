@@ -620,8 +620,26 @@ test('все ссылки разрешаются во всех брендах и
   assert.deepEqual(validateReferences(), []);
 });
 
-test('набор обязательных пар не пуст', () => {
-  assert.ok(CONTRAST_PAIRS.length >= 8);
+// Тест намеренно хрупкий. Он обязан падать при любом изменении пары или
+// порога, чтобы такое изменение всегда было осознанной правкой, а не тихой.
+// Проверка длины массива здесь не годится: она пропустит замену 4.5 на 3.0.
+const EXPECTED_PAIRS = [
+  { fg: 'text.primary',   bg: 'surface.content', min: 4.5, note: 'основной текст на контенте' },
+  { fg: 'text.primary',   bg: 'surface.chrome',  min: 4.5, note: 'основной текст на хроме' },
+  { fg: 'text.secondary', bg: 'surface.content', min: 4.5, note: 'вторичный текст на контенте' },
+  { fg: 'text.secondary', bg: 'surface.chrome',  min: 4.5, note: 'вторичный текст на хроме' },
+  { fg: 'text.onBrand',   bg: 'action.primary',  min: 4.5, note: 'подпись кнопки' },
+  { fg: 'action.primary', bg: 'surface.content', min: 3.0, note: 'ссылка и полоса активного' },
+  { fg: 'status.moving',  bg: 'surface.content', min: 3.0, note: 'статусная точка' },
+  { fg: 'status.warning', bg: 'surface.content', min: 3.0, note: 'статусная точка' },
+  { fg: 'status.alarm',   bg: 'surface.content', min: 3.0, note: 'статусная точка' },
+  { fg: 'map.trackDefault',  bg: 'surface.content', min: 3.0, note: 'трек на светлой подложке' },
+  { fg: 'map.trackSelected', bg: 'surface.content', min: 3.0, note: 'выбранный трек' },
+  { fg: 'border.strong',  bg: 'surface.content', min: 1.2, note: 'граница секции различима' },
+];
+
+test('состав пар и пороги зафиксированы — ослабление порога должно ломать тест', () => {
+  assert.deepEqual(CONTRAST_PAIRS, EXPECTED_PAIRS);
 });
 
 test('text.disabled не проверяется на контраст', () => {
