@@ -1,0 +1,9 @@
+{
+  "status": {
+    "moving":  { "light": "#12A150", "dark": "#2BD47A" },
+    "parked":  { "light": "#6E7480", "dark": "#9CA2AE" },
+    "warning": { "light": "#B7791F", "dark": "#F0B429" },
+    "alarm":   { "light": "#C7301F", "dark": "#F0554F" },
+    "offline": { "light": "#C9CDD6", "dark": "#40444F" }
+  }
+}

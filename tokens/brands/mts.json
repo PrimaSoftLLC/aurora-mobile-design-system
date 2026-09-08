@@ -1,0 +1,23 @@
+{
+  "id": "mts",
+  "appName": "MTS Automonitoring",
+  "logo": "mts.svg",
+  "wordmark": "mts-wordmark.svg",
+  "baseUrl": "https://api.aurora.mts.by/",
+  "defaultLocale": "ru",
+  "neutralHue": 28,
+  "seed": "#E30611",
+  "color": {
+    "neutral": {
+      "0": "#FFFFFF", "50": "#F7F6F5", "100": "#F1EFED", "200": "#E6E3E1",
+      "300": "#D2CDC9", "400": "#A09B97", "500": "#74706D", "600": "#565250",
+      "700": "#3E3B39", "800": "#302D2B", "850": "#272423", "900": "#201E1D",
+      "950": "#1B1A19", "1000": "#161514"
+    },
+    "brand": {
+      "50": "#FDEAEA", "100": "#FACFD0", "200": "#F4A2A4", "300": "#EE7175",
+      "400": "#FF4D52", "500": "#E30611", "600": "#D0050F", "700": "#A8040C",
+      "800": "#7E0A10", "900": "#5A0C10"
+    }
+  }
+}

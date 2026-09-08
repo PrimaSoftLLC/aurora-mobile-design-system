@@ -1,0 +1,4 @@
+{
+  "duration": { "fast": 120, "base": 200, "slow": 320, "dataInterp": 500 },
+  "curve": { "enter": "easeOutCubic", "exit": "easeInCubic" }
+}

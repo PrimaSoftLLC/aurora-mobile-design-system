@@ -1,0 +1,15 @@
+{
+  "fontFamily": { "sans": "Inter", "arabic": "Noto Sans Arabic" },
+  "role": {
+    "display":   { "size": 28, "lineHeight": 34, "weight": 600, "tracking": -0.015, "tabular": false },
+    "title":     { "size": 20, "lineHeight": 26, "weight": 600, "tracking": -0.01,  "tabular": false },
+    "section":   { "size": 15, "lineHeight": 20, "weight": 600, "tracking": 0,      "tabular": false },
+    "body":      { "size": 15, "lineHeight": 22, "weight": 400, "tracking": 0,      "tabular": false },
+    "label":     { "size": 13, "lineHeight": 18, "weight": 550, "tracking": 0,      "tabular": false },
+    "caption":   { "size": 11, "lineHeight": 15, "weight": 400, "tracking": 0,      "tabular": false },
+    "overline":  { "size": 9,  "lineHeight": 12, "weight": 700, "tracking": 0.08,   "tabular": false, "uppercase": true },
+    "numberLg":  { "size": 20, "lineHeight": 24, "weight": 600, "tracking": 0,      "tabular": true },
+    "numberMd":  { "size": 14, "lineHeight": 18, "weight": 600, "tracking": 0,      "tabular": true },
+    "numberSm":  { "size": 11, "lineHeight": 14, "weight": 600, "tracking": 0,      "tabular": true }
+  }
+}
