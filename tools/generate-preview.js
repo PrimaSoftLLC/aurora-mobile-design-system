@@ -6,7 +6,24 @@ import { contrastRatio } from './color.js';
 import { CONTRAST_PAIRS } from './validate.js';
 
 const THEMES = ['light', 'dark'];
+/** Короткие подписи для переключателя; для неизвестного бренда берётся appName. */
 const BRAND_LABEL = { aurora: 'Aurora', mts: 'МТС', irissoft: 'Irissoft' };
+
+/**
+ * Контрольные точки кривых Flutter (`Curves.easeOutCubic` = Cubic(0.215,
+ * 0.61, 0.355, 1.0)). Превью анимирует той же кривой, что и код; кривая
+ * без записи здесь останавливает сборку, а не тихо подменяется на `ease`.
+ */
+const CURVE_BEZIER = {
+  easeOutCubic: '.215,.61,.355,1',
+  easeInCubic: '.55,.055,.675,.19',
+};
+
+function cssCurve(name) {
+  const bezier = CURVE_BEZIER[name];
+  if (!bezier) throw new Error(`generate-preview: нет cubic-bezier для кривой "${name}"`);
+  return `cubic-bezier(${bezier})`;
+}
 
 /** Экранирование для текстовых узлов и значений атрибутов. */
 export function esc(s) {
@@ -41,7 +58,15 @@ export function collect() {
       dark: contrastRatio(colors.dark[p.fg], colors.dark[p.bg]),
     }));
 
-    data.byBrand[id] = { meta: brand, colors, pairs };
+    // Гейт сравнивает цвет с поверхностью, а не два сигнала между собой.
+    // Трек с превышением и обычный трек — тот случай, где это важно: у МТС
+    // оба красные. Число меряется здесь, чтобы дизайнер видел его на странице.
+    const trackDistinction = {
+      light: contrastRatio(colors.light['map.trackSpeeding'], colors.light['map.trackDefault']),
+      dark: contrastRatio(colors.dark['map.trackSpeeding'], colors.dark['map.trackDefault']),
+    };
+
+    data.byBrand[id] = { meta: brand, colors, pairs, trackDistinction };
   }
   return data;
 }
@@ -69,9 +94,18 @@ function themeVars(c) {
     `--warning:${c['status.warning']}`,
     `--alarm:${c['status.alarm']}`,
     `--offline:${c['status.offline']}`,
+    `--scrim:${c['surface.scrim']}`,
     `--track:${c['map.trackDefault']}`,
+    `--track-speeding:${c['map.trackSpeeding']}`,
     `--track-selected:${c['map.trackSelected']}`,
+    `--marker-fill:${c['map.markerFill']}`,
+    `--marker-stroke:${c['map.markerStroke']}`,
+    ...geofenceNames(c).map((k) => `--geofence-${k.slice('geofence.'.length)}:${c[k]}`),
   ].join(';');
+}
+
+function geofenceNames(c) {
+  return Object.keys(c).filter((k) => k.startsWith('geofence.'));
 }
 
 function paletteCss(data) {
@@ -268,7 +302,7 @@ function brandGate(id, first) {
 
 function semanticTable(d) {
   const groups = [
-    ['Поверхности', ['surface.content', 'surface.chrome', 'surface.selected', 'surface.overlay']],
+    ['Поверхности', ['surface.content', 'surface.chrome', 'surface.selected', 'surface.overlay', 'surface.scrim']],
     ['Границы', ['border.hairline', 'border.strong']],
     ['Текст', ['text.primary', 'text.secondary', 'text.disabled', 'text.onBrand']],
     ['Действие', ['action.primary', 'action.pressed', 'action.subtle', 'focus.indicator']],
@@ -357,10 +391,15 @@ function typographyBlock(role) {
   }).join('');
 }
 
-function componentsBlock(c) {
-  const row = (dot, plate, sub, val, unit, on) =>
+/**
+ * Экран собран только из CSS-переменных страницы, а не из hex конкретной
+ * темы: так он перекрашивается вместе с темой зрителя. Инлайновый hex светлой
+ * темы здесь был бы светлой точкой статуса на тёмном фоне.
+ */
+function componentsBlock() {
+  const row = (status, plate, sub, val, unit, on) =>
     `<div class="demo-row${on ? ' on' : ''}">
-      <span class="dot" style="background:${esc(dot)}"></span>
+      <span class="dot" style="background:var(--${esc(status)})"></span>
       <div><div class="plate">${esc(plate)}</div><div class="sub">${esc(sub)}</div></div>
       <div class="metric"><b>${esc(val)}</b><i>${esc(unit)}</i></div>
     </div>`;
@@ -369,11 +408,13 @@ function componentsBlock(c) {
     <div class="demo-bar"><span class="demo-title">Поездки</span><span class="demo-count">24 / 31</span></div>
     <div class="hud">
       <svg viewBox="0 0 800 150" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0 116 L120 96 L240 106 L360 60 L480 70 L640 30 L800 44" fill="none"
-              stroke="${esc(c['map.trackDefault'])}" stroke-width="3" stroke-linecap="round"/>
-        <circle cx="360" cy="60" r="11" fill="${esc(c['map.markerFill'])}" stroke="${esc(c['map.markerStroke'])}" stroke-width="3"/>
-        <circle cx="640" cy="30" r="6" fill="${esc(c['status.moving'])}"/>
-        <circle cx="120" cy="96" r="6" fill="${esc(c['status.alarm'])}"/>
+        <path d="M0 116 L120 96 L240 106 L360 60" fill="none"
+              stroke="var(--track-speeding)" stroke-width="3" stroke-linecap="round"/>
+        <path d="M360 60 L480 70 L640 30 L800 44" fill="none"
+              stroke="var(--track)" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="360" cy="60" r="11" fill="var(--marker-fill)" stroke="var(--marker-stroke)" stroke-width="3"/>
+        <circle cx="640" cy="30" r="6" fill="var(--moving)"/>
+        <circle cx="120" cy="96" r="6" fill="var(--alarm)"/>
       </svg>
       <div class="hud-card">
         <div><div class="plate">AB 4721-7</div><div class="sub mono">53.9158, 27.5629</div></div>
@@ -381,22 +422,22 @@ function componentsBlock(c) {
       </div>
     </div>
     <div class="demo-sec"><span>Пн, 8 сентября</span><span class="num">72.3 км</span></div>
-    ${row(c['status.moving'], 'Склад №3 → Заводская', '07:42–08:16 · 34 мин · 2 остановки', '18.4', 'км', true)}
-    ${row(c['status.parked'], 'Заводская → Кольцевая', '09:03–09:31 · 28 мин', '122.7', 'км', false)}
-    ${row(c['status.alarm'], 'Кольцевая → Склад №3', '11:15–12:04 · превышение скорости', '31.2', 'км', false)}
-    ${row(c['status.offline'], 'Промзона → Склад №3', '13:20 · нет связи 2 ч', '—', 'км', false)}
+    ${row('moving', 'Склад №3 → Заводская', '07:42–08:16 · 34 мин · 2 остановки', '18.4', 'км', true)}
+    ${row('parked', 'Заводская → Кольцевая', '09:03–09:31 · 28 мин', '122.7', 'км', false)}
+    ${row('alarm', 'Кольцевая → Склад №3', '11:15–12:04 · превышение скорости', '31.2', 'км', false)}
+    ${row('offline', 'Промзона → Склад №3', '13:20 · нет связи 2 ч', '—', 'км', false)}
     <div class="demo-total"><span>Итого за период</span><span class="num">126.3 км</span></div>
   </div>`;
 }
 
-function geofenceBlock(c) {
-  const names = Object.keys(c).filter((k) => k.startsWith('geofence.'));
-  const cells = names.map((k) => {
-    const light = c[k];
+/** Заливка идёт через переменную и следует за темой; подписи показывают обе альфы. */
+function geofenceBlock(colors) {
+  const cells = geofenceNames(colors.light).map((k) => {
+    const name = k.slice('geofence.'.length);
     return `<div class="tile">
-      <div style="height:44px;border-radius:8px;border:1px solid var(--strong);background:${esc(light)}"></div>
-      <div class="tile-label">${esc(k.replace('geofence.', ''))}</div>
-      <div class="hex">${esc(light)}</div>
+      <div style="height:44px;border-radius:8px;border:1px solid var(--strong);background:var(--geofence-${esc(name)})"></div>
+      <div class="tile-label">${esc(name)}</div>
+      <div class="hex">${esc(colors.light[k])} · ${esc(colors.dark[k])}</div>
     </div>`;
   }).join('');
   return `<div class="tiles">${cells}</div>`;
@@ -427,19 +468,23 @@ export function generatePreview() {
     `<div class="brand-only b-${id}">${contrastTable(d.byBrand[id])}</div>`
   ).join('');
 
-  const componentSections = d.brands.map((id) =>
-    `<div class="brand-only b-${id}">${componentsBlock(d.byBrand[id].colors.light)}</div>`
-  ).join('');
+  // Экран красится переменными страницы, поэтому один на все бренды.
+  const componentSection = componentsBlock();
 
   const geofenceSections = d.brands.map((id) =>
-    `<div class="brand-only b-${id}">${geofenceBlock(d.byBrand[id].colors.light)}</div>`
+    `<div class="brand-only b-${id}">${geofenceBlock(d.byBrand[id].colors)}</div>`
   ).join('');
 
   const gates = d.brands.map((id) => brandGate(id, first)).join('\n');
 
   const switchButtons = d.brands.map((id, i) =>
-    `<button type="button" data-set-brand="${esc(id)}" aria-pressed="${i === 0 ? 'true' : 'false'}">${esc(BRAND_LABEL[id] ?? id)}</button>`
+    `<button type="button" data-set-brand="${esc(id)}" aria-pressed="${i === 0 ? 'true' : 'false'}">${esc(BRAND_LABEL[id] ?? d.byBrand[id].meta.appName)}</button>`
   ).join('');
+
+  const trackNumbers = d.brands.map((id) => {
+    const t = d.byBrand[id].trackDistinction;
+    return `${BRAND_LABEL[id] ?? d.byBrand[id].meta.appName}: <strong>${t.light.toFixed(2)}</strong> в светлой, <strong>${t.dark.toFixed(2)}</strong> в тёмной`;
+  }).join('; ');
 
   const radiusTiles = Object.entries(p.radius).map(([k, v]) =>
     `<div class="tile"><div class="radius-demo" style="border-radius:${v}px"></div><div class="tile-label">radius.${esc(k)}</div><div class="tile-val">${v === 999 ? 'pill' : v}</div></div>`
@@ -455,7 +500,7 @@ export function generatePreview() {
 
   const motionRows = Object.entries(p.duration).map(([k, v]) =>
     `<div class="motion">
-      <div class="motion-track" data-play="${v}"><div class="motion-dot" style="transition:transform ${v}ms cubic-bezier(.215,.61,.355,1)"></div></div>
+      <div class="motion-track" data-play="${v}"><div class="motion-dot" style="transition:transform ${v}ms ${cssCurve(p.curve.enter)}"></div></div>
       <div class="ramp-legend"><span class="tile-label">duration.${esc(k)}</span><span class="tile-val" style="font-size:13px">${v} мс</span></div>
     </div>`
   ).join('');
@@ -545,7 +590,7 @@ ${BASE_CSS}
   <section>
     <header>
       <h2>Геозоны <span>·</span> данные, а не оформление</h2>
-      <p>Эти восемь цветов назначает оператор, а не дизайнер. Они одинаковы у всех брендов и перекраске не подлежат — иначе у клиента «красная зона» перестанет быть красной. Показаны с альфой для светлой темы.</p>
+      <p>Эти восемь цветов назначает оператор, а не дизайнер. Они одинаковы у всех брендов и перекраске не подлежат — иначе у клиента «красная зона» перестанет быть красной. Заливка следует за темой; в подписи обе альфы, светлая и тёмная.</p>
     </header>
     ${geofenceSections}
   </section>
@@ -553,17 +598,37 @@ ${BASE_CSS}
   <section>
     <header>
       <h2>В деле <span>·</span> экран из этих токенов</h2>
-      <p>Ни одного цвета, набранного руками. Выделенная строка — полоса 2 px слева плюс подсветка фоном; больше одного выделителя на экране не бывает.</p>
+      <p>Ни одного цвета, набранного руками. Выделенная строка — полоса 2 px слева плюс подсветка фоном; больше одного выделителя на экране не бывает. Первый отрезок трека — превышение скорости, дальше обычный ход: переключите бренд на МТС и посмотрите, видна ли граница.</p>
     </header>
-    ${componentSections}
+    ${componentSection}
   </section>
 
   <section>
     <header>
       <h2>Открыто <span>·</span> ждёт вашего решения</h2>
-      <p>Две вещи нашлись при финальной проверке и намеренно не тронуты: обе меняют цвет, подобранный человеком.</p>
+      <p>Эти вещи нашлись при проверке и намеренно не тронуты: каждая меняет цвет, подобранный человеком, или добавляет то, чего в системе пока нет.</p>
     </header>
     <div class="open">
+      <div class="open-item">
+        <h3>У МТС трек с превышением скорости не отличается от обычного</h3>
+        <p>Обычный трек идёт от <span class="mono">action.primary</span>, то есть от фирменного цвета, превышение — от <span class="mono">status.alarm</span>. Для Aurora это синий против красного, для МТС красный против красного. Контраст между ними: ${trackNumbers}. Та же пара делает кнопку primary и тревогу одним цветом. Варианты: второй признак у превышения кроме цвета (пунктир, ширина), либо трек по умолчанию не брендовый. Автоматика этого не ловит: гейт сравнивает цвет с поверхностью, а не два сигнала между собой.</p>
+      </div>
+      <div class="open-item">
+        <h3>Графикам нечем красить серии</h3>
+        <p>Сегодняшний экран графиков рисует до семи серий сырыми цветами. В токенах есть только <span class="mono">action.primary</span> и пять статусов, категориальной палитры для данных нет. Нужен набор <span class="mono">chart.series.*</span>, общий для брендов, как и статусы: это данные, а не оформление.</p>
+      </div>
+      <div class="open-item">
+        <h3>У статусов нет подложек, а бейдж с заливкой не пройдёт AA</h3>
+        <p>Белый текст на <span class="mono">status.moving</span> даёт 3.37, на <span class="mono">status.offline</span> 3.20, на <span class="mono">status.warning</span> 3.64 в светлой теме, всё ниже 4.5. Сегодняшнее приложение красит ореол объекта и фон карточки 12-процентным тинтом статуса. Либо <span class="mono">status.*Subtle</span> по образцу <span class="mono">action.subtle</span> с текстом цветом статуса, либо бейдж только контурный.</p>
+      </div>
+      <div class="open-item">
+        <h3>Ошибка формы и тревога объекта — один цвет</h3>
+        <p>Ошибка валидации в логине сейчас берёт <span class="mono">status.alarm</span>, а на МТС это ещё и цвет primary-кнопки. Три разных вещи одним цветом. Если нужен отдельный токен ошибки, это <span class="mono">feedback.error</span> или подобный; если нет, решение стоит записать явно.</p>
+      </div>
+      <div class="open-item">
+        <h3>Вес 550 ничем не рисуется</h3>
+        <p>JSON говорит 550, код рисует 600, и <span class="mono">label</span> выходит того же веса, что <span class="mono">section</span>. Либо записать в JSON то, что рендерится, либо положить переменный Inter, и тогда код сможет отрисовать 550 буквально.</p>
+      </div>
       <div class="open-item">
         <h3>Подсветка выбранной строки стала слабее</h3>
         <p>Чтобы текст на выделенной строке взял AA, её фон пересобрали от белого. Побочный эффект: сама подсветка сблизилась с фоном — тональный шаг упал с 1.147 до <strong>1.059</strong> у Aurora и с 1.161 до <strong>1.074</strong> у МТС. В системе без теней тон — единственный разделитель, и этот шаг сейчас самый слабый из всех. Либо зафиксировать как есть, либо усилить подсветку.</p>

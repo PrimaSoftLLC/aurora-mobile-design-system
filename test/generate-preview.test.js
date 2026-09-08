@@ -91,3 +91,31 @@ test('теней нет и на самой странице', () => {
     assert.ok(s.includes('inset'), `страница показывает систему без теней, но имеет ${s}`);
   }
 });
+
+test('экран «В деле» красится переменными страницы, а не hex светлой темы', () => {
+  const demo = /<div class="demo">[\s\S]*?<div class="demo-total">/.exec(html)[0];
+  assert.equal(/#[0-9A-F]{6}/i.test(demo), false, 'в демо-экране есть инлайновый hex, в тёмной теме он останется светлым');
+  assert.match(demo, /var\(--track-speeding\)/);
+  assert.match(demo, /var\(--moving\)/);
+  assert.match(demo, /var\(--marker-fill\)/);
+});
+
+test('заливка геозон и scrim объявлены переменными в обеих темах', () => {
+  assert.match(html, /:root\{[^}]*--scrim:#[0-9A-F]{8}/);
+  assert.match(html, /:root\{[^}]*--geofence-aqua:#00FFFF40/);
+  assert.match(html, /:root\[data-theme="dark"\]\{[^}]*--geofence-aqua:#00FFFF59/);
+});
+
+test('кривая движения в превью выведена из токена, а не набрана руками', () => {
+  assert.match(html, /transition:transform 200ms cubic-bezier\(\.215,\.61,\.355,1\)/);
+});
+
+test('различимость треков посчитана для каждого бренда и показана', () => {
+  const d = collect();
+  for (const id of d.brands) {
+    const t = d.byBrand[id].trackDistinction;
+    assert.ok(html.includes(t.light.toFixed(2)), `${id}: нет значения ${t.light.toFixed(2)}`);
+  }
+  // У МТС оба трека красные: это и есть открытый вопрос, ради которого число меряется.
+  assert.ok(d.byBrand.mts.trackDistinction.light < 1.5);
+});
