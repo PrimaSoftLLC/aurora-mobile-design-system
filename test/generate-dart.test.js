@@ -1,5 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { root } from '../tools/load.js';
 import { camelize, dartColor, generateDart } from '../tools/generate-dart.js';
 
 test('camelize превращает точечное имя в camelCase', () => {
@@ -67,4 +70,19 @@ test('табличные цифры только у числовых ролей'
 
 test('генерация детерминирована', () => {
   assert.equal(generateDart(), dart);
+});
+
+// Детерминированность ничего не говорит о том, что лежит в репозитории:
+// можно поправить JSON, получить зелёный прогон и закоммитить Dart от
+// прошлой сборки. Эта проверка читает файл с диска — она и есть гейт против
+// расхождения JSON и Dart, ради которого существует весь конвейер.
+// eol=lf в design-system/.gitattributes держит файл в LF на любой платформе,
+// иначе на свежем клоне под Windows сравнение падало бы на переводах строк.
+test('закоммиченный tokens.g.dart совпадает с генерацией — иначе Dart устарел', () => {
+  const file = path.join(root, 'aurora_design_system', 'lib', 'src', 'tokens', 'tokens.g.dart');
+  const committed = readFileSync(file, 'utf8');
+  assert.equal(
+    committed, dart,
+    'tokens.g.dart в репозитории отличается от генерации. Запустите `npm run build` и закоммитьте результат.',
+  );
 });
