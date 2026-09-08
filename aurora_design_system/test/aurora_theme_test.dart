@@ -54,10 +54,44 @@ void main() {
     expect(found.colors.actionPrimary, const Color(0xFFD0050F));
   });
 
-  testWidgets('в ThemeData нет теней', (tester) async {
-    final data = auroraThemeData(AuroraBrand.aurora, Brightness.light);
-    expect(data.cardTheme.elevation, 0);
-    expect(data.appBarTheme.elevation, 0);
-    expect(data.appBarTheme.scrolledUnderElevation, 0);
+  // Прошлая версия этой проверки читала те же три поля, которые
+  // auroraThemeData задаёт двумя строками выше, — тавтология в костюме
+  // принципа. Здесь дерево реально собирается, и проверяется то, что видит
+  // пользователь: ни один отрисованный Material не поднят над плоскостью.
+  // ElevatedButton и FloatingActionButton взяты потому, что в Material 3 у
+  // них ненулевая elevation по умолчанию (1.0 и 6.0), то есть проверка
+  // способна падать.
+  testWidgets('ни один Material в собранном дереве не поднят над плоскостью', (tester) async {
+    await tester.pumpWidget(MaterialApp(
+      theme: auroraThemeData(AuroraBrand.aurora, Brightness.light),
+      home: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: const Icon(Icons.add),
+        ),
+        body: Center(
+          child: ElevatedButton(onPressed: () {}, child: const Text('Кнопка')),
+        ),
+      ),
+    ));
+    await tester.pumpAndSettle();
+
+    final materials = tester.widgetList<Material>(find.byType(Material)).toList();
+    expect(materials, isNotEmpty, reason: 'дерево не собралось — проверять нечего');
+    for (final m in materials) {
+      expect(
+        m.elevation, 0.0,
+        reason: 'Material с elevation ${m.elevation} — теней в системе нет',
+      );
+    }
+  });
+
+  testWidgets('тень и M3-подкраска поверхности отключены глобально', (tester) async {
+    for (final brightness in Brightness.values) {
+      final data = auroraThemeData(AuroraBrand.mts, brightness);
+      expect(data.shadowColor, Colors.transparent);
+      expect(data.colorScheme.shadow, Colors.transparent);
+      expect(data.colorScheme.surfaceTint, Colors.transparent);
+    }
   });
 }

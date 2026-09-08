@@ -97,8 +97,21 @@ class AuroraTheme extends ThemeExtension<AuroraTheme> {
   }
 }
 
+/// Ноль подъёма для всех состояний кнопки: Material 3 держит `ElevatedButton`
+/// на 1.0 в покое и 3.0 под курсором, и без этого тени возвращаются через
+/// умолчания фреймворка, а не через токены.
+const WidgetStatePropertyAll<double> _noElevation = WidgetStatePropertyAll<double>(0);
+
 /// Собирает [ThemeData] так, чтобы Material-компоненты подчинялись токенам.
-/// Теней нет нигде — это принцип системы, а не настройка.
+///
+/// Теней нет нигде — это принцип системы, а не настройка. Поверхности
+/// разделяются тоном и волосяной границей. Обнулить `Card` и `AppBar`
+/// недостаточно: у `ElevatedButton`, `FloatingActionButton`, `Dialog`,
+/// `BottomSheet`, `SnackBar`, `Drawer`, `PopupMenu`, `MenuAnchor` и
+/// `NavigationBar` подъём ненулевой по умолчанию, а `ColorScheme.surfaceTint`
+/// без явного значения падает на `primary` — и всё поднятое получает
+/// брендовую подкраску M3. Поэтому здесь и глобальный запрет тени, и
+/// поимённое обнуление подтем.
 ThemeData auroraThemeData(AuroraBrand brand, Brightness brightness) {
   final aurora = AuroraTheme.forBrand(brand, brightness);
   final c = aurora.colors;
@@ -106,8 +119,9 @@ ThemeData auroraThemeData(AuroraBrand brand, Brightness brightness) {
   return ThemeData(
     useMaterial3: true,
     brightness: brightness,
-    fontFamily: 'Inter',
+    fontFamily: AuroraTypographyTokens.fontFamilySans,
     scaffoldBackgroundColor: c.surfaceContent,
+    shadowColor: Colors.transparent,
     colorScheme: ColorScheme(
       brightness: brightness,
       primary: c.actionPrimary,
@@ -118,6 +132,8 @@ ThemeData auroraThemeData(AuroraBrand brand, Brightness brightness) {
       onSurface: c.textPrimary,
       error: c.statusAlarm,
       onError: c.textOnBrand,
+      shadow: Colors.transparent,
+      surfaceTint: Colors.transparent,
     ),
     dividerTheme: DividerThemeData(
       color: c.borderHairline,
@@ -138,6 +154,25 @@ ThemeData auroraThemeData(AuroraBrand brand, Brightness brightness) {
       backgroundColor: c.surfaceContent,
       foregroundColor: c.textPrimary,
     ),
+    elevatedButtonTheme: const ElevatedButtonThemeData(
+      style: ButtonStyle(elevation: _noElevation, shadowColor: WidgetStatePropertyAll<Color>(Colors.transparent)),
+    ),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      elevation: 0,
+      focusElevation: 0,
+      hoverElevation: 0,
+      highlightElevation: 0,
+      disabledElevation: 0,
+    ),
+    dialogTheme: const DialogThemeData(elevation: 0),
+    bottomSheetTheme: const BottomSheetThemeData(elevation: 0, modalElevation: 0),
+    snackBarTheme: const SnackBarThemeData(elevation: 0),
+    drawerTheme: const DrawerThemeData(elevation: 0),
+    popupMenuTheme: const PopupMenuThemeData(elevation: 0),
+    menuTheme: const MenuThemeData(
+      style: MenuStyle(elevation: _noElevation, shadowColor: WidgetStatePropertyAll<Color>(Colors.transparent)),
+    ),
+    navigationBarTheme: const NavigationBarThemeData(elevation: 0),
     extensions: <ThemeExtension<dynamic>>[aurora],
   );
 }
