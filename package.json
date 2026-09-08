@@ -1,0 +1,11 @@
+{
+  "name": "aurora-design-tokens",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node --test test/",
+    "build": "node tools/build.js"
+  }
+}
