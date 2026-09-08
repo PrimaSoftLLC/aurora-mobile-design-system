@@ -23,7 +23,7 @@
 - **Бренд меняет ровно четыре вещи:** шкалу `brand`, шкалу `neutral` (через `neutralHue`), `logo`, `wordmark`. Всё остальное едино. Задача 4 — автоматический сторож этого правила.
 - **Направление синхронизации: JSON → Figma, не наоборот.** Генератор Figma только пишет; обратного импорта в пайплайне нет и не должно появиться.
 - **RTL:** отступы логические (`start`/`end`), не `left`/`right`. В токенах это значит: никаких `paddingLeft`.
-- **Каждое сообщение коммита заканчивается трейлером:**
+- **Сообщения коммитов на английском** (глобальное правило проекта), и каждое заканчивается трейлером:
   ```
   Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
   ```
@@ -238,7 +238,7 @@ export function contrastRatio(hexA, hexB) {
 
 ```bash
 git add design-system/
-git commit -m "feat(tokens): цветовая математика для пайплайна токенов"
+git commit -m "feat(tokens): colour maths for the token pipeline"
 ```
 
 ---
@@ -584,7 +584,7 @@ export function resolveColors(brandId, theme, semanticOverride) {
 
 ```bash
 git add design-system/
-git commit -m "feat(tokens): источник токенов и разрешение ссылок"
+git commit -m "feat(tokens): token source and reference resolution"
 ```
 
 ---
@@ -725,7 +725,7 @@ export function validateAll() {
 
 ```bash
 git add design-system/
-git commit -m "feat(tokens): валидация ссылок и контраста WCAG AA"
+git commit -m "feat(tokens): reference and WCAG AA contrast validation"
 ```
 
 ---
@@ -843,7 +843,7 @@ export function checkBrandParity() {
 
 ```bash
 git add design-system/
-git commit -m "feat(tokens): сторож правила брендовой чётности"
+git commit -m "feat(tokens): brand parity guard"
 ```
 
 ---
@@ -1112,7 +1112,7 @@ export function writeDart() {
 
 ```bash
 git add design-system/
-git commit -m "feat(tokens): генератор Dart-токенов"
+git commit -m "feat(tokens): Dart token generator"
 ```
 
 ---
@@ -1448,7 +1448,7 @@ flutter test
 
 ```bash
 git add design-system/
-git commit -m "feat(design-system): Flutter-пакет с AuroraTheme"
+git commit -m "feat(design-system): Flutter package with AuroraTheme"
 ```
 
 ---
@@ -1650,7 +1650,7 @@ Flutter-пакет:
 
 ```bash
 git add design-system/
-git commit -m "feat(tokens): генератор Figma, сборка и README"
+git commit -m "feat(tokens): Figma generator, build script and README"
 ```
 
 ---
