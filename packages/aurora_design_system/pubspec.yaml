@@ -30,7 +30,7 @@ dev_dependencies:
 #           weight: 700
 #
 # Раскомментировать, когда дизайнер положит эти четыре файла в
-# aurora_design_system/assets/fonts/. До тех пор `fontFamily: 'Inter'`
+# packages/aurora_design_system/assets/fonts/. До тех пор `fontFamily: 'Inter'`
 # в токенах и в auroraThemeData просто не резолвится в незарегистрированное
 # семейство и откатывается на платформный шрифт по умолчанию — это корректное
 # поведение, а объявление шрифта, файлов которого нет на диске, ломает сборку
