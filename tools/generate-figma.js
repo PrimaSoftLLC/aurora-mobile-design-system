@@ -62,7 +62,7 @@ export function generateFigma() {
 
   return {
     $meta: {
-      generatedBy: 'design-system/tools/generate-figma.js',
+      generatedBy: 'tools/generate-figma.js',
       direction: 'JSON → Figma. Обратный импорт не поддерживается намеренно.',
       note:
         'Коллекции component нет намеренно: §4.3 спека запрещает заводить этот ' +

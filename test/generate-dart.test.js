@@ -86,10 +86,10 @@ test('генерация детерминирована', () => {
 // можно поправить JSON, получить зелёный прогон и закоммитить Dart от
 // прошлой сборки. Эта проверка читает файл с диска — она и есть гейт против
 // расхождения JSON и Dart, ради которого существует весь конвейер.
-// eol=lf в design-system/.gitattributes держит файл в LF на любой платформе,
+// eol=lf в .gitattributes держит файл в LF на любой платформе,
 // иначе на свежем клоне под Windows сравнение падало бы на переводах строк.
 test('закоммиченный tokens.g.dart совпадает с генерацией — иначе Dart устарел', () => {
-  const file = path.join(root, 'aurora_design_system', 'lib', 'src', 'tokens', 'tokens.g.dart');
+  const file = path.join(root, 'packages', 'aurora_design_system', 'lib', 'src', 'tokens', 'tokens.g.dart');
   const committed = readFileSync(file, 'utf8');
   assert.equal(
     committed, dart,

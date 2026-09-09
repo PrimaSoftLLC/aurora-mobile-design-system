@@ -10,12 +10,12 @@
 
 Flutter-пакет:
 
-    cd aurora_design_system && flutter test
+    cd packages/aurora_design_system && flutter test
 
 ## Как что-то поменять
 
 Цвет, отступ, радиус — правится в `tokens/`, затем `npm run build`.
-`aurora_design_system/lib/src/tokens/tokens.g.dart` руками не редактируется.
+`packages/aurora_design_system/lib/src/tokens/tokens.g.dart` руками не редактируется.
 
 ## Как добавить бренд
 

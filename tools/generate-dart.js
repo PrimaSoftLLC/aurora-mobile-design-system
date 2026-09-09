@@ -85,7 +85,7 @@ export function generateDart() {
 
   const lines = [];
   lines.push('// GENERATED — не редактировать руками.');
-  lines.push('// Источник: design-system/tokens/. Пересобрать: npm run build');
+  lines.push('// Источник: tokens/. Пересобрать: npm run build');
   lines.push('');
   lines.push("import 'dart:ui' show Brightness, Color, FontFeature, FontWeight;");
   lines.push("import 'package:flutter/animation.dart' show Curve, Curves;");
@@ -225,7 +225,7 @@ export function generateDart() {
 }
 
 export function writeDart() {
-  const out = path.join(root, 'aurora_design_system', 'lib', 'src', 'tokens', 'tokens.g.dart');
+  const out = path.join(root, 'packages', 'aurora_design_system', 'lib', 'src', 'tokens', 'tokens.g.dart');
   mkdirSync(path.dirname(out), { recursive: true });
   writeFileSync(out, generateDart(), 'utf8');
   return out;

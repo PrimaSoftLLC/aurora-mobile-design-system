@@ -1,5 +1,5 @@
 // GENERATED — не редактировать руками.
-// Источник: design-system/tokens/. Пересобрать: npm run build
+// Источник: tokens/. Пересобрать: npm run build
 
 import 'dart:ui' show Brightness, Color, FontFeature, FontWeight;
 import 'package:flutter/animation.dart' show Curve, Curves;

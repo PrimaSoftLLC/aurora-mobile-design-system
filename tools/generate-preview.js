@@ -626,7 +626,7 @@ ${BASE_CSS}
   </section>
 
   <div class="foot">
-    <span>Источник: <span class="mono">design-system/tokens/</span> · страница пересобирается командой <span class="mono">npm run build</span></span>
+    <span>Источник: <span class="mono">tokens/</span> · страница пересобирается командой <span class="mono">npm run build</span></span>
     <span>Если страница и код разошлись — верен код.</span>
   </div>
 

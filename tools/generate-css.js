@@ -42,7 +42,7 @@ export function generateCss() {
 
   const out = [];
   out.push('/* GENERATED — не редактировать руками.');
-  out.push(' * Источник: design-system/tokens/. Пересобрать: npm run build');
+  out.push(' * Источник: tokens/. Пересобрать: npm run build');
   out.push(' *');
   out.push(` * Бренды: ${brands.join(', ')}. Темы: light, dark. Семантических цветов: ${semanticCount}.`);
   out.push(' * Переключение: <html data-brand="mts" data-theme="dark">; без data-theme тема');
