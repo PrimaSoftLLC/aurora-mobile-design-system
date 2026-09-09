@@ -2,15 +2,31 @@
 
 Источник истины: `tokens/`. Всё остальное генерируется.
 
+## Инструменты
+
+Node и Flutter ставятся через [mise](https://mise.jdx.dev/), версии закреплены
+в `mise.toml` (`node = "20"`, `flutter = "3.41.9"`). После клонирования один раз:
+
+    mise install
+    mise trust
+
+Дальше все команды идут через `mise exec --`, чтобы гарантированно взять
+версии из `mise.toml`, а не то, что случайно стоит в системе.
+
+Пакет требует Flutter `>=3.41.0` (`environment.flutter` в `pubspec.yaml`
+пакета): на более старом SDK `flutter pub get` упадёт с ошибкой разрешения
+зависимостей, никак не указывающей на причину. Если это случилось —
+проверьте версию через `flutter --version` и переустановите SDK через mise.
+
 ## Команды
 
-    npm test        проверки: ссылки, контраст WCAG AA, брендовая чётность, свежесть Dart
-    npm run build   валидация, затем генерация Dart, Figma, превью build/preview.html
-                    и CSS-переменных build/design-system.css
+    mise exec -- npm test        проверки: ссылки, контраст WCAG AA, брендовая чётность, свежесть Dart
+    mise exec -- npm run build   валидация, затем генерация Dart, Figma, превью build/preview.html
+                                  и CSS-переменных build/design-system.css
 
 Flutter-пакет:
 
-    cd packages/aurora_design_system && flutter test
+    cd packages/aurora_design_system && mise exec -- flutter test
 
 ## Как подключить в приложении
 
@@ -29,6 +45,37 @@ Flutter-пакет:
 доступ — deploy key либо PAT, подставленный до `flutter pub get`:
 
     git config --global url."https://${TOKEN}@github.com/".insteadOf "https://github.com/"
+
+## Как использовать в коде
+
+Точка входа — `auroraThemeData()`, она собирает `ThemeData` под выбранный
+бренд и тему (`packages/aurora_design_system/lib/src/theme/aurora_theme.dart`):
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:aurora_design_system/aurora_design_system.dart';
+
+MaterialApp(
+  theme: auroraThemeData(AuroraBrand.aurora, Brightness.light),
+  darkTheme: auroraThemeData(AuroraBrand.aurora, Brightness.dark),
+  home: const HomePage(),
+)
+```
+
+Внутри виджета токены достаются через `AuroraTheme.of(context)` — это
+`ThemeExtension`, зарегистрированное в `ThemeData.extensions`:
+
+```dart
+final aurora = AuroraTheme.of(context);
+final Color primary = aurora.colors.actionPrimary;
+final TextStyle title = aurora.typography.title;
+```
+
+`AuroraTheme.of` падает по `assert`, если `auroraThemeData()` не была отдана
+`MaterialApp`/`Theme` выше по дереву. Полный список токенов — в
+`AuroraColorTokens` и `AuroraTypography`
+(`packages/aurora_design_system/lib/src/tokens/tokens.g.dart`, экспортированы
+через `package:aurora_design_system/aurora_design_system.dart`).
 
 ## Как что-то поменять
 
@@ -66,6 +113,22 @@ Flutter-пакет:
 (`parity.js` сверяет ступени с эталонным списком и называет недостающие и
 лишние). Ступень `850` существует потому, что в тёмной теме
 `border.hairline` и фон панели иначе слились бы в один тон.
+
+## Как выпустить версию
+
+Версия и тег живут только в `packages/aurora_design_system/pubspec.yaml` —
+руками тег не ставится, его создаёт CI. Порядок:
+
+1. Написать `changelog/X.Y.Z.md` с описанием релиза (без него релизная
+   работа в CI откажет ещё на шаге проверки).
+2. Поднять `version:` в `packages/aurora_design_system/pubspec.yaml` до
+   `X.Y.Z`.
+3. Запушить оба изменения в `main`.
+
+Дальше CI сам: если тега `vX.Y.Z` ещё нет — прогоняет гейты, создаёт тег и
+GitHub-релиз с превью, CSS-переменными и Figma-JSON вложением. Если тег уже
+есть — работа `release` завершается без изменений, это ожидаемое поведение,
+а не ошибка.
 
 ## Куда идёт Figma
 
