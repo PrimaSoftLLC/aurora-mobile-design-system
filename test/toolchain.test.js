@@ -9,6 +9,13 @@ import { root } from '../tools/load.js';
 // пин посадил бы каждое приложение-потребителя ровно на эту версию Flutter.
 // Поэтому версия в ci.yaml написана числом и может разъехаться с mise.toml
 // молча — сборка просто поедет на другом SDK. Этот тест их связывает.
+//
+// Вхождение ровно одно: flutter-action стоит только в job `test` — job
+// `release` Flutter не ставит и пакет не собирает. matchAll (а не .exec)
+// и явная проверка количества нужны, чтобы появление второго шага с этим
+// же ключом (например, если release тоже начнёт собирать Flutter-пакет) не
+// проскочило непроверенным, а пропажа единственного вхождения не осталась
+// незамеченной тестом, который смотрит только на первое совпадение.
 test('пин Flutter в ci.yaml совпадает с mise.toml', () => {
   const mise = readFileSync(path.join(root, 'mise.toml'), 'utf8');
   const ci = readFileSync(path.join(root, '.github', 'workflows', 'ci.yaml'), 'utf8');
@@ -16,14 +23,21 @@ test('пин Flutter в ci.yaml совпадает с mise.toml', () => {
   const pinned = /^\s*flutter\s*=\s*"([^"]+)"/m.exec(mise);
   assert.ok(pinned, 'в mise.toml нет строки flutter = "..."');
 
-  const used = /flutter-version:\s*([0-9][^\s#]*)/.exec(ci);
-  assert.ok(used, 'в ci.yaml нет строки flutter-version:');
-
+  const used = [...ci.matchAll(/flutter-version:\s*([0-9][^\s#]*)/g)].map((m) => m[1]);
   assert.equal(
-    used[1], pinned[1],
-    'ci.yaml собирает не на той версии Flutter, что стоит в mise.toml — ' +
-    'поднимайте обе строки вместе',
+    used.length, 1,
+    'ожидалось ровно одно вхождение "flutter-version:" в ci.yaml (шаг ' +
+    'flutter-action в job test) — если добавили ещё одно, включите его ' +
+    'в эту проверку, а не просто подняли число',
   );
+
+  for (const version of used) {
+    assert.equal(
+      version, pinned[1],
+      'ci.yaml собирает не на той версии Flutter, что стоит в mise.toml — ' +
+      'поднимайте обе строки вместе',
+    );
+  }
 });
 
 // setup-node тоже не читает mise.toml напрямую (проверено прогоном: с
@@ -32,6 +46,13 @@ test('пин Flutter в ci.yaml совпадает с mise.toml', () => {
 // test и release. Разъедься он с mise.toml молча, CI и локальная сборка
 // начнут ставить разные Node без единого предупреждения. Этот тест держит
 // оба вхождения в узде.
+//
+// Вхождений ровно два: job `test` ставит Node безусловно, job `release` —
+// тем же шагом под условием release == true (перед сборкой build/ для
+// gh release create). Явная проверка количества нужна потому, что молчаливое
+// удаление шага setup-node из одной из работ (скажем, из release) не тронуло
+// бы значение оставшегося пина — цикл по укороченному списку не упал бы сам
+// по себе, а работа тихо съехала бы на системный Node раннера.
 test('пин Node в ci.yaml совпадает с mise.toml', () => {
   const mise = readFileSync(path.join(root, 'mise.toml'), 'utf8');
   const ci = readFileSync(path.join(root, '.github', 'workflows', 'ci.yaml'), 'utf8');
@@ -40,7 +61,12 @@ test('пин Node в ci.yaml совпадает с mise.toml', () => {
   assert.ok(pinned, 'в mise.toml нет строки node = "..."');
 
   const used = [...ci.matchAll(/node-version:\s*"?([0-9][^\s"#]*)"?/g)].map((m) => m[1]);
-  assert.ok(used.length > 0, 'в ci.yaml нет ни одной строки node-version:');
+  assert.equal(
+    used.length, 2,
+    'ожидалось ровно два вхождения "node-version:" в ci.yaml (job test и ' +
+    'job release) — пропавшее вхождение означает, что одна из работ молча ' +
+    'лишилась пина и поедет на системном Node раннера',
+  );
 
   for (const version of used) {
     assert.equal(
