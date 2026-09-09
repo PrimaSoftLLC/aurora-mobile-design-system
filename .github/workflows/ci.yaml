@@ -7,6 +7,12 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+# По умолчанию токен получает объём прав репозитория, ни один из шагов job
+# `test` в такой полноте не нуждается — только чтение. Job `release` поднимает
+# `contents: write` явно, этот блок её не отменяет: permissions на уровне job
+# полностью замещают permissions на уровне workflow для этой job.
+permissions:
+  contents: read
 
 jobs:
   test:
@@ -41,9 +47,16 @@ jobs:
         working-directory: packages/aurora_design_system
       # build/ лежит в .gitignore: артефакт — единственный способ отдать
       # превью, CSS и Figma-JSON дизайнеру, не требуя клона и Node.
+      #
+      # Без if: always() — намеренно. С ним шаг выполнился бы и после
+      # красного npm test/flutter test/npm run build, но build/ в этом случае
+      # либо не существует, либо устарел, и if-no-files-found: error давал бы
+      # второй красный шаг поверх уже красного, с сообщением, не называющим
+      # первопричину (и точно так же красным после отмены прогона). Без
+      # always() шаг просто пропускается, когда что-то раньше упало, —
+      # виден один красный шаг, тот, что действительно сломался.
       - run: npm run build
       - uses: actions/upload-artifact@v7
-        if: always()
         with:
           name: design-system-build
           path: build/
