@@ -61,7 +61,7 @@
 - Consumes: ветка `feat/aurora-design-tokens` в `D:\projects\AndroidClientYandex`.
 - Produces: git-репозиторий `D:\projects\aurora-mobile-design-system` с веткой `main`, без remote, где `tokens/`, `tools/`, `test/`, `assets/`, `aurora_design_system/`, `docs/` лежат в корне. Число коммитов — `N`, снятое на шаге 2.
 
-- [ ] **Шаг 1: Убедиться, что план закоммичен и дерево чистое**
+- [x] **Шаг 1: Убедиться, что план закоммичен и дерево чистое**
 
 ```bash
 cd /d/projects/AndroidClientYandex
@@ -71,7 +71,7 @@ git log --oneline -1 -- docs/superpowers/plans/2026-09-09-design-system-extracti
 
 Ожидается: пустой `git status` и коммит с этим планом. Он должен быть в истории **до** клонирования, иначе не переедет вместе с `docs/`. Если дерево грязное — разберитесь с изменениями прежде, чем клонировать: `filter-repo` переносит только закоммиченное.
 
-- [ ] **Шаг 2: Снять эталонное число коммитов**
+- [x] **Шаг 2: Снять эталонное число коммитов**
 
 ```bash
 cd /d/projects/AndroidClientYandex
@@ -80,7 +80,7 @@ git rev-list --count origin/main..HEAD
 
 Запишите это число как `N`. Проверено при написании плана: каждый коммит ветки трогает `design-system/` или `docs/` (единственный коммит, задевающий `.gitignore` в корне, — `cf7916a`, он же добавляет спек), поэтому после переноса ни один коммит не должен пропасть. Число не выписано в план заранее намеренно: каждый коммит в ветку его меняет.
 
-- [ ] **Шаг 3: Установить `git filter-repo` и убедиться, что он виден git**
+- [x] **Шаг 3: Установить `git filter-repo` и убедиться, что он виден git**
 
 ```bash
 python -m pip install git-filter-repo
@@ -91,7 +91,7 @@ git filter-repo --version
 
 Если установка не проходит вовсе — переходите на запасной путь из §5 спека (`git subtree split --prefix=design-system`, спек и планы одним коммитом сверху) и отметьте это в `changelog/0.1.0.md` в Задаче 3.
 
-- [ ] **Шаг 4: Склонировать ветку в целевой каталог**
+- [x] **Шаг 4: Склонировать ветку в целевой каталог**
 
 ```bash
 git clone --no-hardlinks --single-branch --branch feat/aurora-design-tokens \
@@ -100,7 +100,7 @@ git clone --no-hardlinks --single-branch --branch feat/aurora-design-tokens \
 
 `--no-hardlinks` обязателен: без него объекты клона разделяются с исходным репозиторием, а `filter-repo` переписывает историю на месте.
 
-- [ ] **Шаг 5: Переписать историю**
+- [x] **Шаг 5: Переписать историю**
 
 ```bash
 cd /d/projects/aurora-mobile-design-system
@@ -109,7 +109,7 @@ git filter-repo --path design-system/ --path docs/ --path-rename design-system/:
 
 `--path` оставляет только эти два дерева, `--path-rename design-system/:` поднимает содержимое подпапки в корень. Коммиты, от которых после фильтрации ничего не осталось (вся история Android-приложения), отбрасываются. `filter-repo` сам удаляет remote `origin` — это его штатное поведение, защита от случайного пуша переписанной истории в исходный репозиторий.
 
-- [ ] **Шаг 6: Переименовать ветку в `main` и проверить, что remote нет**
+- [x] **Шаг 6: Переименовать ветку в `main` и проверить, что remote нет**
 
 ```bash
 cd /d/projects/aurora-mobile-design-system
@@ -119,7 +119,7 @@ git remote -v
 
 Ожидается: пустой вывод `git remote -v`.
 
-- [ ] **Шаг 7: Проверить, что история полная и чистая**
+- [x] **Шаг 7: Проверить, что история полная и чистая**
 
 ```bash
 cd /d/projects/aurora-mobile-design-system
@@ -135,14 +135,14 @@ ls
 
 Если число коммитов **меньше** `N` — остановитесь и разберитесь, какой коммит отбросился, прежде чем идти дальше: `git log --oneline` в обоих репозиториях и сравнение сообщений покажет пропажу.
 
-- [ ] **Шаг 8: Довериться mise в свежем клоне**
+- [x] **Шаг 8: Довериться mise в свежем клоне**
 
 ```bash
 cd /d/projects/aurora-mobile-design-system
 mise trust
 ```
 
-- [ ] **Шаг 9: Прогнать оба набора тестов из нового места**
+- [x] **Шаг 9: Прогнать оба набора тестов из нового места**
 
 ```bash
 cd /d/projects/aurora-mobile-design-system
@@ -169,7 +169,7 @@ cd aurora_design_system && mise exec -- flutter test 2>&1 | tail -3
 - Consumes: репозиторий из Задачи 1.
 - Produces: путь `packages/aurora_design_system` — его подставляют в `path:` потребители (Задача 3, README) и в `working-directory` шаги CI (Задача 4).
 
-- [ ] **Шаг 1: Переместить пакет**
+- [x] **Шаг 1: Переместить пакет**
 
 ```bash
 cd /d/projects/aurora-mobile-design-system
@@ -177,7 +177,7 @@ mkdir -p packages
 git mv aurora_design_system packages/aurora_design_system
 ```
 
-- [ ] **Шаг 2: Прогнать тесты и увидеть, как гейт ловит переезд**
+- [x] **Шаг 2: Прогнать тесты и увидеть, как гейт ловит переезд**
 
 ```bash
 mise exec -- npm test 2>&1 | tail -20
@@ -185,7 +185,7 @@ mise exec -- npm test 2>&1 | tail -20
 
 Ожидается FAIL: набор `generate-dart` не находит `aurora_design_system/lib/src/tokens/tokens.g.dart` (`ENOENT`). Это тот самый гейт свежести — он читает файл с диска, поэтому переезд для него неотличим от пропажи. Красный здесь означает, что гейт работает.
 
-- [ ] **Шаг 3: Починить путь вывода генератора**
+- [x] **Шаг 3: Починить путь вывода генератора**
 
 В `tools/generate-dart.js`, функция `writeDart()`:
 
@@ -198,7 +198,7 @@ export function writeDart() {
 }
 ```
 
-- [ ] **Шаг 4: Починить путь в тесте**
+- [x] **Шаг 4: Починить путь в тесте**
 
 В `test/generate-dart.test.js`, тест «закоммиченный tokens.g.dart совпадает с генерацией»:
 
@@ -212,7 +212,7 @@ export function writeDart() {
 // eol=lf в .gitattributes держит файл в LF на любой платформе,
 ```
 
-- [ ] **Шаг 5: Прогнать тесты и убедиться, что зелено**
+- [x] **Шаг 5: Прогнать тесты и убедиться, что зелено**
 
 ```bash
 mise exec -- npm test 2>&1 | tail -8
@@ -220,7 +220,7 @@ mise exec -- npm test 2>&1 | tail -8
 
 Ожидается `# pass 102`, `# fail 0`.
 
-- [ ] **Шаг 6: Починить строки происхождения в генераторах**
+- [x] **Шаг 6: Починить строки происхождения в генераторах**
 
 Префикс `design-system/` вшит в **генерируемый вывод** и после переезда указывает в никуда. Четыре места:
 
@@ -248,7 +248,7 @@ mise exec -- npm test 2>&1 | tail -8
     <span>Источник: <span class="mono">tokens/</span> · страница пересобирается командой <span class="mono">npm run build</span></span>
 ```
 
-- [ ] **Шаг 7: Прогнать тесты и увидеть, что гейт свежести поймал изменившийся заголовок**
+- [x] **Шаг 7: Прогнать тесты и увидеть, что гейт свежести поймал изменившийся заголовок**
 
 ```bash
 mise exec -- npm test 2>&1 | tail -20
@@ -256,7 +256,7 @@ mise exec -- npm test 2>&1 | tail -20
 
 Ожидается FAIL: «tokens.g.dart в репозитории отличается от генерации». Заголовок сгенерированного файла изменился, а закоммиченный — ещё нет. Ни один тест не проверяет строки происхождения напрямую, так что это единственный сигнал, что шаг 6 состоялся.
 
-- [ ] **Шаг 8: Пересобрать**
+- [x] **Шаг 8: Пересобрать**
 
 ```bash
 mise exec -- npm run build
@@ -265,7 +265,7 @@ git diff --stat packages/aurora_design_system/lib/src/tokens/tokens.g.dart
 
 Ожидается дифф ровно в одну строку — заголовок. Если строк больше, остановитесь: значит изменилось что-то кроме происхождения.
 
-- [ ] **Шаг 9: Убедиться, что `tokens/` не тронут**
+- [x] **Шаг 9: Убедиться, что `tokens/` не тронут**
 
 ```bash
 git status --short tokens/
@@ -273,7 +273,7 @@ git status --short tokens/
 
 Ожидается пустой вывод. Это глобальное ограничение цикла.
 
-- [ ] **Шаг 10: Прогнать все три гейта**
+- [x] **Шаг 10: Прогнать все три гейта**
 
 ```bash
 mise exec -- npm test 2>&1 | tail -8
@@ -282,7 +282,7 @@ cd packages/aurora_design_system && mise exec -- flutter analyze 2>&1 | tail -2 
 
 Ожидается: `# pass 102` / `# fail 0`, «No issues found!», `+16: All tests passed!`.
 
-- [ ] **Шаг 11: Поправить README**
+- [x] **Шаг 11: Поправить README**
 
 Строка 13 — путь к пакету:
 
@@ -296,7 +296,7 @@ cd packages/aurora_design_system && mise exec -- flutter analyze 2>&1 | tail -2 
 `packages/aurora_design_system/lib/src/tokens/tokens.g.dart` руками не редактируется.
 ```
 
-- [ ] **Шаг 12: Закоммитить**
+- [x] **Шаг 12: Закоммитить**
 
 ```bash
 git add -A
@@ -317,7 +317,7 @@ git commit -m "Move the Flutter package under packages/ and repoint the generato
 - Consumes: путь `packages/aurora_design_system` из Задачи 2.
 - Produces: `changelog/0.1.0.md` и версия `0.1.0` в `packages/aurora_design_system/pubspec.yaml` — их читает job `release` из Задачи 4.
 
-- [ ] **Шаг 1: Убрать второе число версии**
+- [x] **Шаг 1: Убрать второе число версии**
 
 В `package.json` удалить строку `"version": "1.0.0",`. Пакет `private: true`, в npm не публикуется; единственный источник версии — `pubspec.yaml`. Результат:
 
@@ -334,7 +334,7 @@ git commit -m "Move the Flutter package under packages/ and repoint the generato
 }
 ```
 
-- [ ] **Шаг 2: Убедиться, что npm не возражает против отсутствия версии**
+- [x] **Шаг 2: Убедиться, что npm не возражает против отсутствия версии**
 
 ```bash
 mise exec -- npm test 2>&1 | tail -8
@@ -342,7 +342,7 @@ mise exec -- npm test 2>&1 | tail -8
 
 Ожидается `# pass 102`, `# fail 0`.
 
-- [ ] **Шаг 3: Проверить версию в pubspec**
+- [x] **Шаг 3: Проверить версию в pubspec**
 
 ```bash
 grep -n "^version:" packages/aurora_design_system/pubspec.yaml
@@ -350,7 +350,7 @@ grep -n "^version:" packages/aurora_design_system/pubspec.yaml
 
 Ожидается `version: 0.1.0`. Если там другое число — дальше в плане и в CI подставляйте его, changelog назовите так же.
 
-- [ ] **Шаг 4: Написать `changelog/0.1.0.md`**
+- [x] **Шаг 4: Написать `changelog/0.1.0.md`**
 
 ```markdown
 # 0.1.0
@@ -369,7 +369,7 @@ grep -n "^version:" packages/aurora_design_system/pubspec.yaml
 
 Если в Задаче 1 пришлось пойти запасным путём (`git subtree split`), добавьте последней строкой: «История спека и планов не перенесена — они добавлены одним коммитом.»
 
-- [ ] **Шаг 5: Добавить в README раздел о подключении**
+- [x] **Шаг 5: Добавить в README раздел о подключении**
 
 После раздела «Команды», перед «Как что-то поменять»:
 
@@ -393,7 +393,7 @@ grep -n "^version:" packages/aurora_design_system/pubspec.yaml
     git config --global url."https://${TOKEN}@github.com/".insteadOf "https://github.com/"
 ```
 
-- [ ] **Шаг 6: Написать `CLAUDE.md`**
+- [x] **Шаг 6: Написать `CLAUDE.md`**
 
 ```markdown
 # aurora-mobile-design-system
@@ -433,7 +433,7 @@ grep -n "^version:" packages/aurora_design_system/pubspec.yaml
   `docs/superpowers/specs/2026-09-08-aurora-design-system-design.md`.
 ```
 
-- [ ] **Шаг 7: Закоммитить**
+- [x] **Шаг 7: Закоммитить**
 
 ```bash
 git add -A
@@ -452,9 +452,17 @@ git commit -m "Give the repository a single version, a changelog and consumption
 - Consumes: `packages/aurora_design_system` (Задача 2), `changelog/0.1.0.md` и версия в pubspec (Задача 3).
 - Produces: job `test` (гейты на PR и пуш) и job `release` (тег и GitHub-релиз при пуше в `main`).
 
-Почему нужен новый тест: `subosito/flutter-action` читает версию только из `pubspec.yaml`, `.fvmrc` или `.fvm/fvm_config.json`. Наш pubspec — библиотечный, и в нём обязан стоять **диапазон** `>=3.41.0`, а не пин: пин заставил бы каждое приложение-потребителя сесть ровно на эту версию Flutter. Значит в `ci.yaml` версия пишется числом и может молча разъехаться с `mise.toml`. Для node такой проблемы нет: `actions/setup-node` умеет читать `mise.toml` напрямую.
+Почему нужен новый тест: `subosito/flutter-action` читает версию только из `pubspec.yaml`, `.fvmrc` или `.fvm/fvm_config.json`. Наш pubspec — библиотечный, и в нём обязан стоять **диапазон** `>=3.41.0`, а не пин: пин заставил бы каждое приложение-потребителя сесть ровно на эту версию Flutter. Значит в `ci.yaml` версия пишется числом и может молча разъехаться с `mise.toml`.
 
-- [ ] **Шаг 1: Написать падающий тест на расхождение пинов**
+**Уточнение по факту прогона** (первая редакция этого абзаца ошибалась):
+для node та же проблема есть. Предполагалось, что `actions/setup-node` умеет
+читать `mise.toml` напрямую через `node-version-file: mise.toml` — реальный
+прогон на GitHub (Задача 5, «дождаться CI и почитать результат... и чинить»)
+это опроверг: `setup-node` принял строку `[tools]` за версию и упал. Поэтому
+версия Node в `ci.yaml` тоже пишется числом, как и Flutter, и оба пина
+проверяет один и тот же `test/toolchain.test.js`.
+
+- [x] **Шаг 1: Написать падающий тест на расхождение пинов**
 
 Создать `test/toolchain.test.js`:
 
@@ -488,7 +496,7 @@ test('пин Flutter в ci.yaml совпадает с mise.toml', () => {
 });
 ```
 
-- [ ] **Шаг 2: Прогнать и убедиться, что тест падает**
+- [x] **Шаг 2: Прогнать и убедиться, что тест падает**
 
 ```bash
 mise exec -- npm test 2>&1 | tail -20
@@ -496,7 +504,7 @@ mise exec -- npm test 2>&1 | tail -20
 
 Ожидается FAIL: `ENOENT` на `.github/workflows/ci.yaml` — файла ещё нет.
 
-- [ ] **Шаг 3: Узнать актуальные мажоры используемых actions**
+- [x] **Шаг 3: Узнать актуальные мажоры используемых actions**
 
 ```bash
 for a in actions/checkout actions/setup-node actions/upload-artifact; do
@@ -506,7 +514,7 @@ done
 
 Соседний репозиторий `auroraDriverFlutter` использует `actions/checkout@v7` и `actions/upload-artifact@v7` — это заведомо рабочие пины, файл ниже написан с ними. Единственный, которого у соседа нет, — `actions/setup-node`: в файле стоит `@v5`, замените на мажор из вывода команды, если он другой.
 
-- [ ] **Шаг 4: Написать `.github/workflows/ci.yaml`**
+- [x] **Шаг 4: Написать `.github/workflows/ci.yaml`**
 
 ```yaml
 name: CI
@@ -600,7 +608,7 @@ jobs:
             build/preview.html build/design-system.css build/figma-variables.json
 ```
 
-- [ ] **Шаг 5: Прогнать и убедиться, что тест позеленел**
+- [x] **Шаг 5: Прогнать и убедиться, что тест позеленел**
 
 ```bash
 mise exec -- npm test 2>&1 | tail -8
@@ -608,11 +616,11 @@ mise exec -- npm test 2>&1 | tail -8
 
 Ожидается `# pass 103`, `# fail 0` — на один тест больше эталонных 102.
 
-- [ ] **Шаг 6: Проверить, что гейт ловит расхождение**
+- [x] **Шаг 6: Проверить, что гейт ловит расхождение**
 
 Временно поменяйте в `ci.yaml` `flutter-version: 3.41.9` на `3.40.0`, прогоните `mise exec -- npm test` — ожидается FAIL с текстом «поднимайте обе строки вместе», — затем верните `3.41.9` и прогоните ещё раз до зелёного. Тест, который не пробовали уронить, ничего не стережёт.
 
-- [ ] **Шаг 7: Проверить синтаксис YAML**
+- [x] **Шаг 7: Проверить синтаксис YAML**
 
 ```bash
 mise exec -- node -e "const {readFileSync}=require('fs');const s=readFileSync('.github/workflows/ci.yaml','utf8');if(/\t/.test(s))throw new Error('таб в YAML');console.log('строк:',s.split('\n').length)"
@@ -620,7 +628,7 @@ mise exec -- node -e "const {readFileSync}=require('fs');const s=readFileSync('.
 
 Табов в YAML быть не должно. Полная проверка схемы — только на GitHub, в Задаче 5.
 
-- [ ] **Шаг 8: Закоммитить**
+- [x] **Шаг 8: Закоммитить**
 
 ```bash
 git add -A
@@ -639,7 +647,7 @@ git commit -m "Add CI with the token gates, the release job and a guard against 
 - Consumes: всё, что собрано Задачами 1–4.
 - Produces: `https://github.com/NikolayNN/aurora-mobile-design-system`, тег `v0.1.0`, релиз с тремя файлами. `ref: v0.1.0` из README становится рабочим.
 
-- [ ] **Шаг 1: Убедиться, что всё зелено локально и дерево чистое**
+- [x] **Шаг 1: Убедиться, что всё зелено локально и дерево чистое**
 
 ```bash
 cd /d/projects/aurora-mobile-design-system
@@ -650,11 +658,11 @@ cd packages/aurora_design_system && mise exec -- flutter analyze 2>&1 | tail -2 
 
 Ожидается: пустой `git status`, `# pass 103` / `# fail 0`, «No issues found!», `+16: All tests passed!`.
 
-- [ ] **Шаг 2: Спросить человека и дождаться ответа**
+- [x] **Шаг 2: Спросить человека и дождаться ответа**
 
 Показать, что будет создано: приватный репозиторий `NikolayNN/aurora-mobile-design-system`, в него уйдёт вся история ветки. Не выполнять шаг 3 без ответа.
 
-- [ ] **Шаг 3: Создать репозиторий и запушить**
+- [x] **Шаг 3: Создать репозиторий и запушить**
 
 ```bash
 cd /d/projects/aurora-mobile-design-system
@@ -662,7 +670,7 @@ gh repo create NikolayNN/aurora-mobile-design-system \
   --private --source . --remote origin --push
 ```
 
-- [ ] **Шаг 4: Дождаться CI и прочитать результат**
+- [x] **Шаг 4: Дождаться CI и прочитать результат**
 
 ```bash
 gh run watch --exit-status
@@ -670,7 +678,7 @@ gh run watch --exit-status
 
 Если job `test` красный — читать лог упавшего шага (`gh run view --log-failed`) и чинить. Наиболее вероятные места: мажор какого-то action не тот (шаг 3 Задачи 4), либо `flutter-action` не находит 3.41.9 на канале stable.
 
-- [ ] **Шаг 5: Проверить, что CI сам создал тег и релиз**
+- [x] **Шаг 5: Проверить, что CI сам создал тег и релиз**
 
 ```bash
 git fetch --tags
@@ -682,7 +690,7 @@ gh release view v0.1.0
 
 Если тега нет, а job `release` зелёный — значит он ушёл в ветку `release=false`; посмотрите лог шага «Version from pubspec.yaml».
 
-- [ ] **Шаг 6: Проверить артефакт сборки**
+- [x] **Шаг 6: Проверить артефакт сборки**
 
 ```bash
 out="$TMPDIR/ds-artifact"; mkdir -p "$out"
@@ -699,6 +707,8 @@ ls "$out"
 ---
 
 ### Task 6: Закрыть переезд в Android-репозитории
+
+**Единственное открытое дело плана — ждёт явного решения человека, не отмечено намеренно.**
 
 **Требует явного «да» от человека:** удаление ветки — единственный необратимый шаг цикла.
 

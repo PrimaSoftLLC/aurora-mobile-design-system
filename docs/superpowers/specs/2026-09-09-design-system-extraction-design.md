@@ -153,12 +153,18 @@ git filter-repo --path design-system/ --path docs/ --path-rename design-system/:
 
 | Шаг | Что стережёт |
 |---|---|
-| `actions/setup-node` (20), `npm test` | целостность ссылок, контраст WCAG AA, брендовая чётность, свежесть `tokens.g.dart` |
-| `subosito/flutter-action` (`flutter-version-file`), `flutter pub get` | — |
+| `actions/setup-node` (`node-version: "20"`), `npm test` | целостность ссылок, контраст WCAG AA, брендовая чётность, свежесть `tokens.g.dart`, совпадение пинов Node и Flutter с `mise.toml` |
+| `subosito/flutter-action` (`flutter-version: 3.41.9`), `flutter pub get` | — |
 | `flutter analyze` в `packages/aurora_design_system` | линт пакета |
 | `flutter test` в `packages/aurora_design_system` | тема, равенство по значению, прокидка в `ColorScheme` |
 | `npm run build` | генераторы не падают |
 | `actions/upload-artifact` | `build/preview.html`, `build/design-system.css`, `build/figma-variables.json` |
+
+Ни `setup-node`, ни `flutter-action` не читают `mise.toml` напрямую (проверено
+прогоном: `setup-node` с `node-version-file: mise.toml` принял строку
+`[tools]` за версию и упал), поэтому оба пина — Node и Flutter — продублированы
+в `ci.yaml` числом намеренно, а не по недосмотру, и оба стережёт
+`test/toolchain.test.js`, сверяя их с `mise.toml`.
 
 Артефакт закрывает раздел README «что отдать дизайн-инструменту»: `build/` в
 `.gitignore`, и сегодня, чтобы получить превью, дизайнеру нужен клон и Node.
