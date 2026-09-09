@@ -1,0 +1,89 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          # setup-node читает mise.toml напрямую — пин node не дублируется.
+          node-version-file: mise.toml
+      # Гейты токенов: целостность ссылок, контраст WCAG AA, брендовая
+      # чётность, свежесть закоммиченного tokens.g.dart и совпадение пина
+      # Flutter в этом файле с mise.toml.
+      - run: npm test
+      - uses: subosito/flutter-action@v2
+        with:
+          # Дублирует mise.toml вынужденно: flutter-action не читает ни
+          # mise.toml, ни .tool-versions, а pubspec библиотеки держит диапазон,
+          # а не пин. За расхождением следит test/toolchain.test.js.
+          flutter-version: 3.41.9
+          channel: stable
+          cache: true
+      - run: flutter pub get
+        working-directory: packages/aurora_design_system
+      - run: flutter analyze
+        working-directory: packages/aurora_design_system
+      - run: flutter test
+        working-directory: packages/aurora_design_system
+      # build/ лежит в .gitignore: артефакт — единственный способ отдать
+      # превью, CSS и Figma-JSON дизайнеру, не требуя клона и Node.
+      - run: npm run build
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: design-system-build
+          path: build/
+          if-no-files-found: error
+
+  # Релиз по стандарту «тег — выход CI»: версия в pubspec пакета — единственный
+  # источник. Пуш в main с версией, у которой ещё нет тега, создаёт тег и
+  # релиз. Руками теги не ставятся.
+  release:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - name: Version from pubspec.yaml
+        id: version
+        run: |
+          pubspec=packages/aurora_design_system/pubspec.yaml
+          v=$(sed -nE 's/^version:[[:space:]]*([0-9]+\.[0-9]+\.[0-9]+).*/\1/p' "$pubspec")
+          test -n "$v" || { echo "version not found in $pubspec"; exit 1; }
+          test -f "changelog/$v.md" || { echo "changelog/$v.md is missing - write the changelog entry before bumping the version"; exit 1; }
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          if git ls-remote --exit-code --tags origin "refs/tags/v$v" >/dev/null; then
+            echo "v$v is already tagged - nothing to release"
+            echo "release=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/setup-node@v7
+        if: steps.version.outputs.release == 'true'
+        with:
+          node-version-file: mise.toml
+      - run: npm run build
+        if: steps.version.outputs.release == 'true'
+      - name: Tag and GitHub release
+        if: steps.version.outputs.release == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          # Тело релиза — запись changelog без строки заголовка версии.
+          awk 'NR > 1' "changelog/$VERSION.md" > release-notes.md
+          gh release create "v$VERSION" --target "$GITHUB_SHA" \
+            --title "v$VERSION" --notes-file release-notes.md \
+            build/preview.html build/design-system.css build/figma-variables.json
