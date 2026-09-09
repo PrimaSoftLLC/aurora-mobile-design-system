@@ -12,6 +12,24 @@ Flutter-пакет:
 
     cd packages/aurora_design_system && flutter test
 
+## Как подключить в приложении
+
+    dependencies:
+      aurora_design_system:
+        git:
+          url: https://github.com/NikolayNN/aurora-mobile-design-system.git
+          ref: v0.1.0
+          path: packages/aurora_design_system
+
+`ref` — тег релиза. Ветку указывать не нужно: версии двигаются тегами, и
+приложение само решает, когда перейти на следующую.
+
+Репозиторий приватный. Локально `flutter pub get` берёт git-креденшл
+разработчика и ничего дополнительного не требует. В CI приложения нужен
+доступ — deploy key либо PAT, подставленный до `flutter pub get`:
+
+    git config --global url."https://${TOKEN}@github.com/".insteadOf "https://github.com/"
+
 ## Как что-то поменять
 
 Цвет, отступ, радиус — правится в `tokens/`, затем `npm run build`.
