@@ -8,6 +8,7 @@ import 'package:flutter/painting.dart' show TextStyle;
 enum AuroraBrand { aurora, mts }
 
 class AuroraColorTokens {
+  final Color surfaceGround;
   final Color surfaceContent;
   final Color surfaceChrome;
   final Color surfaceSelected;
@@ -19,6 +20,9 @@ class AuroraColorTokens {
   final Color textSecondary;
   final Color textDisabled;
   final Color textOnBrand;
+  final Color textOnMovingSubtle;
+  final Color textOnWarningSubtle;
+  final Color textOnAlarmSubtle;
   final Color actionPrimary;
   final Color actionPressed;
   final Color actionSubtle;
@@ -28,6 +32,9 @@ class AuroraColorTokens {
   final Color statusWarning;
   final Color statusAlarm;
   final Color statusOffline;
+  final Color statusMovingSubtle;
+  final Color statusWarningSubtle;
+  final Color statusAlarmSubtle;
   final Color mapTrackDefault;
   final Color mapTrackSpeeding;
   final Color mapTrackSelected;
@@ -45,6 +52,7 @@ class AuroraColorTokens {
   final Color geofenceYellow;
 
   const AuroraColorTokens({
+    required this.surfaceGround,
     required this.surfaceContent,
     required this.surfaceChrome,
     required this.surfaceSelected,
@@ -56,6 +64,9 @@ class AuroraColorTokens {
     required this.textSecondary,
     required this.textDisabled,
     required this.textOnBrand,
+    required this.textOnMovingSubtle,
+    required this.textOnWarningSubtle,
+    required this.textOnAlarmSubtle,
     required this.actionPrimary,
     required this.actionPressed,
     required this.actionSubtle,
@@ -65,6 +76,9 @@ class AuroraColorTokens {
     required this.statusWarning,
     required this.statusAlarm,
     required this.statusOffline,
+    required this.statusMovingSubtle,
+    required this.statusWarningSubtle,
+    required this.statusAlarmSubtle,
     required this.mapTrackDefault,
     required this.mapTrackSpeeding,
     required this.mapTrackSelected,
@@ -87,6 +101,7 @@ class AuroraColorTokens {
     if (identical(this, other)) return true;
     return other is AuroraColorTokens &&
         runtimeType == other.runtimeType &&
+        surfaceGround == other.surfaceGround &&
         surfaceContent == other.surfaceContent &&
         surfaceChrome == other.surfaceChrome &&
         surfaceSelected == other.surfaceSelected &&
@@ -98,6 +113,9 @@ class AuroraColorTokens {
         textSecondary == other.textSecondary &&
         textDisabled == other.textDisabled &&
         textOnBrand == other.textOnBrand &&
+        textOnMovingSubtle == other.textOnMovingSubtle &&
+        textOnWarningSubtle == other.textOnWarningSubtle &&
+        textOnAlarmSubtle == other.textOnAlarmSubtle &&
         actionPrimary == other.actionPrimary &&
         actionPressed == other.actionPressed &&
         actionSubtle == other.actionSubtle &&
@@ -107,6 +125,9 @@ class AuroraColorTokens {
         statusWarning == other.statusWarning &&
         statusAlarm == other.statusAlarm &&
         statusOffline == other.statusOffline &&
+        statusMovingSubtle == other.statusMovingSubtle &&
+        statusWarningSubtle == other.statusWarningSubtle &&
+        statusAlarmSubtle == other.statusAlarmSubtle &&
         mapTrackDefault == other.mapTrackDefault &&
         mapTrackSpeeding == other.mapTrackSpeeding &&
         mapTrackSelected == other.mapTrackSelected &&
@@ -126,6 +147,7 @@ class AuroraColorTokens {
 
   @override
   int get hashCode => Object.hashAll(<Object?>[
+        surfaceGround,
         surfaceContent,
         surfaceChrome,
         surfaceSelected,
@@ -137,6 +159,9 @@ class AuroraColorTokens {
         textSecondary,
         textDisabled,
         textOnBrand,
+        textOnMovingSubtle,
+        textOnWarningSubtle,
+        textOnAlarmSubtle,
         actionPrimary,
         actionPressed,
         actionSubtle,
@@ -146,6 +171,9 @@ class AuroraColorTokens {
         statusWarning,
         statusAlarm,
         statusOffline,
+        statusMovingSubtle,
+        statusWarningSubtle,
+        statusAlarmSubtle,
         mapTrackDefault,
         mapTrackSpeeding,
         mapTrackSelected,
@@ -165,6 +193,7 @@ class AuroraColorTokens {
 }
 
 const AuroraColorTokens _auroraLight = AuroraColorTokens(
+  surfaceGround: Color(0xFFE0E3EC),
   surfaceContent: Color(0xFFFFFFFF),
   surfaceChrome: Color(0xFFF4F6FA),
   surfaceSelected: Color(0xFFF5F9FC),
@@ -176,6 +205,10 @@ const AuroraColorTokens _auroraLight = AuroraColorTokens(
   textSecondary: Color(0xFF666C85),
   textDisabled: Color(0xFFC4C9D8),
   textOnBrand: Color(0xFFFFFFFF),
+  textOnMovingSubtle: Color(0xFF0B7A3C),
+  textOnWarningSubtle: Color(0xFF8A5A0F),
+  statusAlarm: Color(0xFFC7301F),
+  textOnAlarmSubtle: Color(0xFFC7301F),
   actionPrimary: Color(0xFF0066B8),
   actionPressed: Color(0xFF005493),
   actionSubtle: Color(0xFFE8F2FB),
@@ -183,8 +216,10 @@ const AuroraColorTokens _auroraLight = AuroraColorTokens(
   statusMoving: Color(0xFF12A150),
   statusParked: Color(0xFF6E7480),
   statusWarning: Color(0xFFB7791F),
-  statusAlarm: Color(0xFFC7301F),
   statusOffline: Color(0xFF8D9096),
+  statusMovingSubtle: Color(0xFFE3F4EA),
+  statusWarningSubtle: Color(0xFFF5ECE0),
+  statusAlarmSubtle: Color(0xFFF9EAE9),
   mapTrackDefault: Color(0xFF0066B8),
   mapTrackSpeeding: Color(0xFFC7301F),
   mapTrackSelected: Color(0xFF141624),
@@ -203,6 +238,7 @@ const AuroraColorTokens _auroraLight = AuroraColorTokens(
 );
 
 const AuroraColorTokens _auroraDark = AuroraColorTokens(
+  surfaceGround: Color(0xFF101220),
   surfaceContent: Color(0xFF101220),
   surfaceChrome: Color(0xFF191C2E),
   surfaceSelected: Color(0xFF20243A),
@@ -214,15 +250,21 @@ const AuroraColorTokens _auroraDark = AuroraColorTokens(
   textSecondary: Color(0xFF949AB4),
   textDisabled: Color(0xFF343A50),
   textOnBrand: Color(0xFF101220),
+  statusMoving: Color(0xFF2BD47A),
+  textOnMovingSubtle: Color(0xFF2BD47A),
+  statusWarning: Color(0xFFF0B429),
+  textOnWarningSubtle: Color(0xFFF0B429),
+  statusAlarm: Color(0xFFF0554F),
+  textOnAlarmSubtle: Color(0xFFF0554F),
   actionPrimary: Color(0xFF3E9BE0),
   actionPressed: Color(0xFF1478C6),
   actionSubtle: Color(0xFF143253),
   focusIndicator: Color(0xFF3E9BE0),
-  statusMoving: Color(0xFF2BD47A),
   statusParked: Color(0xFF9CA2AE),
-  statusWarning: Color(0xFFF0B429),
-  statusAlarm: Color(0xFFF0554F),
   statusOffline: Color(0xFF606677),
+  statusMovingSubtle: Color(0xFF14312E),
+  statusWarningSubtle: Color(0xFF382F22),
+  statusAlarmSubtle: Color(0xFF381E28),
   mapTrackDefault: Color(0xFF3E9BE0),
   mapTrackSpeeding: Color(0xFFF0554F),
   mapTrackSelected: Color(0xFFF4F6FA),
@@ -241,6 +283,7 @@ const AuroraColorTokens _auroraDark = AuroraColorTokens(
 );
 
 const AuroraColorTokens _mtsLight = AuroraColorTokens(
+  surfaceGround: Color(0xFFE6E3E1),
   surfaceContent: Color(0xFFFFFFFF),
   surfaceChrome: Color(0xFFF7F6F5),
   surfaceSelected: Color(0xFFFDF5F5),
@@ -252,6 +295,10 @@ const AuroraColorTokens _mtsLight = AuroraColorTokens(
   textSecondary: Color(0xFF74706D),
   textDisabled: Color(0xFFD2CDC9),
   textOnBrand: Color(0xFFFFFFFF),
+  textOnMovingSubtle: Color(0xFF0B7A3C),
+  textOnWarningSubtle: Color(0xFF8A5A0F),
+  statusAlarm: Color(0xFFC7301F),
+  textOnAlarmSubtle: Color(0xFFC7301F),
   actionPrimary: Color(0xFFD0050F),
   actionPressed: Color(0xFFA8040C),
   actionSubtle: Color(0xFFFDEAEA),
@@ -259,8 +306,10 @@ const AuroraColorTokens _mtsLight = AuroraColorTokens(
   statusMoving: Color(0xFF12A150),
   statusParked: Color(0xFF6E7480),
   statusWarning: Color(0xFFB7791F),
-  statusAlarm: Color(0xFFC7301F),
   statusOffline: Color(0xFF8D9096),
+  statusMovingSubtle: Color(0xFFE3F4EA),
+  statusWarningSubtle: Color(0xFFF5ECE0),
+  statusAlarmSubtle: Color(0xFFF9EAE9),
   mapTrackDefault: Color(0xFFD0050F),
   mapTrackSpeeding: Color(0xFFC7301F),
   mapTrackSelected: Color(0xFF1B1A19),
@@ -279,6 +328,7 @@ const AuroraColorTokens _mtsLight = AuroraColorTokens(
 );
 
 const AuroraColorTokens _mtsDark = AuroraColorTokens(
+  surfaceGround: Color(0xFF161514),
   surfaceContent: Color(0xFF161514),
   surfaceChrome: Color(0xFF201E1D),
   surfaceSelected: Color(0xFF272423),
@@ -290,15 +340,21 @@ const AuroraColorTokens _mtsDark = AuroraColorTokens(
   textSecondary: Color(0xFFA09B97),
   textDisabled: Color(0xFF3E3B39),
   textOnBrand: Color(0xFF161514),
+  statusMoving: Color(0xFF2BD47A),
+  textOnMovingSubtle: Color(0xFF2BD47A),
+  statusWarning: Color(0xFFF0B429),
+  textOnWarningSubtle: Color(0xFFF0B429),
+  statusAlarm: Color(0xFFF0554F),
+  textOnAlarmSubtle: Color(0xFFF0554F),
   actionPrimary: Color(0xFFFF4D52),
   actionPressed: Color(0xFFE30611),
   actionSubtle: Color(0xFF5A0C10),
   focusIndicator: Color(0xFFFF4D52),
-  statusMoving: Color(0xFF2BD47A),
   statusParked: Color(0xFF9CA2AE),
-  statusWarning: Color(0xFFF0B429),
-  statusAlarm: Color(0xFFF0554F),
   statusOffline: Color(0xFF606677),
+  statusMovingSubtle: Color(0xFF193424),
+  statusWarningSubtle: Color(0xFF3D3218),
+  statusAlarmSubtle: Color(0xFF3D211F),
   mapTrackDefault: Color(0xFFFF4D52),
   mapTrackSpeeding: Color(0xFFF0554F),
   mapTrackSelected: Color(0xFFF7F6F5),

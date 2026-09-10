@@ -287,11 +287,12 @@ function brandGate(id, first) {
 
 function semanticTable(d) {
   const groups = [
-    ['Поверхности', ['surface.content', 'surface.chrome', 'surface.selected', 'surface.overlay', 'surface.scrim']],
+    ['Поверхности', ['surface.ground', 'surface.content', 'surface.chrome', 'surface.selected', 'surface.overlay', 'surface.scrim']],
     ['Границы', ['border.hairline', 'border.strong']],
     ['Текст', ['text.primary', 'text.secondary', 'text.disabled', 'text.onBrand']],
     ['Действие', ['action.primary', 'action.pressed', 'action.subtle', 'focus.indicator']],
     ['Статусы', ['status.moving', 'status.parked', 'status.warning', 'status.alarm', 'status.offline']],
+    ['Подложки статусов', ['status.movingSubtle', 'text.onMovingSubtle', 'status.warningSubtle', 'text.onWarningSubtle', 'status.alarmSubtle', 'text.onAlarmSubtle']],
     ['Карта', ['map.trackDefault', 'map.trackSpeeding', 'map.trackSelected', 'map.markerFill', 'map.markerStroke', 'map.clusterFill', 'map.clusterText']],
   ];
   const rows = [];
