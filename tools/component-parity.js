@@ -3,8 +3,6 @@ import path from 'node:path';
 import { root } from './load.js';
 
 const PKG = path.join(root, 'packages', 'aurora_design_system');
-const SRC = path.join(PKG, 'lib', 'src', 'base');
-const TEST = path.join(PKG, 'test');
 
 // Файлы без виджетов: перечислять их в исключениях честнее, чем угадывать по
 // содержимому. Компонент, случайно попавший сюда, виден в диффе.
@@ -14,14 +12,29 @@ const NO_WIDGETS = new Set(['status.dart']);
  * Компонент, экспортированный без проверки на четыре комбинации, — это
  * компонент, чья перекраска не проверена никем. Гейт ловит ровно это:
  * файл в `base/` обязан иметь тест, а тест обязан звать `forEachBrandAndTheme`.
+ *
+ * `pkgDir` — путь к пакету `aurora_design_system` (по умолчанию — настоящий
+ * пакет этого репозитория). Параметр существует ради тестов: они подсовывают
+ * временную фикстуру вместо реального дерева, не трогая ни его, ни сигнатуру
+ * вызова из `tools/build.js`.
  */
-export function checkComponentParity() {
+export function checkComponentParity({ pkgDir = PKG } = {}) {
   const problems = [];
-  if (!existsSync(SRC)) return problems;
+  const src = path.join(pkgDir, 'lib', 'src', 'base');
+  const testDir = path.join(pkgDir, 'test');
 
-  const barrel = readFileSync(path.join(PKG, 'lib', 'aurora_design_system.dart'), 'utf8');
+  if (!existsSync(src)) {
+    // Раньше отсутствие base/ тихо возвращало «проблем нет». Гейт, которому
+    // нечего проверить, не то же самое, что гейт, у которого всё в порядке —
+    // переименованный каталог, опечатка в пути после рефакторинга или
+    // неверный root должны провалить проверку, а не молча пропустить её.
+    problems.push(`${src}: каталог не найден — гейту нечего проверять`);
+    return problems;
+  }
 
-  for (const file of readdirSync(SRC).filter((f) => f.endsWith('.dart'))) {
+  const barrel = readFileSync(path.join(pkgDir, 'lib', 'aurora_design_system.dart'), 'utf8');
+
+  for (const file of readdirSync(src).filter((f) => f.endsWith('.dart'))) {
     const name = file.replace(/\.dart$/, '');
 
     if (!barrel.includes(`export 'src/base/${file}';`)) {
@@ -30,7 +43,7 @@ export function checkComponentParity() {
 
     if (NO_WIDGETS.has(file)) continue;
 
-    const testFile = path.join(TEST, `${name}_test.dart`);
+    const testFile = path.join(testDir, `${name}_test.dart`);
     if (!existsSync(testFile)) {
       problems.push(`${file}: нет теста test/${name}_test.dart`);
       continue;
