@@ -51,4 +51,27 @@ void main() {
         ));
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('слот action рисует переданный виджет, не растягивая его на всю высоту баннера',
+      (tester) async {
+    // IntrinsicHeight с CrossAxisAlignment.stretch задаёт баннеру высоту по
+    // самому высокому ребёнку — при переносе текста на несколько строк это
+    // заметно больше 44. Без heightFactor на внутреннем Center кнопки именно
+    // этот слот и раздувался: баннер с переносящимся текстом сам по себе тест
+    // на C1.
+    await pumpAurora(
+      tester,
+      SizedBox(
+        width: 220,
+        child: AuroraBanner(
+          text:
+              'Запись выключится по расписанию сегодня в 18:00, включится завтра в 09:00',
+          action: AuroraButton(label: 'Продлить', onPressed: () {}),
+        ),
+      ),
+    );
+    expect(find.text('Продлить'), findsOneWidget);
+    final height = tester.getSize(find.byType(AuroraButton)).height;
+    expect(height, lessThan(AuroraDimensions.touchTarget + 16));
+  });
 }
