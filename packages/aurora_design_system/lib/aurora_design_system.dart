@@ -6,3 +6,5 @@ library;
 
 export 'src/theme/aurora_theme.dart';
 export 'src/base/button.dart';
+export 'src/base/chip.dart';
+export 'src/base/status.dart';
