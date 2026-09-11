@@ -5,3 +5,4 @@
 library;
 
 export 'src/theme/aurora_theme.dart';
+export 'src/base/button.dart';
