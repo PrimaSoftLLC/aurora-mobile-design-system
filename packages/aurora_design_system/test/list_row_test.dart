@@ -5,27 +5,30 @@ import 'support/harness.dart';
 
 void main() {
   testWidgets('длинный заголовок не переносится на вторую строку', (tester) async {
-    const longTitle = 'очень очень очень очень очень очень длинный заголовок';
+    const longTitle =
+        'очень очень очень очень очень очень очень очень очень очень очень очень очень очень очень очень очень очень заголовок';
     await pumpAurora(
       tester,
       const SizedBox(
-        width: 120,  // Narrow width to force wrapping without maxLines
+        width: 100,
         child: AuroraListRow(
           title: longTitle,
           height: AuroraRowHeight.compact,
         ),
       ),
     );
-    // Check the RenderParagraph to count actual lines rendered.
-    // With maxLines: 1, should have 1 line.
-    // Without maxLines, should have 2+ lines.
+
     final textFinder = find.text(longTitle);
     expect(textFinder, findsOneWidget);
 
-    // Get the Text widget to verify maxLines is set
-    final textWidget = textFinder.evaluate().first.widget as Text;
-    expect(textWidget.maxLines, equals(1),
-        reason: 'Text widget should have maxLines: 1 set');
+    // The title text must fit inside the row.
+    // With maxLines: 1, text is a single line and fits.
+    // Without maxLines, text would wrap to multiple lines.
+    expect(
+      tester.getSize(textFinder).height,
+      lessThan(AuroraDimensions.rowCompact),
+      reason: 'Title must fit in row height as single line',
+    );
   });
 
   forEachBrandAndTheme((brand, brightness) {
