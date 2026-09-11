@@ -1,11 +1,12 @@
 import { validateAll } from './validate.js';
 import { checkBrandParity } from './parity.js';
+import { checkComponentParity } from './component-parity.js';
 import { writeDart } from './generate-dart.js';
 import { writeFigma } from './generate-figma.js';
 import { writePreview } from './generate-preview.js';
 import { writeCss } from './generate-css.js';
 
-const problems = [...validateAll(), ...checkBrandParity()];
+const problems = [...validateAll(), ...checkBrandParity(), ...checkComponentParity()];
 
 if (problems.length > 0) {
   console.error('Сборка остановлена, токены не прошли проверку:\n');
