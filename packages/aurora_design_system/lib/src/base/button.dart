@@ -97,7 +97,11 @@ class AuroraButton extends StatelessWidget {
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: AuroraDimensions.space16),
-              child: Center(widthFactor: expanded ? null : 1, child: content),
+              child: Center(
+                widthFactor: expanded ? null : 1,
+                heightFactor: 1,
+                child: content,
+              ),
             ),
           ),
         ),
@@ -129,6 +133,7 @@ class AuroraIconButton extends StatelessWidget {
       enabled: onPressed != null,
       child: GestureDetector(
         onTap: onPressed,
+        behavior: HitTestBehavior.opaque,
         child: SizedBox(
           width: AuroraDimensions.touchTarget,
           height: AuroraDimensions.touchTarget,
