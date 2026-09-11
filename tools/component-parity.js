@@ -1,17 +1,13 @@
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { root } from './load.js';
+import { listComponents } from './components.js';
 
 const PKG = path.join(root, 'packages', 'aurora_design_system');
 
 // Файлы без виджетов: перечислять их в исключениях честнее, чем угадывать по
 // содержимому. Компонент, случайно попавший сюда, виден в диффе.
 const NO_WIDGETS = new Set(['status.dart']);
-
-// Публичный виджет — класс верхнего уровня без ведущего подчёркивания.
-// `_StateBody` в states.dart так не совпадёт — это внутренняя деталь, а не
-// экспортируемый компонент.
-const WIDGET_CLASS = /^class ([A-Za-z]\w*) extends/gm;
 
 /**
  * Компонент, экспортированный без проверки на четыре комбинации, — это
@@ -39,6 +35,15 @@ export function checkComponentParity({ pkgDir = PKG } = {}) {
 
   const barrel = readFileSync(path.join(pkgDir, 'lib', 'aurora_design_system.dart'), 'utf8');
 
+  // Виджеты берём из того же инвентаря, что печатает превью: иначе «что есть
+  // в пакете» разбирают два парсера, и первый же разошедшийся ответ окажется
+  // либо дырой в гейте, либо враньём в превью.
+  const widgetsByFile = {};
+  for (const c of listComponents({ pkgDir })) {
+    if (c.kind !== 'widget') continue;
+    (widgetsByFile[c.file] ??= []).push(c.name);
+  }
+
   for (const file of readdirSync(src).filter((f) => f.endsWith('.dart'))) {
     const name = file.replace(/\.dart$/, '');
 
@@ -62,10 +67,11 @@ export function checkComponentParity({ pkgDir = PKG } = {}) {
     // Файл → тест ловит компонент без теста вообще, но не ловит второй
     // публичный виджет в том же файле: button.dart и chip.dart экспортируют
     // по два виджета каждый, и тест одного не гарантирует тест другого.
-    const componentSource = readFileSync(path.join(src, file), 'utf8');
-    const widgetClasses = [...componentSource.matchAll(WIDGET_CLASS)].map((m) => m[1]);
-    for (const className of widgetClasses) {
-      if (!body.includes(className)) {
+    for (const className of widgetsByFile[file] ?? []) {
+      // Сверяем по границам слова, а не подстрокой. Подстрока засчитывала
+      // `AuroraButtonKind` за `AuroraButton`: тест, где остались одни варианты
+      // кнопки, проходил бы гейт без единой проверки самой кнопки.
+      if (!new RegExp(`\\b${className}\\b`).test(body)) {
         problems.push(`${file}: виджет ${className} не упомянут в test/${name}_test.dart`);
       }
     }

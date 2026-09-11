@@ -166,3 +166,22 @@ test('lib/src/base отсутствует — гейт проваливаетс�
     rmSync(pkgDir, { recursive: true, force: true });
   }
 });
+
+test('упоминания одного лишь енума виджету не засчитывается', () => {
+  withFixture((pkgDir) => {
+    // До сверки по границам слова этот тест проходил гейт: `includes`
+    // находил `AuroraFoo` внутри `AuroraFooKind`, и виджет считался
+    // проверенным, хотя в тесте от него остались одни варианты.
+    writeComponent(pkgDir, 'foo.dart', 'enum AuroraFooKind { a, b }\n\nclass AuroraFoo extends StatelessWidget {}\n');
+    writeBarrel(pkgDir, ['foo.dart']);
+    writeTest(
+      pkgDir,
+      'foo',
+      "void main() { forEachBrandAndTheme((brand, theme) { AuroraFooKind.a; }); }\n",
+    );
+
+    assert.deepEqual(checkComponentParity({ pkgDir }), [
+      'foo.dart: виджет AuroraFoo не упомянут в test/foo_test.dart',
+    ]);
+  });
+});

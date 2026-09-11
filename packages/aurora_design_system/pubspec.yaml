@@ -1,6 +1,6 @@
 name: aurora_design_system
 description: Дизайн-система Aurora — токены, темы и компоненты.
-version: 0.2.0
+version: 0.2.1
 publish_to: none
 
 environment:

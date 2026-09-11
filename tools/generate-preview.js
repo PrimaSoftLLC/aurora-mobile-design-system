@@ -5,6 +5,7 @@ import { resolveColors } from './resolve.js';
 import { contrastRatio } from './color.js';
 import { CONTRAST_PAIRS } from './validate.js';
 import { cssCurve } from './curves.js';
+import { listComponents } from './components.js';
 
 const THEMES = ['light', 'dark'];
 /** Короткие подписи для переключателя; для неизвестного бренда берётся appName. */
@@ -417,6 +418,31 @@ function componentsBlock() {
 }
 
 /** Заливка идёт через переменную и следует за темой; подписи показывают обе альфы. */
+/**
+ * Инвентарь, а не галерея. Нарисовать компоненты на HTML значило бы завести
+ * вторую реализацию кнопки и строки рядом с Flutter — они разошлись бы при
+ * первой же правке. Список же читается из исходников пакета при каждой
+ * сборке и разойтись не может.
+ */
+function inventoryTable() {
+  const rows = listComponents().map((c) => {
+    const variants = c.variants.length > 0 ? c.variants.join(' · ') : '—';
+    const required = c.required.length > 0 ? c.required.join(', ') : '—';
+    const kind = c.kind === 'widget' ? 'виджет' : c.kind === 'function' ? 'функция' : 'енум';
+    return `<tr>
+      <td class="mono">${esc(c.name)}</td>
+      <td>${esc(kind)}</td>
+      <td>${esc(variants)}</td>
+      <td class="mono">${esc(required)}</td>
+      <td class="mono">${esc(c.file)}</td>
+    </tr>`;
+  });
+
+  return `<div class="scroll"><table><thead><tr>
+    <th>компонент</th><th>что это</th><th>варианты</th><th>обязательные параметры</th><th>файл</th>
+  </tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
+}
+
 function geofenceBlock(colors) {
   const cells = geofenceNames(colors.light).map((k) => {
     const name = k.slice('geofence.'.length);
@@ -456,6 +482,7 @@ export function generatePreview() {
 
   // Экран красится переменными страницы, поэтому один на все бренды.
   const componentSection = componentsBlock();
+  const inventorySection = inventoryTable();
 
   const geofenceSections = d.brands.map((id) =>
     `<div class="brand-only b-${id}">${geofenceBlock(d.byBrand[id].colors)}</div>`
@@ -587,6 +614,14 @@ ${BASE_CSS}
       <p>Ни одного цвета, набранного руками. Выделенная строка — полоса 2 px слева плюс подсветка фоном; больше одного выделителя на экране не бывает. Первый отрезок трека — превышение скорости, дальше обычный ход: переключите бренд на МТС и посмотрите, видна ли граница.</p>
     </header>
     ${componentSection}
+  </section>
+
+  <section>
+    <header>
+      <h2>Компоненты <span>·</span> что уже есть в пакете</h2>
+      <p>Список читается из исходников пакета при каждой сборке, поэтому отстать от кода не может. Экран выше нарисован из токенов напрямую и этими блоками пока не собран — так что сверяйтесь со списком, а не с ним. Прежде чем рисовать новый блок, посмотрите, нет ли его здесь: седьмой вариант кнопки дороже, чем кажется.</p>
+    </header>
+    ${inventorySection}
   </section>
 
   <section>
