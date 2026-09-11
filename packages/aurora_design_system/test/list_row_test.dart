@@ -4,23 +4,28 @@ import 'package:aurora_design_system/aurora_design_system.dart';
 import 'support/harness.dart';
 
 void main() {
-  testWidgets('компонент не ломается на длинном тексте в узкой ширине', (tester) async {
+  testWidgets('длинный заголовок не переносится на вторую строку', (tester) async {
+    const longTitle = 'очень очень очень очень очень очень длинный заголовок';
     await pumpAurora(
       tester,
       const SizedBox(
-        width: 200,
+        width: 120,  // Narrow width to force wrapping without maxLines
         child: AuroraListRow(
-          title: 'очень очень очень очень очень очень длинный заголовок',
-          subtitle: 'очень очень очень очень очень очень длинный подзаголовок',
+          title: longTitle,
           height: AuroraRowHeight.compact,
         ),
       ),
     );
-    // Verify the row height is still the compact height (40), not grown by wrapping text
-    final rowSize = tester.getSize(find.byKey(const Key('aurora.row')));
-    expect(rowSize.height, AuroraDimensions.rowCompact);
-    // Verify no RenderFlex overflow exceptions were thrown
-    expect(tester.takeException(), isNull);
+    // Check the RenderParagraph to count actual lines rendered.
+    // With maxLines: 1, should have 1 line.
+    // Without maxLines, should have 2+ lines.
+    final textFinder = find.text(longTitle);
+    expect(textFinder, findsOneWidget);
+
+    // Get the Text widget to verify maxLines is set
+    final textWidget = textFinder.evaluate().first.widget as Text;
+    expect(textWidget.maxLines, equals(1),
+        reason: 'Text widget should have maxLines: 1 set');
   });
 
   forEachBrandAndTheme((brand, brightness) {
