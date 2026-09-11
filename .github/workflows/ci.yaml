@@ -91,8 +91,30 @@ jobs:
         if: steps.version.outputs.release == 'true'
         with:
           node-version: "20"
+      # Галерею компонентов в превью рисует Flutter, а не Node: без него
+      # `npm run build` соберёт превью без снимков и не упадёт — так в релиз
+      # 0.2.2 и уехал файл на 89 КБ вместо 680. Дублирует пин из test-job
+      # вынужденно, по той же причине, что и там: flutter-action не читает
+      # mise.toml, а за расхождением следит test/toolchain.test.js.
+      - uses: subosito/flutter-action@v2
+        if: steps.version.outputs.release == 'true'
+        with:
+          flutter-version: 3.41.9
+          channel: stable
+          cache: true
+      - run: flutter pub get
+        if: steps.version.outputs.release == 'true'
+        working-directory: packages/aurora_design_system
       - run: npm run build
         if: steps.version.outputs.release == 'true'
+      # Превью со снимками весит сотни килобайт, без них — десятки. Порог
+      # ловит ровно ту тихую деградацию, из-за которой релиз 0.2.2 вышел
+      # неполным: собралось, не упало, а галереи внутри нет.
+      - name: Preview must carry the gallery
+        if: steps.version.outputs.release == 'true'
+        run: |
+          size=$(stat -c%s build/preview.html)
+          test "$size" -gt 300000 || { echo "preview.html is $size bytes - the component gallery is missing"; exit 1; }
       - name: Tag and GitHub release
         if: steps.version.outputs.release == 'true'
         env:
