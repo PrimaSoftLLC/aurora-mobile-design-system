@@ -35,7 +35,14 @@ class AuroraStatusChip extends StatelessWidget {
               child: const SizedBox(width: AuroraDimensions.space8, height: AuroraDimensions.space8),
             ),
             const SizedBox(width: AuroraDimensions.space8),
-            Text(label, style: aurora.typography.label.copyWith(color: c.textPrimary)),
+            Flexible(
+              child: Text(
+                label,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: aurora.typography.label.copyWith(color: c.textPrimary),
+              ),
+            ),
           ],
         ),
       ),
@@ -59,15 +66,18 @@ class AuroraFilterChip extends StatelessWidget {
   final VoidCallback? onPressed;
   final String? count;
 
+  bool get _enabled => onPressed != null;
+
   @override
   Widget build(BuildContext context) {
     final aurora = AuroraTheme.of(context);
     final c = aurora.colors;
-    final fg = selected ? c.actionPrimary : c.textSecondary;
+    final fg = !_enabled ? c.textDisabled : (selected ? c.actionPrimary : c.textSecondary);
 
     return Semantics(
       button: true,
       selected: selected,
+      enabled: _enabled,
       child: GestureDetector(
         onTap: onPressed,
         child: ConstrainedBox(
@@ -75,7 +85,7 @@ class AuroraFilterChip extends StatelessWidget {
           child: DecoratedBox(
             key: const Key('aurora.chip.filter'),
             decoration: BoxDecoration(
-              color: selected ? c.actionSubtle : c.surfaceChrome,
+              color: _enabled && selected ? c.actionSubtle : c.surfaceChrome,
               borderRadius: BorderRadius.circular(AuroraDimensions.radiusMd),
             ),
             child: Padding(
@@ -83,10 +93,24 @@ class AuroraFilterChip extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(label, style: aurora.typography.label.copyWith(color: fg)),
+                  Flexible(
+                    child: Text(
+                      label,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: aurora.typography.label.copyWith(color: fg),
+                    ),
+                  ),
                   if (count != null) ...<Widget>[
                     const SizedBox(width: AuroraDimensions.space4),
-                    Text(count!, style: aurora.typography.numberSm.copyWith(color: fg)),
+                    Flexible(
+                      child: Text(
+                        count!,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: aurora.typography.numberSm.copyWith(color: fg),
+                      ),
+                    ),
                   ],
                 ],
               ),
