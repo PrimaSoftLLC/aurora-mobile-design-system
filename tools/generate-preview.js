@@ -6,6 +6,7 @@ import { contrastRatio } from './color.js';
 import { CONTRAST_PAIRS } from './validate.js';
 import { cssCurve } from './curves.js';
 import { listComponents } from './components.js';
+import { loadGallery } from './gallery.js';
 
 const THEMES = ['light', 'dark'];
 /** Короткие подписи для переключателя; для неизвестного бренда берётся appName. */
@@ -270,6 +271,23 @@ td.slack{font-size:11px;color:var(--muted)}
 .foot{margin-top:64px;padding-top:20px;border-top:1px solid var(--strong);color:var(--muted);font-size:12px;display:flex;flex-direction:column;gap:6px}
 
 .brand-only{display:none}
+.gallery{margin:0 0 20px;padding:0}
+.gallery img{max-width:100%;display:block;border:1px solid var(--hairline);border-radius:10px}
+.gallery figcaption{margin-top:6px;font-size:11px;color:var(--muted)}
+.note{padding:12px 14px;border-radius:8px;background:var(--chrome);border:1px solid var(--strong)}
+/* Снимок — картинка, за переменными темы она не следует, поэтому их два и
+   виден тот, что отвечает текущей теме. Порядок правил повторяет порядок
+   палитры: системная тема, затем явный выбор. */
+.shot{display:none}
+.shot.t-light{display:block}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .shot.t-light{display:none}
+  :root:not([data-theme="light"]) .shot.t-dark{display:block}
+}
+:root[data-theme="dark"] .shot.t-light{display:none}
+:root[data-theme="dark"] .shot.t-dark{display:block}
+:root[data-theme="light"] .shot.t-light{display:block}
+:root[data-theme="light"] .shot.t-dark{display:none}
 @media (max-width:720px){
   .wrap,.top-in{padding-left:16px;padding-right:16px}
   h1{font-size:27px}
@@ -424,6 +442,52 @@ function componentsBlock() {
  * первой же правке. Список же читается из исходников пакета при каждой
  * сборке и разойтись не может.
  */
+/**
+ * Галерея: снимки настоящих виджетов, отрисованные Flutter'ом. Не HTML-копия
+ * компонента — копия разошлась бы с кодом на первой же правке, а снимок
+ * рождается из того самого виджета, который поедет в приложение.
+ *
+ * Картинка не умеет следовать за CSS-переменными, поэтому снимков четыре —
+ * по одному на комбинацию бренда и темы, — а показывается тот, что отвечает
+ * текущему переключателю.
+ */
+function galleryBlock(entry, shots) {
+  if (!shots || shots.length === 0) return '';
+
+  // Бренд прячем тем же механизмом, что и остальные блоки страницы
+  // (`.brand-only.b-<id>`), а тему — своим, для картинок. Вешать `b-<id>`
+  // прямо на <img> нельзя: правило переключателя брендов задаёт таким
+  // элементам display и перебило бы выбор по теме.
+  const brands = [...new Set(shots.map((s) => s.brand))].sort();
+  return brands
+    .map((brand) => {
+      const images = shots
+        .filter((s) => s.brand === brand)
+        .map(
+          (s) =>
+            `<img class="shot t-${esc(s.theme)}" src="${s.src}" alt="${esc(entry.name)}, ${esc(brand)}, ${esc(s.theme)}" loading="lazy">`,
+        )
+        .join('');
+      return `<div class="brand-only b-${esc(brand)}">
+        <figure class="gallery">${images}<figcaption class="mono">${esc(entry.name)}</figcaption></figure>
+      </div>`;
+    })
+    .join('');
+}
+
+function gallerySection() {
+  const shots = loadGallery();
+  const drawn = listComponents().filter((c) => (shots[c.name] ?? []).length > 0);
+
+  if (drawn.length === 0) {
+    // Молчаливое отсутствие галереи читалось бы как «компоненты не рисуются».
+    // Говорим прямо, чего не хватает и чем это чинится.
+    return `<p class="note">Снимки не собраны: запустите <span class="mono">npm run build</span> там, где доступен Flutter. Ниже — только инвентарь.</p>`;
+  }
+
+  return drawn.map((c) => galleryBlock(c, shots[c.name])).join('');
+}
+
 function inventoryTable() {
   const rows = listComponents().map((c) => {
     const variants = c.variants.length > 0 ? c.variants.join(' · ') : '—';
@@ -619,8 +683,9 @@ ${BASE_CSS}
   <section>
     <header>
       <h2>Компоненты <span>·</span> что уже есть в пакете</h2>
-      <p>Список читается из исходников пакета при каждой сборке, поэтому отстать от кода не может. Экран выше нарисован из токенов напрямую и этими блоками пока не собран — так что сверяйтесь со списком, а не с ним. Прежде чем рисовать новый блок, посмотрите, нет ли его здесь: седьмой вариант кнопки дороже, чем кажется.</p>
+      <p>Снимки ниже нарисованы настоящим Flutter'ом — это те самые виджеты, которые поедут в приложение, а не их HTML-подобие, поэтому разойтись с кодом они не могут. Переключатель бренда меняет и картинки; тема следует за системной. Прежде чем рисовать новый блок, посмотрите, нет ли его здесь: седьмой вариант кнопки дороже, чем кажется.</p>
     </header>
+    ${gallerySection()}
     ${inventorySection}
   </section>
 
