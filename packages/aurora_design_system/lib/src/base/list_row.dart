@@ -46,71 +46,75 @@ class AuroraListRow extends StatelessWidget {
     final aurora = AuroraTheme.of(context);
     final c = aurora.colors;
 
-    return GestureDetector(
-      onTap: onTap,
-      child: DecoratedBox(
-        key: const Key('aurora.row'),
-        decoration: BoxDecoration(
-          color: selected ? c.surfaceSelected : c.surfaceContent,
-          border: showDivider
-              ? Border(
-                  bottom: BorderSide(
-                    color: c.borderHairline,
-                    width: AuroraDimensions.hairlineWidth,
-                  ),
-                )
-              : null,
-        ),
-        child: SizedBox(
-          height: _height,
-          child: Row(
-            children: <Widget>[
-              SizedBox(
-                width: AuroraDimensions.activeBarWidth,
-                child: selected ? ColoredBox(color: c.actionPrimary) : null,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AuroraDimensions.screenPadding,
-                  ),
-                  child: Row(
-                    children: <Widget>[
-                      if (leading != null) ...<Widget>[
-                        leading!,
-                        const SizedBox(width: AuroraDimensions.space12),
-                      ],
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              title,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              style: aurora.typography.body.copyWith(color: c.textPrimary),
-                            ),
-                            if (subtitle != null)
+    return Semantics(
+      button: onTap != null,
+      selected: selected,
+      child: GestureDetector(
+        onTap: onTap,
+        child: DecoratedBox(
+          key: const Key('aurora.row'),
+          decoration: BoxDecoration(
+            color: selected ? c.surfaceSelected : c.surfaceContent,
+            border: showDivider
+                ? Border(
+                    bottom: BorderSide(
+                      color: c.borderHairline,
+                      width: AuroraDimensions.hairlineWidth,
+                    ),
+                  )
+                : null,
+          ),
+          child: SizedBox(
+            height: _height,
+            child: Row(
+              children: <Widget>[
+                SizedBox(
+                  width: AuroraDimensions.activeBarWidth,
+                  child: selected ? ColoredBox(color: c.actionPrimary) : null,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AuroraDimensions.screenPadding,
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        if (leading != null) ...<Widget>[
+                          leading!,
+                          const SizedBox(width: AuroraDimensions.space12),
+                        ],
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
                               Text(
-                                subtitle!,
+                                title,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
-                                style: aurora.typography.caption
-                                    .copyWith(color: c.textSecondary),
+                                style: aurora.typography.body.copyWith(color: c.textPrimary),
                               ),
-                          ],
+                              if (subtitle != null)
+                                Text(
+                                  subtitle!,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: aurora.typography.caption
+                                      .copyWith(color: c.textSecondary),
+                                ),
+                            ],
+                          ),
                         ),
-                      ),
-                      if (trailing != null) ...<Widget>[
-                        const SizedBox(width: AuroraDimensions.space12),
-                        trailing!,
+                        if (trailing != null) ...<Widget>[
+                          const SizedBox(width: AuroraDimensions.space12),
+                          trailing!,
+                        ],
                       ],
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

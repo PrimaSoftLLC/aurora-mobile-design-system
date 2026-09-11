@@ -21,9 +21,7 @@ void main() {
     final textFinder = find.text(longTitle);
     expect(textFinder, findsOneWidget);
 
-    // The title text must fit inside the row.
-    // With maxLines: 1, text is a single line and fits.
-    // Without maxLines, text would wrap to multiple lines.
+    // The title text must fit inside the row as a single line.
     expect(
       tester.getSize(textFinder).height,
       lessThan(AuroraDimensions.rowCompact),
@@ -62,5 +60,21 @@ void main() {
     await pumpAurora(tester, AuroraListRow(title: 'x', onTap: () => taps++));
     await tester.tap(find.byKey(const Key('aurora.row')));
     expect(taps, 1);
+  });
+
+  testWidgets('тапабельная выбранная строка несёт семантику кнопки и выбора', (tester) async {
+    await pumpAurora(tester, AuroraListRow(title: 'x', selected: true, onTap: () {}));
+    expect(
+      tester.getSemantics(find.byKey(const Key('aurora.row'))),
+      matchesSemantics(isButton: true, hasSelectedState: true, isSelected: true, hasTapAction: true),
+    );
+  });
+
+  testWidgets('строка без onTap не несёт семантику кнопки', (tester) async {
+    await pumpAurora(tester, const AuroraListRow(title: 'x'));
+    expect(
+      tester.getSemantics(find.byKey(const Key('aurora.row'))),
+      matchesSemantics(isButton: false, hasSelectedState: true, isSelected: false),
+    );
   });
 }
