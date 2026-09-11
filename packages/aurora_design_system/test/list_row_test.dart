@@ -4,6 +4,25 @@ import 'package:aurora_design_system/aurora_design_system.dart';
 import 'support/harness.dart';
 
 void main() {
+  testWidgets('компонент не ломается на длинном тексте в узкой ширине', (tester) async {
+    await pumpAurora(
+      tester,
+      const SizedBox(
+        width: 200,
+        child: AuroraListRow(
+          title: 'очень очень очень очень очень очень длинный заголовок',
+          subtitle: 'очень очень очень очень очень очень длинный подзаголовок',
+          height: AuroraRowHeight.compact,
+        ),
+      ),
+    );
+    // Verify the row height is still the compact height (40), not grown by wrapping text
+    final rowSize = tester.getSize(find.byKey(const Key('aurora.row')));
+    expect(rowSize.height, AuroraDimensions.rowCompact);
+    // Verify no RenderFlex overflow exceptions were thrown
+    expect(tester.takeException(), isNull);
+  });
+
   forEachBrandAndTheme((brand, brightness) {
     final name = '${brand.name}/${brightness.name}';
 

@@ -69,6 +69,7 @@ class AuroraButton extends StatelessWidget {
           child: Text(
             label,
             overflow: TextOverflow.ellipsis,
+            maxLines: 1,
             style: aurora.typography.label.copyWith(color: fg),
           ),
         ),

@@ -88,12 +88,14 @@ class AuroraListRow extends StatelessWidget {
                             Text(
                               title,
                               overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
                               style: aurora.typography.body.copyWith(color: c.textPrimary),
                             ),
                             if (subtitle != null)
                               Text(
                                 subtitle!,
                                 overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
                                 style: aurora.typography.caption
                                     .copyWith(color: c.textSecondary),
                               ),
