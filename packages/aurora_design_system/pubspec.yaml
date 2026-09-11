@@ -16,22 +16,11 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^6.0.0
 
-# flutter:
-#   fonts:
-#     - family: Inter
-#       fonts:
-#         - asset: assets/fonts/Inter-Regular.ttf
-#           weight: 400
-#         - asset: assets/fonts/Inter-Medium.ttf
-#           weight: 500
-#         - asset: assets/fonts/Inter-SemiBold.ttf
-#           weight: 600
-#         - asset: assets/fonts/Inter-Bold.ttf
-#           weight: 700
-#
-# Раскомментировать, когда дизайнер положит эти четыре файла в
-# packages/aurora_design_system/assets/fonts/. До тех пор `fontFamily: 'Inter'`
-# в токенах и в auroraThemeData просто не резолвится в незарегистрированное
-# семейство и откатывается на платформный шрифт по умолчанию — это корректное
-# поведение, а объявление шрифта, файлов которого нет на диске, ломает сборку
-# ассетов при `flutter test`/`flutter build`.
+flutter:
+  fonts:
+    - family: Inter
+      fonts:
+        # Вариативный файл: одно начертание на все веса. Оси — opsz и wght;
+        # вес выбирается через fontVariations в tokens.g.dart, поэтому
+        # перечислять здесь weight не нужно и нельзя.
+        - asset: assets/fonts/InterVariable.ttf

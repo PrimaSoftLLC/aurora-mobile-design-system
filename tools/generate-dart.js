@@ -10,6 +10,11 @@ export function camelize(dotted) {
     .join('');
 }
 
+// Шрифт объявлен в pubspec пакета, поэтому Flutter видит семейство как
+// `packages/<имя пакета>/<семейство>`. Без префикса шрифт молча не находится
+// и всё рисуется платформенным — в CSS и Figma префикс, наоборот, не нужен.
+const DART_PACKAGE = 'aurora_design_system';
+
 /**
  * Принимает `#RRGGBB` и `#RRGGBBAA`; Dart хочет ARGB, поэтому альфа
  * переезжает вперёд. Полупрозрачны цвета геозон (пользовательские данные
@@ -87,7 +92,7 @@ export function generateDart() {
   lines.push('// GENERATED — не редактировать руками.');
   lines.push('// Источник: tokens/. Пересобрать: npm run build');
   lines.push('');
-  lines.push("import 'dart:ui' show Brightness, Color, FontFeature, FontWeight;");
+  lines.push("import 'dart:ui' show Brightness, Color, FontFeature, FontVariation, FontWeight;");
   lines.push("import 'package:flutter/animation.dart' show Curve, Curves;");
   lines.push("import 'package:flutter/painting.dart' show TextStyle;");
   lines.push('');
@@ -171,7 +176,7 @@ export function generateDart() {
   // Типографика. Генерируется, чтобы JSON и Dart не разъехались.
   lines.push('class AuroraTypographyTokens {');
   lines.push('  const AuroraTypographyTokens._();');
-  lines.push(`  static const String fontFamilySans = '${primitives.fontFamily.sans}';`);
+  lines.push(`  static const String fontFamilySans = 'packages/${DART_PACKAGE}/${primitives.fontFamily.sans}';`);
   lines.push(`  static const String fontFamilyArabic = '${primitives.fontFamily.arabic}';`);
   lines.push('');
   lines.push('  /// Арабский — один из языков приложения, а у Inter арабских глифов нет.');
@@ -189,6 +194,10 @@ export function generateDart() {
     lines.push(`    fontSize: ${r.size},`);
     lines.push(`    height: ${lineHeightRatio(r)},`);
     lines.push(`    fontWeight: ${dartWeight(r.weight)},`);
+    // Вариативный Inter: `fontWeight` сам по себе не двигает ось `wght`,
+    // поэтому вес задаётся осью. `fontWeight` остаётся для фолбэка на
+    // платформенный шрифт и для метрик.
+    lines.push(`    fontVariations: <FontVariation>[FontVariation('wght', ${r.weight})],`);
     lines.push(`    letterSpacing: ${letterSpacingPx(r)},`);
     if (r.tabular) {
       lines.push('    fontFeatures: <FontFeature>[FontFeature.tabularFigures()],');

@@ -236,4 +236,15 @@ void main() {
     }
     expect(AuroraTypographyTokens.numberSm.fontFamilyFallback, contains('Noto Sans Arabic'));
   });
+
+  test('семейство шрифта package-квалифицировано', () {
+    expect(AuroraTypographyTokens.fontFamilySans, 'packages/aurora_design_system/Inter');
+  });
+
+  test('вес 550 у label доезжает осью wght, а не округляется', () {
+    expect(
+      AuroraTypographyTokens.label.fontVariations,
+      contains(const FontVariation('wght', 550)),
+    );
+  });
 }

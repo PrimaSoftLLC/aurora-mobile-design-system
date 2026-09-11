@@ -1,7 +1,7 @@
 // GENERATED — не редактировать руками.
 // Источник: tokens/. Пересобрать: npm run build
 
-import 'dart:ui' show Brightness, Color, FontFeature, FontWeight;
+import 'dart:ui' show Brightness, Color, FontFeature, FontVariation, FontWeight;
 import 'package:flutter/animation.dart' show Curve, Curves;
 import 'package:flutter/painting.dart' show TextStyle;
 
@@ -422,7 +422,7 @@ class AuroraMotionTokens {
 
 class AuroraTypographyTokens {
   const AuroraTypographyTokens._();
-  static const String fontFamilySans = 'Inter';
+  static const String fontFamilySans = 'packages/aurora_design_system/Inter';
   static const String fontFamilyArabic = 'Noto Sans Arabic';
 
   /// Арабский — один из языков приложения, а у Inter арабских глифов нет.
@@ -435,6 +435,7 @@ class AuroraTypographyTokens {
     fontSize: 28,
     height: 1.2143,
     fontWeight: FontWeight.w600,
+    fontVariations: <FontVariation>[FontVariation('wght', 600)],
     letterSpacing: -0.4200,
   );
 
@@ -444,6 +445,7 @@ class AuroraTypographyTokens {
     fontSize: 20,
     height: 1.3000,
     fontWeight: FontWeight.w600,
+    fontVariations: <FontVariation>[FontVariation('wght', 600)],
     letterSpacing: -0.2000,
   );
 
@@ -453,6 +455,7 @@ class AuroraTypographyTokens {
     fontSize: 15,
     height: 1.3333,
     fontWeight: FontWeight.w600,
+    fontVariations: <FontVariation>[FontVariation('wght', 600)],
     letterSpacing: 0.0000,
   );
 
@@ -462,6 +465,7 @@ class AuroraTypographyTokens {
     fontSize: 15,
     height: 1.4667,
     fontWeight: FontWeight.w400,
+    fontVariations: <FontVariation>[FontVariation('wght', 400)],
     letterSpacing: 0.0000,
   );
 
@@ -471,6 +475,7 @@ class AuroraTypographyTokens {
     fontSize: 13,
     height: 1.3846,
     fontWeight: FontWeight.w600,
+    fontVariations: <FontVariation>[FontVariation('wght', 550)],
     letterSpacing: 0.0000,
   );
 
@@ -480,6 +485,7 @@ class AuroraTypographyTokens {
     fontSize: 11,
     height: 1.3636,
     fontWeight: FontWeight.w400,
+    fontVariations: <FontVariation>[FontVariation('wght', 400)],
     letterSpacing: 0.0000,
   );
 
@@ -491,6 +497,7 @@ class AuroraTypographyTokens {
     fontSize: 9,
     height: 1.3333,
     fontWeight: FontWeight.w700,
+    fontVariations: <FontVariation>[FontVariation('wght', 700)],
     letterSpacing: 0.7200,
   );
 
@@ -500,6 +507,7 @@ class AuroraTypographyTokens {
     fontSize: 20,
     height: 1.2000,
     fontWeight: FontWeight.w600,
+    fontVariations: <FontVariation>[FontVariation('wght', 600)],
     letterSpacing: 0.0000,
     fontFeatures: <FontFeature>[FontFeature.tabularFigures()],
   );
@@ -510,6 +518,7 @@ class AuroraTypographyTokens {
     fontSize: 14,
     height: 1.2857,
     fontWeight: FontWeight.w600,
+    fontVariations: <FontVariation>[FontVariation('wght', 600)],
     letterSpacing: 0.0000,
     fontFeatures: <FontFeature>[FontFeature.tabularFigures()],
   );
@@ -520,6 +529,7 @@ class AuroraTypographyTokens {
     fontSize: 11,
     height: 1.2727,
     fontWeight: FontWeight.w600,
+    fontVariations: <FontVariation>[FontVariation('wght', 600)],
     letterSpacing: 0.0000,
     fontFeatures: <FontFeature>[FontFeature.tabularFigures()],
   );
