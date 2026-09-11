@@ -19,8 +19,8 @@ function makeFixture() {
   return pkgDir;
 }
 
-function writeComponent(pkgDir, file) {
-  writeFileSync(path.join(pkgDir, 'lib', 'src', 'base', file), '// fixture\n');
+function writeComponent(pkgDir, file, source = '// fixture\n') {
+  writeFileSync(path.join(pkgDir, 'lib', 'src', 'base', file), source);
 }
 
 function writeBarrel(pkgDir, exportedFiles) {
@@ -92,6 +92,64 @@ test('NO_WIDGETS: тест не обязателен', () => {
     writeBarrel(pkgDir, ['status.dart']);
     // test/status_test.dart намеренно не создаём — для NO_WIDGETS это не проблема
 
+    assert.deepEqual(checkComponentParity({ pkgDir }), []);
+  });
+});
+
+test('второй публичный виджет файла не упомянут в тесте — гейт ловит', () => {
+  withFixture((pkgDir) => {
+    writeComponent(
+      pkgDir,
+      'foo.dart',
+      "class FooA extends StatelessWidget {}\n\nclass FooB extends StatelessWidget {}\n",
+    );
+    writeBarrel(pkgDir, ['foo.dart']);
+    writeTest(
+      pkgDir,
+      'foo',
+      "void main() { forEachBrandAndTheme((brand, theme) {}); FooA(); }\n",
+    );
+
+    assert.deepEqual(checkComponentParity({ pkgDir }), [
+      'foo.dart: виджет FooB не упомянут в test/foo_test.dart',
+    ]);
+  });
+});
+
+test('оба публичных виджета упомянуты в тесте — проблем нет', () => {
+  withFixture((pkgDir) => {
+    writeComponent(
+      pkgDir,
+      'foo.dart',
+      "class FooA extends StatelessWidget {}\n\nclass FooB extends StatelessWidget {}\n",
+    );
+    writeBarrel(pkgDir, ['foo.dart']);
+    writeTest(
+      pkgDir,
+      'foo',
+      "void main() { forEachBrandAndTheme((brand, theme) {}); FooA(); FooB(); }\n",
+    );
+
+    assert.deepEqual(checkComponentParity({ pkgDir }), []);
+  });
+});
+
+test('приватный класс (с подчёркивания) не считается публичным виджетом', () => {
+  withFixture((pkgDir) => {
+    writeComponent(
+      pkgDir,
+      'foo.dart',
+      "class FooA extends StatelessWidget {}\n\nclass _FooBody extends StatelessWidget {}\n",
+    );
+    writeBarrel(pkgDir, ['foo.dart']);
+    writeTest(
+      pkgDir,
+      'foo',
+      "void main() { forEachBrandAndTheme((brand, theme) {}); FooA(); }\n",
+    );
+
+    // _FooBody — деталь реализации, не экспортируемый компонент: гейт не
+    // должен требовать её имени в тесте.
     assert.deepEqual(checkComponentParity({ pkgDir }), []);
   });
 });

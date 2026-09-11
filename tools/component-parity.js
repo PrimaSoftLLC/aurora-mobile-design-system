@@ -8,6 +8,11 @@ const PKG = path.join(root, 'packages', 'aurora_design_system');
 // содержимому. Компонент, случайно попавший сюда, виден в диффе.
 const NO_WIDGETS = new Set(['status.dart']);
 
+// Публичный виджет — класс верхнего уровня без ведущего подчёркивания.
+// `_StateBody` в states.dart так не совпадёт — это внутренняя деталь, а не
+// экспортируемый компонент.
+const WIDGET_CLASS = /^class ([A-Za-z]\w*) extends/gm;
+
 /**
  * Компонент, экспортированный без проверки на четыре комбинации, — это
  * компонент, чья перекраска не проверена никем. Гейт ловит ровно это:
@@ -52,6 +57,17 @@ export function checkComponentParity({ pkgDir = PKG } = {}) {
     const body = readFileSync(testFile, 'utf8');
     if (!body.includes('forEachBrandAndTheme(')) {
       problems.push(`${name}_test.dart: не зовёт forEachBrandAndTheme — компонент проверен не во всех темах`);
+    }
+
+    // Файл → тест ловит компонент без теста вообще, но не ловит второй
+    // публичный виджет в том же файле: button.dart и chip.dart экспортируют
+    // по два виджета каждый, и тест одного не гарантирует тест другого.
+    const componentSource = readFileSync(path.join(src, file), 'utf8');
+    const widgetClasses = [...componentSource.matchAll(WIDGET_CLASS)].map((m) => m[1]);
+    for (const className of widgetClasses) {
+      if (!body.includes(className)) {
+        problems.push(`${file}: виджет ${className} не упомянут в test/${name}_test.dart`);
+      }
     }
   }
 
