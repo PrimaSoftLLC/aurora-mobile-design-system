@@ -1,0 +1,405 @@
+/* GENERATED — не редактировать руками.
+ * Источник: tokens/. Пересобрать: npm run build
+ *
+ * Бренды: aurora, mts. Темы: light, dark. Семантических цветов: 42.
+ * Переключение: <html data-brand="mts" data-theme="dark">; без data-theme тема
+ * следует за prefers-color-scheme; без data-brand действует aurora.
+ * Компонент обращается только к этим переменным, к ступеням шкал — никогда (§4.4 спека).
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap");
+
+/* ── Цвет · aurora, светлая ─────────────────────────── */
+:root {
+  color-scheme: light dark;
+  --surface-ground: #E0E3EC;
+  --surface-content: #FFFFFF;
+  --surface-chrome: #F4F6FA;
+  --surface-selected: #F5F9FC;
+  --surface-overlay: #FFFFFF;
+  --surface-scrim: #10122066;
+  --border-hairline: #EFF1F6;
+  --border-strong: #E0E3EC;
+  --text-primary: #141624;
+  --text-secondary: #666C85;
+  --text-disabled: #C4C9D8;
+  --text-on-brand: #FFFFFF;
+  --text-on-moving-subtle: #0B7A3C;
+  --text-on-warning-subtle: #8A5A0F;
+  --status-alarm: #C7301F;
+  --text-on-alarm-subtle: #C7301F;
+  --action-primary: #0066B8;
+  --action-pressed: #005493;
+  --action-subtle: #E8F2FB;
+  --focus-indicator: #0066B8;
+  --status-moving: #12A150;
+  --status-parked: #6E7480;
+  --status-warning: #B7791F;
+  --status-offline: #8D9096;
+  --status-moving-subtle: #E3F4EA;
+  --status-warning-subtle: #F5ECE0;
+  --status-alarm-subtle: #F9EAE9;
+  --map-track-default: #0066B8;
+  --map-track-speeding: #C7301F;
+  --map-track-selected: #141624;
+  --map-marker-fill: #FFFFFF;
+  --map-marker-stroke: #141624;
+  --map-cluster-fill: #FFFFFF;
+  --map-cluster-text: #141624;
+  --geofence-aqua: #00FFFF40;
+  --geofence-blue: #0000FF40;
+  --geofence-gray: #7F7F7F40;
+  --geofence-green: #00FF0040;
+  --geofence-orange: #FF920040;
+  --geofence-purple: #93209240;
+  --geofence-red: #FF000040;
+  --geofence-yellow: #FFFF0040;
+}
+
+/* ── Цвет · mts, светлая ─────────────────────────── */
+:root[data-brand="mts"] {
+  --surface-ground: #E6E3E1;
+  --surface-content: #FFFFFF;
+  --surface-chrome: #F7F6F5;
+  --surface-selected: #FDF5F5;
+  --surface-overlay: #FFFFFF;
+  --surface-scrim: #16151466;
+  --border-hairline: #F1EFED;
+  --border-strong: #E6E3E1;
+  --text-primary: #1B1A19;
+  --text-secondary: #74706D;
+  --text-disabled: #D2CDC9;
+  --text-on-brand: #FFFFFF;
+  --text-on-moving-subtle: #0B7A3C;
+  --text-on-warning-subtle: #8A5A0F;
+  --status-alarm: #C7301F;
+  --text-on-alarm-subtle: #C7301F;
+  --action-primary: #D0050F;
+  --action-pressed: #A8040C;
+  --action-subtle: #FDEAEA;
+  --focus-indicator: #D0050F;
+  --status-moving: #12A150;
+  --status-parked: #6E7480;
+  --status-warning: #B7791F;
+  --status-offline: #8D9096;
+  --status-moving-subtle: #E3F4EA;
+  --status-warning-subtle: #F5ECE0;
+  --status-alarm-subtle: #F9EAE9;
+  --map-track-default: #D0050F;
+  --map-track-speeding: #C7301F;
+  --map-track-selected: #1B1A19;
+  --map-marker-fill: #FFFFFF;
+  --map-marker-stroke: #1B1A19;
+  --map-cluster-fill: #FFFFFF;
+  --map-cluster-text: #1B1A19;
+  --geofence-aqua: #00FFFF40;
+  --geofence-blue: #0000FF40;
+  --geofence-gray: #7F7F7F40;
+  --geofence-green: #00FF0040;
+  --geofence-orange: #FF920040;
+  --geofence-purple: #93209240;
+  --geofence-red: #FF000040;
+  --geofence-yellow: #FFFF0040;
+}
+
+/* ── Цвет · тёмная, по системной настройке ───────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --surface-ground: #101220;
+    --surface-content: #101220;
+    --surface-chrome: #191C2E;
+    --surface-selected: #20243A;
+    --surface-overlay: #191C2E;
+    --surface-scrim: #10122099;
+    --border-hairline: #20243A;
+    --border-strong: #292D42;
+    --text-primary: #F4F6FA;
+    --text-secondary: #949AB4;
+    --text-disabled: #343A50;
+    --text-on-brand: #101220;
+    --status-moving: #2BD47A;
+    --text-on-moving-subtle: #2BD47A;
+    --status-warning: #F0B429;
+    --text-on-warning-subtle: #F0B429;
+    --status-alarm: #F0554F;
+    --text-on-alarm-subtle: #F0554F;
+    --action-primary: #3E9BE0;
+    --action-pressed: #1478C6;
+    --action-subtle: #143253;
+    --focus-indicator: #3E9BE0;
+    --status-parked: #9CA2AE;
+    --status-offline: #606677;
+    --status-moving-subtle: #14312E;
+    --status-warning-subtle: #382F22;
+    --status-alarm-subtle: #381E28;
+    --map-track-default: #3E9BE0;
+    --map-track-speeding: #F0554F;
+    --map-track-selected: #F4F6FA;
+    --map-marker-fill: #101220;
+    --map-marker-stroke: #F4F6FA;
+    --map-cluster-fill: #191C2E;
+    --map-cluster-text: #F4F6FA;
+    --geofence-aqua: #00FFFF59;
+    --geofence-blue: #0000FF59;
+    --geofence-gray: #7F7F7F59;
+    --geofence-green: #00FF0059;
+    --geofence-orange: #FF920059;
+    --geofence-purple: #93209259;
+    --geofence-red: #FF000059;
+    --geofence-yellow: #FFFF0059;
+  }
+  :root:not([data-theme="light"])[data-brand="mts"] {
+    --surface-ground: #161514;
+    --surface-content: #161514;
+    --surface-chrome: #201E1D;
+    --surface-selected: #272423;
+    --surface-overlay: #201E1D;
+    --surface-scrim: #16151499;
+    --border-hairline: #272423;
+    --border-strong: #302D2B;
+    --text-primary: #F7F6F5;
+    --text-secondary: #A09B97;
+    --text-disabled: #3E3B39;
+    --text-on-brand: #161514;
+    --status-moving: #2BD47A;
+    --text-on-moving-subtle: #2BD47A;
+    --status-warning: #F0B429;
+    --text-on-warning-subtle: #F0B429;
+    --status-alarm: #F0554F;
+    --text-on-alarm-subtle: #F0554F;
+    --action-primary: #FF4D52;
+    --action-pressed: #E30611;
+    --action-subtle: #5A0C10;
+    --focus-indicator: #FF4D52;
+    --status-parked: #9CA2AE;
+    --status-offline: #606677;
+    --status-moving-subtle: #193424;
+    --status-warning-subtle: #3D3218;
+    --status-alarm-subtle: #3D211F;
+    --map-track-default: #FF4D52;
+    --map-track-speeding: #F0554F;
+    --map-track-selected: #F7F6F5;
+    --map-marker-fill: #161514;
+    --map-marker-stroke: #F7F6F5;
+    --map-cluster-fill: #201E1D;
+    --map-cluster-text: #F7F6F5;
+    --geofence-aqua: #00FFFF59;
+    --geofence-blue: #0000FF59;
+    --geofence-gray: #7F7F7F59;
+    --geofence-green: #00FF0059;
+    --geofence-orange: #FF920059;
+    --geofence-purple: #93209259;
+    --geofence-red: #FF000059;
+    --geofence-yellow: #FFFF0059;
+  }
+}
+
+/* ── Цвет · тёмная, выбранная явно ───────────────── */
+:root[data-theme="dark"] {
+  --surface-ground: #101220;
+  --surface-content: #101220;
+  --surface-chrome: #191C2E;
+  --surface-selected: #20243A;
+  --surface-overlay: #191C2E;
+  --surface-scrim: #10122099;
+  --border-hairline: #20243A;
+  --border-strong: #292D42;
+  --text-primary: #F4F6FA;
+  --text-secondary: #949AB4;
+  --text-disabled: #343A50;
+  --text-on-brand: #101220;
+  --status-moving: #2BD47A;
+  --text-on-moving-subtle: #2BD47A;
+  --status-warning: #F0B429;
+  --text-on-warning-subtle: #F0B429;
+  --status-alarm: #F0554F;
+  --text-on-alarm-subtle: #F0554F;
+  --action-primary: #3E9BE0;
+  --action-pressed: #1478C6;
+  --action-subtle: #143253;
+  --focus-indicator: #3E9BE0;
+  --status-parked: #9CA2AE;
+  --status-offline: #606677;
+  --status-moving-subtle: #14312E;
+  --status-warning-subtle: #382F22;
+  --status-alarm-subtle: #381E28;
+  --map-track-default: #3E9BE0;
+  --map-track-speeding: #F0554F;
+  --map-track-selected: #F4F6FA;
+  --map-marker-fill: #101220;
+  --map-marker-stroke: #F4F6FA;
+  --map-cluster-fill: #191C2E;
+  --map-cluster-text: #F4F6FA;
+  --geofence-aqua: #00FFFF59;
+  --geofence-blue: #0000FF59;
+  --geofence-gray: #7F7F7F59;
+  --geofence-green: #00FF0059;
+  --geofence-orange: #FF920059;
+  --geofence-purple: #93209259;
+  --geofence-red: #FF000059;
+  --geofence-yellow: #FFFF0059;
+}
+:root[data-theme="dark"][data-brand="mts"] {
+  --surface-ground: #161514;
+  --surface-content: #161514;
+  --surface-chrome: #201E1D;
+  --surface-selected: #272423;
+  --surface-overlay: #201E1D;
+  --surface-scrim: #16151499;
+  --border-hairline: #272423;
+  --border-strong: #302D2B;
+  --text-primary: #F7F6F5;
+  --text-secondary: #A09B97;
+  --text-disabled: #3E3B39;
+  --text-on-brand: #161514;
+  --status-moving: #2BD47A;
+  --text-on-moving-subtle: #2BD47A;
+  --status-warning: #F0B429;
+  --text-on-warning-subtle: #F0B429;
+  --status-alarm: #F0554F;
+  --text-on-alarm-subtle: #F0554F;
+  --action-primary: #FF4D52;
+  --action-pressed: #E30611;
+  --action-subtle: #5A0C10;
+  --focus-indicator: #FF4D52;
+  --status-parked: #9CA2AE;
+  --status-offline: #606677;
+  --status-moving-subtle: #193424;
+  --status-warning-subtle: #3D3218;
+  --status-alarm-subtle: #3D211F;
+  --map-track-default: #FF4D52;
+  --map-track-speeding: #F0554F;
+  --map-track-selected: #F7F6F5;
+  --map-marker-fill: #161514;
+  --map-marker-stroke: #F7F6F5;
+  --map-cluster-fill: #201E1D;
+  --map-cluster-text: #F7F6F5;
+  --geofence-aqua: #00FFFF59;
+  --geofence-blue: #0000FF59;
+  --geofence-gray: #7F7F7F59;
+  --geofence-green: #00FF0059;
+  --geofence-orange: #FF920059;
+  --geofence-purple: #93209259;
+  --geofence-red: #FF000059;
+  --geofence-yellow: #FFFF0059;
+}
+
+/* ── Размеры и движение · одни для всех брендов и тем ── */
+:root {
+  --space-0: 0px;
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 999px;
+  --row-compact: 40px;
+  --row-default: 52px;
+  --row-double: 64px;
+  --touch-target: 44px;
+  --screen-padding: 16px;
+  --row-padding: 14px;
+  --active-bar-width: 2px;
+  --hairline-width: 1px;
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+  --duration-data-interp: 500ms;
+  --ease-enter: cubic-bezier(.215,.61,.355,1);
+  --ease-exit: cubic-bezier(.55,.055,.675,.19);
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-arabic: 'Noto Sans Arabic', system-ui, sans-serif;
+}
+
+/* ── Типографика · десять ролей (§6) ─────────────── */
+/* Вес — тот, что реально рисует код: у Flutter начертания идут шагом 100,
+ * поэтому авторский 550 у label здесь 600. Числовые роли — табличные цифры. */
+.type-display {
+  font-family: var(--font-sans);
+  font-size: 28px;
+  line-height: 1.2143;
+  font-weight: 600;
+  letter-spacing: -0.4200px;
+}
+.type-title {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  line-height: 1.3000;
+  font-weight: 600;
+  letter-spacing: -0.2000px;
+}
+.type-section {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.3333;
+  font-weight: 600;
+  letter-spacing: 0.0000px;
+}
+.type-body {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.4667;
+  font-weight: 400;
+  letter-spacing: 0.0000px;
+}
+.type-label {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.3846;
+  font-weight: 600; /* авторский 550 */
+  letter-spacing: 0.0000px;
+}
+.type-caption {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 1.3636;
+  font-weight: 400;
+  letter-spacing: 0.0000px;
+}
+.type-overline {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  line-height: 1.3333;
+  font-weight: 700;
+  letter-spacing: 0.7200px;
+  text-transform: uppercase;
+}
+.type-number-lg {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  line-height: 1.2000;
+  font-weight: 600;
+  letter-spacing: 0.0000px;
+  font-variant-numeric: tabular-nums;
+}
+.type-number-md {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.2857;
+  font-weight: 600;
+  letter-spacing: 0.0000px;
+  font-variant-numeric: tabular-nums;
+}
+.type-number-sm {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 1.2727;
+  font-weight: 600;
+  letter-spacing: 0.0000px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Правила, которые переменными не выражаются:
+ * — теней нет нигде: поверхности разделяются тоном (surface.*) и волосяной границей (border.hairline);
+ * — выделение активного: полоса --active-bar-width слева цветом --action-primary плюс --surface-selected, один выделитель на экране;
+ * — минимальная зона нажатия --touch-target независимо от видимого размера;
+ * — RTL: все отступы логические (inline-start/end), карта, графики и числа не зеркалятся. */

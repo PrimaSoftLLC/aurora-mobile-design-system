@@ -2,7 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { generateCss, cssName } from '../tools/generate-css.js';
 import { resolveColors } from '../tools/resolve.js';
-import { listBrands, loadSemantic, loadPrimitives } from '../tools/load.js';
+import { listBrands, loadSemantic, loadPrimitives, root } from '../tools/load.js';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 
 const css = generateCss();
 
@@ -76,4 +78,18 @@ test('теней нет и в CSS-токенах', () => {
 
 test('генерация детерминирована', () => {
   assert.equal(generateCss(), css);
+});
+
+// Симметрично гейту на tokens.g.dart: детерминированность генератора ничего
+// не говорит о том, что лежит в репозитории. Можно поправить JSON, получить
+// зелёный прогон и оставить в git вчерашний CSS — а его читает Claude Design
+// и всякий, кто прикрепил репозиторий, а не скачал релиз.
+// eol=lf в .gitattributes держит файл в LF на любой платформе.
+test('закоммиченный build/design-system.css совпадает с генерацией — иначе CSS устарел', () => {
+  const file = path.join(root, 'build', 'design-system.css');
+  const committed = readFileSync(file, 'utf8');
+  assert.equal(
+    committed, generateCss(),
+    'build/design-system.css в репозитории отличается от генерации. Запустите `npm run build` и закоммитьте результат.',
+  );
 });
