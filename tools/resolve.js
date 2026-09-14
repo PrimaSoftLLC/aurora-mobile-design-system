@@ -54,6 +54,9 @@ export function resolveColors(brandId, theme, semanticOverride) {
     color: brand.color,
     status: primitives.status,
     geofence: primitives.geofence,
+    // Хром карты лежит поверх светлых тайлов и не следует ни теме, ни бренду,
+    // поэтому он, как геозоны, живёт вне шкал бренда.
+    map: primitives.map,
   };
 
   const out = {};

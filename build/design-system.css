@@ -1,7 +1,7 @@
 /* GENERATED — не редактировать руками.
  * Источник: tokens/. Пересобрать: npm run build
  *
- * Бренды: aurora, mts. Темы: light, dark. Семантических цветов: 42.
+ * Бренды: aurora, mts. Темы: light, dark. Семантических цветов: 47.
  * Переключение: <html data-brand="mts" data-theme="dark">; без data-theme тема
  * следует за prefers-color-scheme; без data-brand действует aurora.
  * Компонент обращается только к этим переменным, к ступеням шкал — никогда (§4.4 спека).
@@ -46,6 +46,11 @@
   --map-marker-stroke: #141624;
   --map-cluster-fill: #FFFFFF;
   --map-cluster-text: #141624;
+  --map-control-fill: #FFFFFF;
+  --map-control-border: #D6D9E0;
+  --map-control-divider: #E6E8ED;
+  --map-control-ink: #2E3440;
+  --map-attribution-ink: #626B7C;
   --geofence-aqua: #00FFFF40;
   --geofence-blue: #0000FF40;
   --geofence-gray: #7F7F7F40;
@@ -92,6 +97,11 @@
   --map-marker-stroke: #1B1A19;
   --map-cluster-fill: #FFFFFF;
   --map-cluster-text: #1B1A19;
+  --map-control-fill: #FFFFFF;
+  --map-control-border: #D6D9E0;
+  --map-control-divider: #E6E8ED;
+  --map-control-ink: #2E3440;
+  --map-attribution-ink: #626B7C;
   --geofence-aqua: #00FFFF40;
   --geofence-blue: #0000FF40;
   --geofence-gray: #7F7F7F40;
@@ -139,6 +149,11 @@
     --map-marker-stroke: #F4F6FA;
     --map-cluster-fill: #191C2E;
     --map-cluster-text: #F4F6FA;
+    --map-control-fill: #FFFFFF;
+    --map-control-border: #D6D9E0;
+    --map-control-divider: #E6E8ED;
+    --map-control-ink: #2E3440;
+    --map-attribution-ink: #626B7C;
     --geofence-aqua: #00FFFF59;
     --geofence-blue: #0000FF59;
     --geofence-gray: #7F7F7F59;
@@ -183,6 +198,11 @@
     --map-marker-stroke: #F7F6F5;
     --map-cluster-fill: #201E1D;
     --map-cluster-text: #F7F6F5;
+    --map-control-fill: #FFFFFF;
+    --map-control-border: #D6D9E0;
+    --map-control-divider: #E6E8ED;
+    --map-control-ink: #2E3440;
+    --map-attribution-ink: #626B7C;
     --geofence-aqua: #00FFFF59;
     --geofence-blue: #0000FF59;
     --geofence-gray: #7F7F7F59;
@@ -230,6 +250,11 @@
   --map-marker-stroke: #F4F6FA;
   --map-cluster-fill: #191C2E;
   --map-cluster-text: #F4F6FA;
+  --map-control-fill: #FFFFFF;
+  --map-control-border: #D6D9E0;
+  --map-control-divider: #E6E8ED;
+  --map-control-ink: #2E3440;
+  --map-attribution-ink: #626B7C;
   --geofence-aqua: #00FFFF59;
   --geofence-blue: #0000FF59;
   --geofence-gray: #7F7F7F59;
@@ -274,6 +299,11 @@
   --map-marker-stroke: #F7F6F5;
   --map-cluster-fill: #201E1D;
   --map-cluster-text: #F7F6F5;
+  --map-control-fill: #FFFFFF;
+  --map-control-border: #D6D9E0;
+  --map-control-divider: #E6E8ED;
+  --map-control-ink: #2E3440;
+  --map-attribution-ink: #626B7C;
   --geofence-aqua: #00FFFF59;
   --geofence-blue: #0000FF59;
   --geofence-gray: #7F7F7F59;

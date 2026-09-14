@@ -42,6 +42,11 @@ class AuroraColorTokens {
   final Color mapMarkerStroke;
   final Color mapClusterFill;
   final Color mapClusterText;
+  final Color mapControlFill;
+  final Color mapControlBorder;
+  final Color mapControlDivider;
+  final Color mapControlInk;
+  final Color mapAttributionInk;
   final Color geofenceAqua;
   final Color geofenceBlue;
   final Color geofenceGray;
@@ -86,6 +91,11 @@ class AuroraColorTokens {
     required this.mapMarkerStroke,
     required this.mapClusterFill,
     required this.mapClusterText,
+    required this.mapControlFill,
+    required this.mapControlBorder,
+    required this.mapControlDivider,
+    required this.mapControlInk,
+    required this.mapAttributionInk,
     required this.geofenceAqua,
     required this.geofenceBlue,
     required this.geofenceGray,
@@ -135,6 +145,11 @@ class AuroraColorTokens {
         mapMarkerStroke == other.mapMarkerStroke &&
         mapClusterFill == other.mapClusterFill &&
         mapClusterText == other.mapClusterText &&
+        mapControlFill == other.mapControlFill &&
+        mapControlBorder == other.mapControlBorder &&
+        mapControlDivider == other.mapControlDivider &&
+        mapControlInk == other.mapControlInk &&
+        mapAttributionInk == other.mapAttributionInk &&
         geofenceAqua == other.geofenceAqua &&
         geofenceBlue == other.geofenceBlue &&
         geofenceGray == other.geofenceGray &&
@@ -181,6 +196,11 @@ class AuroraColorTokens {
         mapMarkerStroke,
         mapClusterFill,
         mapClusterText,
+        mapControlFill,
+        mapControlBorder,
+        mapControlDivider,
+        mapControlInk,
+        mapAttributionInk,
         geofenceAqua,
         geofenceBlue,
         geofenceGray,
@@ -227,6 +247,11 @@ const AuroraColorTokens _auroraLight = AuroraColorTokens(
   mapMarkerStroke: Color(0xFF141624),
   mapClusterFill: Color(0xFFFFFFFF),
   mapClusterText: Color(0xFF141624),
+  mapControlFill: Color(0xFFFFFFFF),
+  mapControlBorder: Color(0xFFD6D9E0),
+  mapControlDivider: Color(0xFFE6E8ED),
+  mapControlInk: Color(0xFF2E3440),
+  mapAttributionInk: Color(0xFF626B7C),
   geofenceAqua: Color(0x4000FFFF),
   geofenceBlue: Color(0x400000FF),
   geofenceGray: Color(0x407F7F7F),
@@ -272,6 +297,11 @@ const AuroraColorTokens _auroraDark = AuroraColorTokens(
   mapMarkerStroke: Color(0xFFF4F6FA),
   mapClusterFill: Color(0xFF191C2E),
   mapClusterText: Color(0xFFF4F6FA),
+  mapControlFill: Color(0xFFFFFFFF),
+  mapControlBorder: Color(0xFFD6D9E0),
+  mapControlDivider: Color(0xFFE6E8ED),
+  mapControlInk: Color(0xFF2E3440),
+  mapAttributionInk: Color(0xFF626B7C),
   geofenceAqua: Color(0x5900FFFF),
   geofenceBlue: Color(0x590000FF),
   geofenceGray: Color(0x597F7F7F),
@@ -317,6 +347,11 @@ const AuroraColorTokens _mtsLight = AuroraColorTokens(
   mapMarkerStroke: Color(0xFF1B1A19),
   mapClusterFill: Color(0xFFFFFFFF),
   mapClusterText: Color(0xFF1B1A19),
+  mapControlFill: Color(0xFFFFFFFF),
+  mapControlBorder: Color(0xFFD6D9E0),
+  mapControlDivider: Color(0xFFE6E8ED),
+  mapControlInk: Color(0xFF2E3440),
+  mapAttributionInk: Color(0xFF626B7C),
   geofenceAqua: Color(0x4000FFFF),
   geofenceBlue: Color(0x400000FF),
   geofenceGray: Color(0x407F7F7F),
@@ -362,6 +397,11 @@ const AuroraColorTokens _mtsDark = AuroraColorTokens(
   mapMarkerStroke: Color(0xFFF7F6F5),
   mapClusterFill: Color(0xFF201E1D),
   mapClusterText: Color(0xFFF7F6F5),
+  mapControlFill: Color(0xFFFFFFFF),
+  mapControlBorder: Color(0xFFD6D9E0),
+  mapControlDivider: Color(0xFFE6E8ED),
+  mapControlInk: Color(0xFF2E3440),
+  mapAttributionInk: Color(0xFF626B7C),
   geofenceAqua: Color(0x5900FFFF),
   geofenceBlue: Color(0x590000FF),
   geofenceGray: Color(0x597F7F7F),

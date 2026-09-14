@@ -313,6 +313,9 @@ function semanticTable(d) {
     ['Статусы', ['status.moving', 'status.parked', 'status.warning', 'status.alarm', 'status.offline']],
     ['Подложки статусов', ['status.movingSubtle', 'text.onMovingSubtle', 'status.warningSubtle', 'text.onWarningSubtle', 'status.alarmSubtle', 'text.onAlarmSubtle']],
     ['Карта', ['map.trackDefault', 'map.trackSpeeding', 'map.trackSelected', 'map.markerFill', 'map.markerStroke', 'map.clusterFill', 'map.clusterText']],
+    // Кнопки и плашки поверх тайлов. Тайлы OSM светлые в любой теме, поэтому
+    // хром не переключается ни темой, ни брендом — обе колонки совпадают.
+    ['Хром карты · один во всех темах и брендах', ['map.controlFill', 'map.controlBorder', 'map.controlDivider', 'map.controlInk', 'map.attributionInk']],
   ];
   const rows = [];
   for (const [title, keys] of groups) {
@@ -619,6 +622,7 @@ ${BASE_CSS}
     <header>
       <h2>Цвет <span>·</span> семантические токены</h2>
       <p>Компоненты видят только этот слой. К ступеням шкал они не обращаются никогда — именно так ломается тёмная тема, когда в вёрстке стоит «белый» вместо «поверхность контента».</p>
+      <p class="note"><strong>Хром карты — исключение по природе.</strong> Кнопки зума, компас, бейдж скорости и плашка атрибуции лежат поверх тайлов, а тайлы светлые всегда. Поэтому <span class="mono">map.control*</span> и <span class="mono">map.attributionInk</span> одинаковы в светлой и тёмной теме и у всех брендов: переключатель бренда их не меняет, и это не ошибка.</p>
     </header>
     ${brandSections}
   </section>

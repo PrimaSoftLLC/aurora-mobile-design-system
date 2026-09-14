@@ -1,0 +1,11 @@
+{
+  "map": {
+    "chrome": {
+      "fill":     "#FFFFFF",
+      "border":   "#D6D9E0",
+      "divider":  "#E6E8ED",
+      "ink":      "#2E3440",
+      "inkMuted": "#626B7C"
+    }
+  }
+}

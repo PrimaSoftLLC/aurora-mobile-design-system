@@ -110,6 +110,13 @@ test('кривая движения в превью выведена из ток
   assert.match(html, /transition:transform 200ms cubic-bezier\(\.215,\.61,\.355,1\)/);
 });
 
+test('хром карты показан отдельной группой с пометкой, что тема и бренд его не трогают', () => {
+  assert.match(html, /<tr class="grp"><td colspan="3">Хром карты · один во всех темах и брендах<\/td><\/tr>/);
+  for (const key of ['map.controlFill', 'map.controlBorder', 'map.controlDivider', 'map.controlInk', 'map.attributionInk']) {
+    assert.ok(html.includes(`<td class="tok">${key}</td>`), `нет строки ${key}`);
+  }
+});
+
 test('различимость треков посчитана для каждого бренда и показана', () => {
   const d = collect();
   for (const id of d.brands) {

@@ -131,6 +131,44 @@ test('геозоны — общая палитра из восьми с альф
   );
 });
 
+// Хром карты лежит поверх тайлов OSM, а они светлые всегда. Кнопка зума от
+// `surface.overlay` в тёмной теме стала бы почти чёрной на белой карте, от
+// `color.neutral.*` у МТС — тёплой. Поэтому проверяются и значения во всех
+// четырёх комбинациях, и сама запись: ссылка только на примитив `map.chrome.*`.
+// Первый рефактор нейтралей, который «для единообразия» переведёт хром на
+// шкалу бренда или на семантику, должен упасть здесь.
+test('хром карты одинаков во всех темах и брендах и не ссылается на тему или бренд', () => {
+  const expected = {
+    'map.attributionInk': '#626B7C',
+    'map.controlBorder': '#D6D9E0',
+    'map.controlDivider': '#E6E8ED',
+    'map.controlFill': '#FFFFFF',
+    'map.controlInk': '#2E3440',
+  };
+  const semantic = loadSemantic();
+  const names = Object.keys(semantic)
+    .filter((k) => /^map\.control[A-Z]/.test(k) || k === 'map.attributionInk')
+    .sort();
+  assert.deepEqual(names, Object.keys(expected), 'состав семейства хрома карты изменился');
+
+  for (const n of names) {
+    for (const theme of ['light', 'dark']) {
+      assert.match(
+        semantic[n][theme], /^\{map\.chrome\.[a-zA-Z]+\}$/,
+        `${n}.${theme} обязан ссылаться на примитив map.chrome.*, а не на шкалу бренда или семантику темы`,
+      );
+    }
+  }
+  for (const brand of listBrands()) {
+    for (const theme of ['light', 'dark']) {
+      const c = resolveColors(brand, theme);
+      for (const n of names) {
+        assert.equal(c[n], expected[n], `${n} в ${brand}/${theme} разошёлся с хромом карты`);
+      }
+    }
+  }
+});
+
 test('кривая доля в mix() ловится как некорректная запись, а не превращается в NaN', () => {
   assert.throws(
     () => resolveColors('aurora', 'light', {
