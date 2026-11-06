@@ -72,7 +72,7 @@ class AuroraFilterChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final aurora = AuroraTheme.of(context);
     final c = aurora.colors;
-    final fg = !_enabled ? c.textDisabled : (selected ? c.actionPrimary : c.textSecondary);
+    final fg = !_enabled ? c.textDisabled : (selected ? c.actionText : c.textSecondary);
 
     return Semantics(
       button: true,

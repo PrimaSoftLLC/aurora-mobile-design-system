@@ -34,6 +34,7 @@ void main() {
       final tokens = AuroraTheme.forBrand(brand, brightness).colors;
       final box = tester.widget<DecoratedBox>(find.byKey(const Key('aurora.chip.filter')));
       expect((box.decoration as BoxDecoration).color, tokens.actionSubtle);
+      expect(tester.widget<Text>(find.text('Все')).style?.color, tokens.actionText);
     });
 
     testWidgets('$name: невыбранный фильтр лежит на приглушённой поверхности', (tester) async {

@@ -25,6 +25,17 @@ void main() {
       final tokens = AuroraTheme.forBrand(brand, brightness).colors;
       final box = tester.widget<DecoratedBox>(find.byKey(const Key('aurora.button')));
       expect((box.decoration as BoxDecoration).color, tokens.statusAlarm);
+      expect(tester.widget<Text>(find.text('Stop')).style?.color, tokens.textOnSolid);
+    });
+
+    testWidgets('$name: ghost использует брендовые чернила', (tester) async {
+      await pumpAurora(
+          tester,
+          AuroraButton(label: 'Link', onPressed: () {}, kind: AuroraButtonKind.ghost),
+          brand: brand,
+          brightness: brightness);
+      final tokens = AuroraTheme.forBrand(brand, brightness).colors;
+      expect(tester.widget<Text>(find.text('Link')).style?.color, tokens.actionText);
     });
   });
 

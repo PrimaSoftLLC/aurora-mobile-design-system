@@ -104,8 +104,14 @@ export function generateDart() {
   for (const f of fields) lines.push(`  final Color ${f};`);
   lines.push('');
   lines.push('  const AuroraColorTokens({');
-  for (const f of fields) lines.push(`    required this.${f},`);
-  lines.push('  });');
+  // Новые роли необязательны для существующих пользовательских тем.
+  for (const f of fields) {
+    lines.push(['actionText', 'textOnSolid'].includes(f)
+      ? `    Color? ${f},`
+      : `    required this.${f},`);
+  }
+  lines.push('  }) : actionText = actionText ?? actionPrimary,');
+  lines.push('       textOnSolid = textOnSolid ?? textOnBrand;');
   lines.push('');
   pushValueEquality(lines, 'AuroraColorTokens', fields);
   lines.push('}');
@@ -177,6 +183,7 @@ export function generateDart() {
   lines.push('class AuroraTypographyTokens {');
   lines.push('  const AuroraTypographyTokens._();');
   lines.push(`  static const String fontFamilySans = 'packages/${DART_PACKAGE}/${primitives.fontFamily.sans}';`);
+  lines.push(`  static const String fontFamilyMono = 'packages/${DART_PACKAGE}/${primitives.fontFamily.mono}';`);
   lines.push(`  static const String fontFamilyArabic = '${primitives.fontFamily.arabic}';`);
   lines.push('');
   lines.push('  /// Арабский — один из языков приложения, а у Inter арабских глифов нет.');
@@ -189,7 +196,7 @@ export function generateDart() {
       lines.push('  /// поэтому регистр применяет компонент (`Text(value.toUpperCase())`), не токен.');
     }
     lines.push(`  static const TextStyle ${name} = TextStyle(`);
-    lines.push('    fontFamily: fontFamilySans,');
+    lines.push(`    fontFamily: ${r.family === 'mono' ? 'fontFamilyMono' : 'fontFamilySans'},`);
     lines.push('    fontFamilyFallback: fontFamilyFallback,');
     lines.push(`    fontSize: ${r.size},`);
     lines.push(`    height: ${lineHeightRatio(r)},`);
@@ -215,7 +222,7 @@ export function generateDart() {
   for (const r of roles) lines.push(`  final TextStyle ${r};`);
   lines.push('');
   lines.push('  const AuroraTypography({');
-  for (const r of roles) lines.push(`    required this.${r},`);
+  for (const r of roles) lines.push(`    this.${r} = AuroraTypographyTokens.${r},`);
   lines.push('  });');
   lines.push('');
   lines.push('  /// Роли из `AuroraTypographyTokens`. Руками здесь ничего не задаётся:');

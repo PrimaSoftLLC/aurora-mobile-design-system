@@ -44,7 +44,7 @@ test('есть по константе на каждую пару бренд × 
 
 test('цвета попали в вывод', () => {
   assert.match(dart, /surfaceContent: Color\(0xFFFFFFFF\)/);
-  assert.match(dart, /actionPrimary: Color\(0xFF0066B8\)/);
+  assert.match(dart, /actionPrimary: Color\(0xFF2B5F9E\)/);
   assert.match(dart, /actionPrimary: Color\(0xFFD0050F\)/);
 });
 
@@ -52,7 +52,7 @@ test('размеры и движение вынесены отдельно и н
   assert.match(dart, /class AuroraDimensions/);
   assert.match(dart, /static const double radiusLg = 12/);
   assert.match(dart, /static const double rowDefault = 52/);
-  assert.match(dart, /static const Duration durationBase = Duration\(milliseconds: 200\);/);
+  assert.match(dart, /static const Duration durationBase = Duration\(milliseconds: 180\);/);
 });
 
 test('кривые движения попали в вывод', () => {
@@ -66,9 +66,9 @@ test('типографика сгенерирована, а не написан�
   assert.match(dart, /static const TextStyle numberMd = TextStyle\(/);
 });
 
-test('вес 550 округляется к представимому во Flutter', () => {
+test('вес label совпадает с веб-ролью ui', () => {
   const label = /static const TextStyle label = TextStyle\(([^)]*)\)/.exec(dart)[1];
-  assert.match(label, /fontWeight: FontWeight\.w600/);
+  assert.match(label, /fontWeight: FontWeight\.w500/);
 });
 
 test('табличные цифры только у числовых ролей', () => {

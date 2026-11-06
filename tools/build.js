@@ -16,13 +16,15 @@ if (problems.length > 0) {
   process.exit(1);
 }
 
+// Сначала обновляем Dart: компоненты уже могут обращаться к новым ролям.
+console.log('Записан:', writeDart());
+
 // Снимки компонентов рисует Flutter, а не этот скрипт. Если его здесь нет,
 // превью соберётся без галереи и скажет об этом прямо — устаревшие снимки
 // хуже отсутствующих.
 const shots = captureGallery();
 console.log(shots.ok ? 'Снимки компонентов перерисованы' : `Снимки не обновлены: ${shots.reason}`);
 
-console.log('Записан:', writeDart());
 console.log('Записан:', writeFigma());
 console.log('Записан:', writePreview());
 console.log('Записан:', writeCss());

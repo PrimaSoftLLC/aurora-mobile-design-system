@@ -47,7 +47,7 @@ test('направление синхронизации зафиксирован
 test('типографика уезжает в Figma целиком, а не только размеры', () => {
   const t = doc.collections.typography;
   assert.equal(t.modes.length, 0);
-  assert.equal(t.variables['fontFamily.sans'], 'Inter');
+  assert.equal(t.variables['fontFamily.sans'], 'Inter Tight');
   assert.equal(t.variables['fontFamily.arabic'], 'Noto Sans Arabic');
   for (const role of ['display', 'title', 'section', 'body', 'label', 'caption',
                       'overline', 'numberLg', 'numberMd', 'numberSm']) {
@@ -59,18 +59,18 @@ test('типографика уезжает в Figma целиком, а не т�
 });
 
 // Ради этого расхождения авторский и отрисованный вес и разведены на два поля.
-test('вес 550 у label виден в Figma и как 550, и как отрисованные 600', () => {
+test('вес label одинаков в Figma и коде', () => {
   const t = doc.collections.typography.variables;
-  assert.equal(t['role.label.weight'], 550);
-  assert.equal(t['role.label.weightRendered'], 600);
+  assert.equal(t['role.label.weight'], 500);
+  assert.equal(t['role.label.weightRendered'], 500);
   assert.equal(t['role.body.weight'], 400);
   assert.equal(t['role.body.weightRendered'], 400);
 });
 
 test('числа типографики совпадают с теми, что уходят в Dart', () => {
   const t = doc.collections.typography.variables;
-  assert.equal(t['role.body.lineHeightRatio'], Number(lineHeightRatio({ size: 15, lineHeight: 22 })));
-  assert.equal(t['role.display.letterSpacing'], Number(letterSpacingPx({ size: 28, tracking: -0.015 })));
+  assert.equal(t['role.body.lineHeightRatio'], Number(lineHeightRatio({ size: 14, lineHeight: 21 })));
+  assert.equal(t['role.display.letterSpacing'], Number(letterSpacingPx({ size: 30, tracking: -0.015 })));
   assert.equal(t['role.numberMd.tabular'], true);
   assert.equal(t['role.body.tabular'], false);
 });
@@ -78,7 +78,7 @@ test('числа типографики совпадают с теми, что �
 test('движение уезжает в Figma: длительности и кривые', () => {
   const m = doc.collections.motion;
   assert.equal(m.modes.length, 0);
-  assert.equal(m.variables['duration.base'], 200);
+  assert.equal(m.variables['duration.base'], 180);
   assert.equal(m.variables['duration.dataInterp'], 500);
   assert.equal(m.variables['curve.enter'], 'easeOutCubic');
   assert.equal(m.variables['curve.exit'], 'easeInCubic');

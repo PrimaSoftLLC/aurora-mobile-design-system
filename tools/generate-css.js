@@ -50,7 +50,7 @@ export function generateCss() {
   out.push(' * Компонент обращается только к этим переменным, к ступеням шкал — никогда (§4.4 спека).');
   out.push(' */');
   out.push('');
-  out.push('@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap");');
+  out.push('@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap");');
   out.push('');
 
   out.push(`/* ── Цвет · ${first}, светлая ─────────────────────────── */`);
@@ -91,17 +91,16 @@ export function generateCss() {
   for (const [k, v] of Object.entries(p.curve)) motion.push(`--ease-${k}: ${cssCurve(v)};`);
   const fonts = [
     `--font-sans: '${p.fontFamily.sans}', system-ui, sans-serif;`,
+    `--font-mono: '${p.fontFamily.mono}', monospace;`,
     `--font-arabic: '${p.fontFamily.arabic}', system-ui, sans-serif;`,
   ];
   out.push(block(':root', [...dims, ...motion, ...fonts]));
   out.push('');
 
-  out.push('/* ── Типографика · десять ролей (§6) ─────────────── */');
-  out.push('/* Вес — тот, что реально рисует код: у Flutter начертания идут шагом 100,');
-  out.push(' * поэтому авторский 550 у label здесь 600. Числовые роли — табличные цифры. */');
+  out.push('/* ── Типографика · общие веб-роли и мобильные числовые роли ── */');
   for (const [name, r] of Object.entries(p.role)) {
     const entries = [
-      'font-family: var(--font-sans);',
+      `font-family: var(--font-${r.family ?? 'sans'});`,
       `font-size: ${r.size}px;`,
       `line-height: ${lineHeightRatio(r)};`,
       `font-weight: ${renderedWeight(r.weight)};${r.weight !== renderedWeight(r.weight) ? ` /* авторский ${r.weight} */` : ''}`,

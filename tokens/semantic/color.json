@@ -1,49 +1,198 @@
 {
-  "surface.ground":    { "light": "{color.neutral.200}", "dark": "{color.neutral.1000}" },
-  "surface.content":   { "light": "{color.neutral.0}",   "dark": "{color.neutral.1000}" },
-  "surface.chrome":    { "light": "{color.neutral.50}",  "dark": "{color.neutral.900}" },
-  "surface.selected":  { "light": "mix({color.neutral.0}, {color.brand.600}, 0.04)", "dark": "{color.neutral.850}" },
-  "surface.overlay":   { "light": "{color.neutral.0}",   "dark": "{color.neutral.900}" },
-  "surface.scrim":     { "light": "alpha({color.neutral.1000}, 0.4)", "dark": "alpha({color.neutral.1000}, 0.6)" },
-  "border.hairline":   { "light": "{color.neutral.100}", "dark": "{color.neutral.850}" },
-  "border.strong":     { "light": "{color.neutral.200}", "dark": "{color.neutral.800}" },
-  "text.primary":      { "light": "{color.neutral.950}", "dark": "{color.neutral.50}" },
-  "text.secondary":    { "light": "{color.neutral.500}", "dark": "{color.neutral.400}" },
-  "text.disabled":     { "light": "{color.neutral.300}", "dark": "{color.neutral.700}" },
-  "text.onBrand":      { "light": "{color.neutral.0}",   "dark": "{color.neutral.1000}" },
-  "text.onMovingSubtle":  { "light": "{status.onSubtle.moving}",  "dark": "{semantic.status.moving}" },
-  "text.onWarningSubtle": { "light": "{status.onSubtle.warning}", "dark": "{semantic.status.warning}" },
-  "text.onAlarmSubtle":   { "light": "{semantic.status.alarm}",   "dark": "{semantic.status.alarm}" },
-  "action.primary":    { "light": "{color.brand.600}",   "dark": "{color.brand.400}" },
-  "action.pressed":    { "light": "{color.brand.700}",   "dark": "{color.brand.500}" },
-  "action.subtle":     { "light": "{color.brand.50}",    "dark": "{color.brand.900}" },
-  "focus.indicator":   { "light": "{semantic.action.primary}", "dark": "{semantic.action.primary}" },
-  "status.moving":     { "light": "{status.moving.light}",  "dark": "{status.moving.dark}" },
-  "status.parked":     { "light": "{status.parked.light}",  "dark": "{status.parked.dark}" },
-  "status.warning":    { "light": "{status.warning.light}", "dark": "{status.warning.dark}" },
-  "status.alarm":      { "light": "{status.alarm.light}",   "dark": "{status.alarm.dark}" },
-  "status.offline":    { "light": "{status.offline.light}", "dark": "{status.offline.dark}" },
-  "status.movingSubtle":  { "light": "mix({color.neutral.0}, {status.moving.light}, 0.12)",  "dark": "mix({color.neutral.1000}, {status.moving.dark}, 0.16)" },
-  "status.warningSubtle": { "light": "mix({color.neutral.0}, {status.warning.light}, 0.14)", "dark": "mix({color.neutral.1000}, {status.warning.dark}, 0.18)" },
-  "status.alarmSubtle":   { "light": "mix({color.neutral.0}, {status.alarm.light}, 0.10)",   "dark": "mix({color.neutral.1000}, {status.alarm.dark}, 0.18)" },
-  "map.trackDefault":  { "light": "{semantic.action.primary}", "dark": "{semantic.action.primary}" },
-  "map.trackSpeeding": { "light": "{semantic.status.alarm}",   "dark": "{semantic.status.alarm}" },
-  "map.trackSelected": { "light": "{semantic.text.primary}",   "dark": "{semantic.text.primary}" },
-  "map.markerFill":    { "light": "{semantic.surface.content}", "dark": "{semantic.surface.content}" },
-  "map.markerStroke":  { "light": "{semantic.text.primary}",    "dark": "{semantic.text.primary}" },
-  "map.clusterFill":   { "light": "{semantic.surface.overlay}", "dark": "{semantic.surface.overlay}" },
-  "map.clusterText":   { "light": "{semantic.text.primary}",    "dark": "{semantic.text.primary}" },
-  "map.controlFill":    { "light": "{map.chrome.fill}",     "dark": "{map.chrome.fill}" },
-  "map.controlBorder":  { "light": "{map.chrome.border}",   "dark": "{map.chrome.border}" },
-  "map.controlDivider": { "light": "{map.chrome.divider}",  "dark": "{map.chrome.divider}" },
-  "map.controlInk":     { "light": "{map.chrome.ink}",      "dark": "{map.chrome.ink}" },
-  "map.attributionInk": { "light": "{map.chrome.inkMuted}", "dark": "{map.chrome.inkMuted}" },
-  "geofence.aqua":     { "light": "alpha({geofence.aqua}, 0.25)",   "dark": "alpha({geofence.aqua}, 0.35)" },
-  "geofence.blue":     { "light": "alpha({geofence.blue}, 0.25)",   "dark": "alpha({geofence.blue}, 0.35)" },
-  "geofence.gray":     { "light": "alpha({geofence.gray}, 0.25)",   "dark": "alpha({geofence.gray}, 0.35)" },
-  "geofence.green":    { "light": "alpha({geofence.green}, 0.25)",  "dark": "alpha({geofence.green}, 0.35)" },
-  "geofence.orange":   { "light": "alpha({geofence.orange}, 0.25)", "dark": "alpha({geofence.orange}, 0.35)" },
-  "geofence.purple":   { "light": "alpha({geofence.purple}, 0.25)", "dark": "alpha({geofence.purple}, 0.35)" },
-  "geofence.red":      { "light": "alpha({geofence.red}, 0.25)",    "dark": "alpha({geofence.red}, 0.35)" },
-  "geofence.yellow":   { "light": "alpha({geofence.yellow}, 0.25)", "dark": "alpha({geofence.yellow}, 0.35)" }
+  "surface.ground": {
+    "light": "{color.roles.surfaceGround.light}",
+    "dark": "{color.roles.surfaceGround.dark}"
+  },
+  "surface.content": {
+    "light": "{color.roles.surfaceContent.light}",
+    "dark": "{color.roles.surfaceContent.dark}"
+  },
+  "surface.chrome": {
+    "light": "{color.roles.surfaceChrome.light}",
+    "dark": "{color.roles.surfaceChrome.dark}"
+  },
+  "surface.selected": {
+    "light": "{color.roles.surfaceSelected.light}",
+    "dark": "{color.roles.surfaceSelected.dark}"
+  },
+  "surface.overlay": {
+    "light": "{color.roles.surfaceOverlay.light}",
+    "dark": "{color.roles.surfaceOverlay.dark}"
+  },
+  "surface.scrim": {
+    "light": "alpha({color.neutral.1000}, 0.4)",
+    "dark": "alpha({color.neutral.1000}, 0.6)"
+  },
+  "border.hairline": {
+    "light": "{color.roles.borderHairline.light}",
+    "dark": "{color.roles.borderHairline.dark}"
+  },
+  "border.strong": {
+    "light": "{color.roles.borderStrong.light}",
+    "dark": "{color.roles.borderStrong.dark}"
+  },
+  "text.primary": {
+    "light": "{color.roles.textPrimary.light}",
+    "dark": "{color.roles.textPrimary.dark}"
+  },
+  "text.secondary": {
+    "light": "{color.roles.textSecondary.light}",
+    "dark": "{color.roles.textSecondary.dark}"
+  },
+  "text.disabled": {
+    "light": "{color.roles.textDisabled.light}",
+    "dark": "{color.roles.textDisabled.dark}"
+  },
+  "text.onBrand": {
+    "light": "{color.roles.textOnBrand.light}",
+    "dark": "{color.roles.textOnBrand.dark}"
+  },
+  "text.onMovingSubtle": {
+    "light": "{status.textOnMovingSubtle.light}",
+    "dark": "{status.textOnMovingSubtle.dark}"
+  },
+  "text.onWarningSubtle": {
+    "light": "{status.textOnWarningSubtle.light}",
+    "dark": "{status.textOnWarningSubtle.dark}"
+  },
+  "text.onAlarmSubtle": {
+    "light": "{status.textOnAlarmSubtle.light}",
+    "dark": "{status.textOnAlarmSubtle.dark}"
+  },
+  "action.primary": {
+    "light": "{color.roles.actionPrimary.light}",
+    "dark": "{color.roles.actionPrimary.dark}"
+  },
+  "action.pressed": {
+    "light": "mix({semantic.action.primary}, {semantic.text.onBrand}, 0.16)",
+    "dark": "mix({semantic.action.primary}, {semantic.text.onBrand}, 0.16)"
+  },
+  "action.subtle": {
+    "light": "{color.roles.actionSubtle.light}",
+    "dark": "{color.roles.actionSubtle.dark}"
+  },
+  "focus.indicator": {
+    "light": "{semantic.action.primary}",
+    "dark": "{semantic.action.primary}"
+  },
+  "status.moving": {
+    "light": "{status.moving.light}",
+    "dark": "{status.moving.dark}"
+  },
+  "status.parked": {
+    "light": "{status.parked.light}",
+    "dark": "{status.parked.dark}"
+  },
+  "status.warning": {
+    "light": "{status.warning.light}",
+    "dark": "{status.warning.dark}"
+  },
+  "status.alarm": {
+    "light": "{status.alarm.light}",
+    "dark": "{status.alarm.dark}"
+  },
+  "status.offline": {
+    "light": "{status.offline.light}",
+    "dark": "{status.offline.dark}"
+  },
+  "status.movingSubtle": {
+    "light": "{status.statusMovingSubtle.light}",
+    "dark": "mix({semantic.surface.content}, {semantic.status.moving}, 0.16)"
+  },
+  "status.warningSubtle": {
+    "light": "{status.statusWarningSubtle.light}",
+    "dark": "mix({semantic.surface.content}, {semantic.status.warning}, 0.16)"
+  },
+  "status.alarmSubtle": {
+    "light": "{status.statusAlarmSubtle.light}",
+    "dark": "mix({semantic.surface.content}, {semantic.status.alarm}, 0.16)"
+  },
+  "map.trackDefault": {
+    "light": "{semantic.action.primary}",
+    "dark": "{semantic.action.primary}"
+  },
+  "map.trackSpeeding": {
+    "light": "{semantic.status.alarm}",
+    "dark": "{semantic.status.alarm}"
+  },
+  "map.trackSelected": {
+    "light": "{semantic.text.primary}",
+    "dark": "{semantic.text.primary}"
+  },
+  "map.markerFill": {
+    "light": "{semantic.surface.content}",
+    "dark": "{semantic.surface.content}"
+  },
+  "map.markerStroke": {
+    "light": "{semantic.text.primary}",
+    "dark": "{semantic.text.primary}"
+  },
+  "map.clusterFill": {
+    "light": "{semantic.surface.overlay}",
+    "dark": "{semantic.surface.overlay}"
+  },
+  "map.clusterText": {
+    "light": "{semantic.text.primary}",
+    "dark": "{semantic.text.primary}"
+  },
+  "map.controlFill": {
+    "light": "{map.chrome.fill}",
+    "dark": "{map.chrome.fill}"
+  },
+  "map.controlBorder": {
+    "light": "{map.chrome.border}",
+    "dark": "{map.chrome.border}"
+  },
+  "map.controlDivider": {
+    "light": "{map.chrome.divider}",
+    "dark": "{map.chrome.divider}"
+  },
+  "map.controlInk": {
+    "light": "{map.chrome.ink}",
+    "dark": "{map.chrome.ink}"
+  },
+  "map.attributionInk": {
+    "light": "{map.chrome.inkMuted}",
+    "dark": "{map.chrome.inkMuted}"
+  },
+  "geofence.aqua": {
+    "light": "alpha({geofence.aqua}, 0.25)",
+    "dark": "alpha({geofence.aqua}, 0.35)"
+  },
+  "geofence.blue": {
+    "light": "alpha({geofence.blue}, 0.25)",
+    "dark": "alpha({geofence.blue}, 0.35)"
+  },
+  "geofence.gray": {
+    "light": "alpha({geofence.gray}, 0.25)",
+    "dark": "alpha({geofence.gray}, 0.35)"
+  },
+  "geofence.green": {
+    "light": "alpha({geofence.green}, 0.25)",
+    "dark": "alpha({geofence.green}, 0.35)"
+  },
+  "geofence.orange": {
+    "light": "alpha({geofence.orange}, 0.25)",
+    "dark": "alpha({geofence.orange}, 0.35)"
+  },
+  "geofence.purple": {
+    "light": "alpha({geofence.purple}, 0.25)",
+    "dark": "alpha({geofence.purple}, 0.35)"
+  },
+  "geofence.red": {
+    "light": "alpha({geofence.red}, 0.25)",
+    "dark": "alpha({geofence.red}, 0.35)"
+  },
+  "geofence.yellow": {
+    "light": "alpha({geofence.yellow}, 0.25)",
+    "dark": "alpha({geofence.yellow}, 0.35)"
+  },
+  "action.text": {
+    "light": "{color.roles.actionText.light}",
+    "dark": "{color.roles.actionText.dark}"
+  },
+  "text.onSolid": {
+    "light": "{status.textOnSolid.light}",
+    "dark": "{status.textOnSolid.dark}"
+  }
 }

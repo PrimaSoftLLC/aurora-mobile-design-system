@@ -9,15 +9,90 @@
   "seed": "#E30611",
   "color": {
     "neutral": {
-      "0": "#FFFFFF", "50": "#F7F6F5", "100": "#F1EFED", "200": "#E6E3E1",
-      "300": "#D2CDC9", "400": "#A09B97", "500": "#74706D", "600": "#565250",
-      "700": "#3E3B39", "800": "#302D2B", "850": "#272423", "900": "#201E1D",
-      "950": "#1B1A19", "1000": "#161514"
+      "0": "#FFFFFF",
+      "50": "#F7F6F5",
+      "100": "#F1EFED",
+      "200": "#E6E3E1",
+      "300": "#D2CDC9",
+      "400": "#A09B97",
+      "500": "#74706D",
+      "600": "#565250",
+      "700": "#3E3B39",
+      "800": "#302D2B",
+      "850": "#272423",
+      "900": "#201E1D",
+      "950": "#1B1A19",
+      "1000": "#161514"
     },
     "brand": {
-      "50": "#FDEAEA", "100": "#FACFD0", "200": "#F4A2A4", "300": "#EE7175",
-      "400": "#FF4D52", "500": "#E30611", "600": "#D0050F", "700": "#A8040C",
-      "800": "#7E0A10", "900": "#5A0C10"
+      "50": "#FDEAEA",
+      "100": "#FACFD0",
+      "200": "#F4A2A4",
+      "300": "#EE7175",
+      "400": "#FF4D52",
+      "500": "#E30611",
+      "600": "#D0050F",
+      "700": "#A8040C",
+      "800": "#7E0A10",
+      "900": "#5A0C10"
+    },
+    "roles": {
+      "surfaceGround": {
+        "light": "#E6E3E1",
+        "dark": "#161514"
+      },
+      "surfaceContent": {
+        "light": "#FFFFFF",
+        "dark": "#161514"
+      },
+      "surfaceChrome": {
+        "light": "#F7F6F5",
+        "dark": "#201E1D"
+      },
+      "surfaceSelected": {
+        "light": "#FDF5F5",
+        "dark": "#272423"
+      },
+      "surfaceOverlay": {
+        "light": "#FFFFFF",
+        "dark": "#201E1D"
+      },
+      "borderHairline": {
+        "light": "#F1EFED",
+        "dark": "#272423"
+      },
+      "borderStrong": {
+        "light": "#E6E3E1",
+        "dark": "#302D2B"
+      },
+      "textPrimary": {
+        "light": "#1B1A19",
+        "dark": "#F7F6F5"
+      },
+      "textSecondary": {
+        "light": "#74706D",
+        "dark": "#A09B97"
+      },
+      "textDisabled": {
+        "light": "#D2CDC9",
+        "dark": "#3E3B39"
+      },
+      "textOnBrand": {
+        "light": "#FFFFFF",
+        "dark": "#161514"
+      },
+      "actionPrimary": {
+        "light": "#D0050F",
+        "dark": "#FF4D52"
+      },
+      "actionText": {
+        "light": "#D0050F",
+        "dark": "#EE7175"
+      },
+      "actionSubtle": {
+        "light": "#FDEAEA",
+        "dark": "#5A0C10"
+      }
     }
   }
 }

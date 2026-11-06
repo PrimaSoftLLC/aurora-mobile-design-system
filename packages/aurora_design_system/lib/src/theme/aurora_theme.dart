@@ -16,8 +16,8 @@ class AuroraTheme extends ThemeExtension<AuroraTheme> {
   final AuroraBrand brand;
   final AuroraColorTokens colors;
 
-  /// Роли §6. Класс генерируется вместе с токенами: моноширинного шрифта
-  /// нет, числовые роли — тот же Inter с табличными цифрами.
+  /// Роли §6. Класс генерируется вместе с токенами: телеметрия — JetBrains Mono,
+  /// числовые мобильные роли — Inter Tight с табличными цифрами.
   final AuroraTypography typography;
 
   const AuroraTheme({
@@ -87,7 +87,7 @@ const WidgetStatePropertyAll<Color> _noShadow = WidgetStatePropertyAll<Color>(Co
 
 /// Роли §6 в слотах Material, чтобы `AppBar`, `ListTile`, кнопки и поля
 /// ввода брали шкалу системы, а не размеры Material по умолчанию. Слотов
-/// у Material пятнадцать, ролей десять: соседние слоты делят роль.
+/// у Material пятнадцать: соседние слоты делят роль.
 /// Цвета сюда не входят — их подставит `ThemeData` из `colorScheme`.
 const TextTheme _textTheme = TextTheme(
   displayLarge: AuroraTypographyTokens.display,
@@ -158,7 +158,7 @@ ThemeData auroraThemeData(AuroraBrand brand, Brightness brightness) {
       // Ошибка формы пока красится тревогой объекта; отдельного токена нет
       // (спек, приложение Б).
       error: c.statusAlarm,
-      onError: c.textOnBrand,
+      onError: c.textOnSolid,
       shadow: Colors.transparent,
       surfaceTint: Colors.transparent,
     ),

@@ -6,13 +6,13 @@ void main() {
   test('Aurora светлая берёт белый контент и синее действие', () {
     final t = AuroraTheme.forBrand(AuroraBrand.aurora, Brightness.light);
     expect(t.colors.surfaceContent, const Color(0xFFFFFFFF));
-    expect(t.colors.actionPrimary, const Color(0xFF0066B8));
+    expect(t.colors.actionPrimary, const Color(0xFF2B5F9E));
   });
 
-  test('Aurora тёмная берёт индиговый контент', () {
+  test('Aurora тёмная берёт поверхность веб-темы', () {
     final t = AuroraTheme.forBrand(AuroraBrand.aurora, Brightness.dark);
-    expect(t.colors.surfaceContent, const Color(0xFF101220));
-    expect(t.colors.actionPrimary, const Color(0xFF3E9BE0));
+    expect(t.colors.surfaceContent, const Color(0xFF15191F));
+    expect(t.colors.actionPrimary, const Color(0xFF5B92D4));
   });
 
   test('МТС берёт свою шкалу', () {
@@ -238,13 +238,13 @@ void main() {
   });
 
   test('семейство шрифта package-квалифицировано', () {
-    expect(AuroraTypographyTokens.fontFamilySans, 'packages/aurora_design_system/Inter');
+    expect(AuroraTypographyTokens.fontFamilySans, 'packages/aurora_design_system/Inter Tight');
   });
 
-  test('вес 550 у label доезжает осью wght, а не округляется', () {
+  test('вес label совпадает с веб-ролью ui', () {
     expect(
       AuroraTypographyTokens.label.fontVariations,
-      contains(const FontVariation('wght', 550)),
+      contains(const FontVariation('wght', 500)),
     );
   });
 }

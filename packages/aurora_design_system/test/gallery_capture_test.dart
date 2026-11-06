@@ -29,7 +29,7 @@ void main() {
     // как сломанный компонент, хотя сломано только тестовое окружение.
     // Имя семейства обязано совпадать с тем, что ставит тема, то есть быть
     // package-квалифицированным.
-    final bytes = File('assets/fonts/InterVariable.ttf').readAsBytesSync();
+    final bytes = File('assets/fonts/InterTightVariable.ttf').readAsBytesSync();
     await (FontLoader(AuroraTypographyTokens.fontFamilySans)
           ..addFont(Future<ByteData>.value(ByteData.view(bytes.buffer))))
         .load();

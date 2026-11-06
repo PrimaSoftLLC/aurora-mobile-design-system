@@ -140,8 +140,12 @@ export function checkBrandParity() {
     }
 
     const scales = Object.keys(brand.color ?? {}).sort();
-    if (scales.join(',') !== 'brand,neutral') {
-      violations.push(`${id}: color содержит шкалы [${scales}], ожидались brand и neutral`);
+    if (scales.join(',') !== 'brand,neutral,roles') {
+      violations.push(`${id}: color содержит [${scales}], ожидались brand, neutral и roles`);
+    }
+    const roleKeys = Object.keys(loadBrand('aurora').color.roles).sort();
+    if (Object.keys(brand.color.roles ?? {}).sort().join(',') !== roleKeys.join(',')) {
+      violations.push(`${id}: набор цветовых ролей отличается от Aurora`);
     }
 
     violations.push(...checkBrandAssets(brand));

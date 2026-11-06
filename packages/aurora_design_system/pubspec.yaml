@@ -18,6 +18,12 @@ dev_dependencies:
 
 flutter:
   fonts:
+    - family: Inter Tight
+      fonts:
+        - asset: assets/fonts/InterTightVariable.ttf
+    - family: JetBrains Mono
+      fonts:
+        - asset: assets/fonts/JetBrainsMonoVariable.ttf
     - family: Inter
       fonts:
         # Вариативный файл: одно начертание на все веса. Оси — opsz и wght;

@@ -70,8 +70,8 @@ test('измеренный контраст попадает на страниц
   }
 });
 
-test('вес 550 показан вместе с тем, во что он округлится', () => {
-  assert.ok(html.includes('550→600'));
+test('превью объясняет общую типографику', () => {
+  assert.ok(html.includes('Inter Tight') && html.includes('JetBrains Mono'));
 });
 
 test('страница не тянет ничего, кроме шрифтов Google', () => {
@@ -107,12 +107,18 @@ test('заливка геозон и scrim объявлены переменны
 });
 
 test('кривая движения в превью выведена из токена, а не набрана руками', () => {
-  assert.match(html, /transition:transform 200ms cubic-bezier\(\.215,\.61,\.355,1\)/);
+  assert.match(html, /transition:transform 180ms cubic-bezier\(\.215,\.61,\.355,1\)/);
 });
 
 test('хром карты показан отдельной группой с пометкой, что тема и бренд его не трогают', () => {
   assert.match(html, /<tr class="grp"><td colspan="3">Хром карты · один во всех темах и брендах<\/td><\/tr>/);
   for (const key of ['map.controlFill', 'map.controlBorder', 'map.controlDivider', 'map.controlInk', 'map.attributionInk']) {
+    assert.ok(html.includes(`<td class="tok">${key}</td>`), `нет строки ${key}`);
+  }
+});
+
+test('превью показывает новые чернила отдельно от заливок', () => {
+  for (const key of ['action.text', 'text.onSolid']) {
     assert.ok(html.includes(`<td class="tok">${key}</td>`), `нет строки ${key}`);
   }
 });

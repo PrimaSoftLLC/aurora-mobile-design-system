@@ -1,51 +1,51 @@
 /* GENERATED — не редактировать руками.
  * Источник: tokens/. Пересобрать: npm run build
  *
- * Бренды: aurora, mts. Темы: light, dark. Семантических цветов: 47.
+ * Бренды: aurora, mts. Темы: light, dark. Семантических цветов: 49.
  * Переключение: <html data-brand="mts" data-theme="dark">; без data-theme тема
  * следует за prefers-color-scheme; без data-brand действует aurora.
  * Компонент обращается только к этим переменным, к ступеням шкал — никогда (§4.4 спека).
  */
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap");
 
 /* ── Цвет · aurora, светлая ─────────────────────────── */
 :root {
   color-scheme: light dark;
-  --surface-ground: #E0E3EC;
+  --surface-ground: #F6F7F9;
   --surface-content: #FFFFFF;
-  --surface-chrome: #F4F6FA;
-  --surface-selected: #F5F9FC;
+  --surface-chrome: #F6F7F9;
+  --surface-selected: #EEF3FA;
   --surface-overlay: #FFFFFF;
   --surface-scrim: #10122066;
-  --border-hairline: #EFF1F6;
-  --border-strong: #E0E3EC;
-  --text-primary: #141624;
-  --text-secondary: #666C85;
-  --text-disabled: #C4C9D8;
+  --border-hairline: #EEF0F4;
+  --border-strong: #CDD2DC;
+  --text-primary: #1D222C;
+  --text-secondary: #5E6676;
+  --text-disabled: #A7AEBD;
   --text-on-brand: #FFFFFF;
-  --text-on-moving-subtle: #0B7A3C;
-  --text-on-warning-subtle: #8A5A0F;
-  --status-alarm: #C7301F;
-  --text-on-alarm-subtle: #C7301F;
-  --action-primary: #0066B8;
-  --action-pressed: #005493;
-  --action-subtle: #E8F2FB;
-  --focus-indicator: #0066B8;
-  --status-moving: #12A150;
-  --status-parked: #6E7480;
-  --status-warning: #B7791F;
-  --status-offline: #8D9096;
-  --status-moving-subtle: #E3F4EA;
-  --status-warning-subtle: #F5ECE0;
-  --status-alarm-subtle: #F9EAE9;
-  --map-track-default: #0066B8;
-  --map-track-speeding: #C7301F;
-  --map-track-selected: #141624;
+  --text-on-moving-subtle: #12653A;
+  --text-on-warning-subtle: #8A5A00;
+  --text-on-alarm-subtle: #B3261E;
+  --action-primary: #2B5F9E;
+  --action-pressed: #4D79AE;
+  --action-subtle: #EEF3FA;
+  --focus-indicator: #2B5F9E;
+  --status-moving: #157A45;
+  --status-parked: #5E6676;
+  --status-warning: #9A6400;
+  --status-alarm: #C1291F;
+  --status-offline: #C1291F;
+  --status-moving-subtle: #E7F4EC;
+  --status-warning-subtle: #FDF3E0;
+  --status-alarm-subtle: #FDECEA;
+  --map-track-default: #2B5F9E;
+  --map-track-speeding: #C1291F;
+  --map-track-selected: #1D222C;
   --map-marker-fill: #FFFFFF;
-  --map-marker-stroke: #141624;
+  --map-marker-stroke: #1D222C;
   --map-cluster-fill: #FFFFFF;
-  --map-cluster-text: #141624;
+  --map-cluster-text: #1D222C;
   --map-control-fill: #FFFFFF;
   --map-control-border: #D6D9E0;
   --map-control-divider: #E6E8ED;
@@ -59,6 +59,8 @@
   --geofence-purple: #93209240;
   --geofence-red: #FF000040;
   --geofence-yellow: #FFFF0040;
+  --action-text: #235081;
+  --text-on-solid: #FFFFFF;
 }
 
 /* ── Цвет · mts, светлая ─────────────────────────── */
@@ -75,23 +77,23 @@
   --text-secondary: #74706D;
   --text-disabled: #D2CDC9;
   --text-on-brand: #FFFFFF;
-  --text-on-moving-subtle: #0B7A3C;
-  --text-on-warning-subtle: #8A5A0F;
-  --status-alarm: #C7301F;
-  --text-on-alarm-subtle: #C7301F;
+  --text-on-moving-subtle: #12653A;
+  --text-on-warning-subtle: #8A5A00;
+  --text-on-alarm-subtle: #B3261E;
   --action-primary: #D0050F;
-  --action-pressed: #A8040C;
+  --action-pressed: #D82D35;
   --action-subtle: #FDEAEA;
   --focus-indicator: #D0050F;
-  --status-moving: #12A150;
-  --status-parked: #6E7480;
-  --status-warning: #B7791F;
-  --status-offline: #8D9096;
-  --status-moving-subtle: #E3F4EA;
-  --status-warning-subtle: #F5ECE0;
-  --status-alarm-subtle: #F9EAE9;
+  --status-moving: #157A45;
+  --status-parked: #5E6676;
+  --status-warning: #9A6400;
+  --status-alarm: #C1291F;
+  --status-offline: #C1291F;
+  --status-moving-subtle: #E7F4EC;
+  --status-warning-subtle: #FDF3E0;
+  --status-alarm-subtle: #FDECEA;
   --map-track-default: #D0050F;
-  --map-track-speeding: #C7301F;
+  --map-track-speeding: #C1291F;
   --map-track-selected: #1B1A19;
   --map-marker-fill: #FFFFFF;
   --map-marker-stroke: #1B1A19;
@@ -110,45 +112,47 @@
   --geofence-purple: #93209240;
   --geofence-red: #FF000040;
   --geofence-yellow: #FFFF0040;
+  --action-text: #D0050F;
+  --text-on-solid: #FFFFFF;
 }
 
 /* ── Цвет · тёмная, по системной настройке ───────── */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --surface-ground: #101220;
-    --surface-content: #101220;
-    --surface-chrome: #191C2E;
-    --surface-selected: #20243A;
-    --surface-overlay: #191C2E;
+    --surface-ground: #0D1015;
+    --surface-content: #15191F;
+    --surface-chrome: #1C2129;
+    --surface-selected: #1F2A38;
+    --surface-overlay: #1C2129;
     --surface-scrim: #10122099;
-    --border-hairline: #20243A;
-    --border-strong: #292D42;
-    --text-primary: #F4F6FA;
-    --text-secondary: #949AB4;
-    --text-disabled: #343A50;
-    --text-on-brand: #101220;
-    --status-moving: #2BD47A;
-    --text-on-moving-subtle: #2BD47A;
-    --status-warning: #F0B429;
-    --text-on-warning-subtle: #F0B429;
-    --status-alarm: #F0554F;
-    --text-on-alarm-subtle: #F0554F;
-    --action-primary: #3E9BE0;
-    --action-pressed: #1478C6;
-    --action-subtle: #143253;
-    --focus-indicator: #3E9BE0;
-    --status-parked: #9CA2AE;
-    --status-offline: #606677;
-    --status-moving-subtle: #14312E;
-    --status-warning-subtle: #382F22;
-    --status-alarm-subtle: #381E28;
-    --map-track-default: #3E9BE0;
-    --map-track-speeding: #F0554F;
-    --map-track-selected: #F4F6FA;
-    --map-marker-fill: #101220;
-    --map-marker-stroke: #F4F6FA;
-    --map-cluster-fill: #191C2E;
-    --map-cluster-text: #F4F6FA;
+    --border-hairline: #272D37;
+    --border-strong: #363D49;
+    --text-primary: #EEF0F4;
+    --text-secondary: #A7AEBD;
+    --text-disabled: #5E6676;
+    --text-on-brand: #0D1520;
+    --text-on-moving-subtle: #7ED4A6;
+    --text-on-warning-subtle: #E8C477;
+    --text-on-alarm-subtle: #F0A39A;
+    --action-primary: #5B92D4;
+    --action-pressed: #4F7EB7;
+    --action-subtle: #1F2A38;
+    --focus-indicator: #5B92D4;
+    --status-moving: #38B076;
+    --status-parked: #8C94A3;
+    --status-warning: #D69E2E;
+    --status-alarm: #E76256;
+    --status-offline: #E76256;
+    --status-moving-subtle: #1B312D;
+    --status-warning-subtle: #342E21;
+    --status-alarm-subtle: #372528;
+    --map-track-default: #5B92D4;
+    --map-track-speeding: #E76256;
+    --map-track-selected: #EEF0F4;
+    --map-marker-fill: #15191F;
+    --map-marker-stroke: #EEF0F4;
+    --map-cluster-fill: #1C2129;
+    --map-cluster-text: #EEF0F4;
     --map-control-fill: #FFFFFF;
     --map-control-border: #D6D9E0;
     --map-control-divider: #E6E8ED;
@@ -162,6 +166,8 @@
     --geofence-purple: #93209259;
     --geofence-red: #FF000059;
     --geofence-yellow: #FFFF0059;
+    --action-text: #9DC0EA;
+    --text-on-solid: #12151C;
   }
   :root:not([data-theme="light"])[data-brand="mts"] {
     --surface-ground: #161514;
@@ -176,23 +182,23 @@
     --text-secondary: #A09B97;
     --text-disabled: #3E3B39;
     --text-on-brand: #161514;
-    --status-moving: #2BD47A;
-    --text-on-moving-subtle: #2BD47A;
-    --status-warning: #F0B429;
-    --text-on-warning-subtle: #F0B429;
-    --status-alarm: #F0554F;
-    --text-on-alarm-subtle: #F0554F;
+    --text-on-moving-subtle: #7ED4A6;
+    --text-on-warning-subtle: #E8C477;
+    --text-on-alarm-subtle: #F0A39A;
     --action-primary: #FF4D52;
-    --action-pressed: #E30611;
+    --action-pressed: #DA4448;
     --action-subtle: #5A0C10;
     --focus-indicator: #FF4D52;
-    --status-parked: #9CA2AE;
-    --status-offline: #606677;
-    --status-moving-subtle: #193424;
-    --status-warning-subtle: #3D3218;
-    --status-alarm-subtle: #3D211F;
+    --status-moving: #38B076;
+    --status-parked: #8C94A3;
+    --status-warning: #D69E2E;
+    --status-alarm: #E76256;
+    --status-offline: #E76256;
+    --status-moving-subtle: #1B2E24;
+    --status-warning-subtle: #352B18;
+    --status-alarm-subtle: #37211F;
     --map-track-default: #FF4D52;
-    --map-track-speeding: #F0554F;
+    --map-track-speeding: #E76256;
     --map-track-selected: #F7F6F5;
     --map-marker-fill: #161514;
     --map-marker-stroke: #F7F6F5;
@@ -211,45 +217,47 @@
     --geofence-purple: #93209259;
     --geofence-red: #FF000059;
     --geofence-yellow: #FFFF0059;
+    --action-text: #EE7175;
+    --text-on-solid: #12151C;
   }
 }
 
 /* ── Цвет · тёмная, выбранная явно ───────────────── */
 :root[data-theme="dark"] {
-  --surface-ground: #101220;
-  --surface-content: #101220;
-  --surface-chrome: #191C2E;
-  --surface-selected: #20243A;
-  --surface-overlay: #191C2E;
+  --surface-ground: #0D1015;
+  --surface-content: #15191F;
+  --surface-chrome: #1C2129;
+  --surface-selected: #1F2A38;
+  --surface-overlay: #1C2129;
   --surface-scrim: #10122099;
-  --border-hairline: #20243A;
-  --border-strong: #292D42;
-  --text-primary: #F4F6FA;
-  --text-secondary: #949AB4;
-  --text-disabled: #343A50;
-  --text-on-brand: #101220;
-  --status-moving: #2BD47A;
-  --text-on-moving-subtle: #2BD47A;
-  --status-warning: #F0B429;
-  --text-on-warning-subtle: #F0B429;
-  --status-alarm: #F0554F;
-  --text-on-alarm-subtle: #F0554F;
-  --action-primary: #3E9BE0;
-  --action-pressed: #1478C6;
-  --action-subtle: #143253;
-  --focus-indicator: #3E9BE0;
-  --status-parked: #9CA2AE;
-  --status-offline: #606677;
-  --status-moving-subtle: #14312E;
-  --status-warning-subtle: #382F22;
-  --status-alarm-subtle: #381E28;
-  --map-track-default: #3E9BE0;
-  --map-track-speeding: #F0554F;
-  --map-track-selected: #F4F6FA;
-  --map-marker-fill: #101220;
-  --map-marker-stroke: #F4F6FA;
-  --map-cluster-fill: #191C2E;
-  --map-cluster-text: #F4F6FA;
+  --border-hairline: #272D37;
+  --border-strong: #363D49;
+  --text-primary: #EEF0F4;
+  --text-secondary: #A7AEBD;
+  --text-disabled: #5E6676;
+  --text-on-brand: #0D1520;
+  --text-on-moving-subtle: #7ED4A6;
+  --text-on-warning-subtle: #E8C477;
+  --text-on-alarm-subtle: #F0A39A;
+  --action-primary: #5B92D4;
+  --action-pressed: #4F7EB7;
+  --action-subtle: #1F2A38;
+  --focus-indicator: #5B92D4;
+  --status-moving: #38B076;
+  --status-parked: #8C94A3;
+  --status-warning: #D69E2E;
+  --status-alarm: #E76256;
+  --status-offline: #E76256;
+  --status-moving-subtle: #1B312D;
+  --status-warning-subtle: #342E21;
+  --status-alarm-subtle: #372528;
+  --map-track-default: #5B92D4;
+  --map-track-speeding: #E76256;
+  --map-track-selected: #EEF0F4;
+  --map-marker-fill: #15191F;
+  --map-marker-stroke: #EEF0F4;
+  --map-cluster-fill: #1C2129;
+  --map-cluster-text: #EEF0F4;
   --map-control-fill: #FFFFFF;
   --map-control-border: #D6D9E0;
   --map-control-divider: #E6E8ED;
@@ -263,6 +271,8 @@
   --geofence-purple: #93209259;
   --geofence-red: #FF000059;
   --geofence-yellow: #FFFF0059;
+  --action-text: #9DC0EA;
+  --text-on-solid: #12151C;
 }
 :root[data-theme="dark"][data-brand="mts"] {
   --surface-ground: #161514;
@@ -277,23 +287,23 @@
   --text-secondary: #A09B97;
   --text-disabled: #3E3B39;
   --text-on-brand: #161514;
-  --status-moving: #2BD47A;
-  --text-on-moving-subtle: #2BD47A;
-  --status-warning: #F0B429;
-  --text-on-warning-subtle: #F0B429;
-  --status-alarm: #F0554F;
-  --text-on-alarm-subtle: #F0554F;
+  --text-on-moving-subtle: #7ED4A6;
+  --text-on-warning-subtle: #E8C477;
+  --text-on-alarm-subtle: #F0A39A;
   --action-primary: #FF4D52;
-  --action-pressed: #E30611;
+  --action-pressed: #DA4448;
   --action-subtle: #5A0C10;
   --focus-indicator: #FF4D52;
-  --status-parked: #9CA2AE;
-  --status-offline: #606677;
-  --status-moving-subtle: #193424;
-  --status-warning-subtle: #3D3218;
-  --status-alarm-subtle: #3D211F;
+  --status-moving: #38B076;
+  --status-parked: #8C94A3;
+  --status-warning: #D69E2E;
+  --status-alarm: #E76256;
+  --status-offline: #E76256;
+  --status-moving-subtle: #1B2E24;
+  --status-warning-subtle: #352B18;
+  --status-alarm-subtle: #37211F;
   --map-track-default: #FF4D52;
-  --map-track-speeding: #F0554F;
+  --map-track-speeding: #E76256;
   --map-track-selected: #F7F6F5;
   --map-marker-fill: #161514;
   --map-marker-stroke: #F7F6F5;
@@ -312,6 +322,8 @@
   --geofence-purple: #93209259;
   --geofence-red: #FF000059;
   --geofence-yellow: #FFFF0059;
+  --action-text: #EE7175;
+  --text-on-solid: #12151C;
 }
 
 /* ── Размеры и движение · одни для всех брендов и тем ── */
@@ -327,7 +339,8 @@
   --space-32: 32px;
   --space-40: 40px;
   --space-48: 48px;
-  --radius-sm: 4px;
+  --radius-xs: 4px;
+  --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
@@ -341,66 +354,65 @@
   --active-bar-width: 2px;
   --hairline-width: 1px;
   --duration-fast: 120ms;
-  --duration-base: 200ms;
+  --duration-base: 180ms;
   --duration-slow: 320ms;
   --duration-data-interp: 500ms;
   --ease-enter: cubic-bezier(.215,.61,.355,1);
   --ease-exit: cubic-bezier(.55,.055,.675,.19);
-  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-sans: 'Inter Tight', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
   --font-arabic: 'Noto Sans Arabic', system-ui, sans-serif;
 }
 
-/* ── Типографика · десять ролей (§6) ─────────────── */
-/* Вес — тот, что реально рисует код: у Flutter начертания идут шагом 100,
- * поэтому авторский 550 у label здесь 600. Числовые роли — табличные цифры. */
+/* ── Типографика · общие веб-роли и мобильные числовые роли ── */
 .type-display {
   font-family: var(--font-sans);
-  font-size: 28px;
-  line-height: 1.2143;
+  font-size: 30px;
+  line-height: 1.2000;
   font-weight: 600;
-  letter-spacing: -0.4200px;
+  letter-spacing: -0.4500px;
 }
 .type-title {
   font-family: var(--font-sans);
   font-size: 20px;
-  line-height: 1.3000;
+  line-height: 1.2000;
   font-weight: 600;
-  letter-spacing: -0.2000px;
+  letter-spacing: -0.3000px;
 }
 .type-section {
   font-family: var(--font-sans);
-  font-size: 15px;
-  line-height: 1.3333;
+  font-size: 16px;
+  line-height: 1.3500;
   font-weight: 600;
   letter-spacing: 0.0000px;
 }
 .type-body {
   font-family: var(--font-sans);
-  font-size: 15px;
-  line-height: 1.4667;
+  font-size: 14px;
+  line-height: 1.5000;
   font-weight: 400;
   letter-spacing: 0.0000px;
 }
 .type-label {
   font-family: var(--font-sans);
   font-size: 13px;
-  line-height: 1.3846;
-  font-weight: 600; /* авторский 550 */
+  line-height: 1.3500;
+  font-weight: 500;
   letter-spacing: 0.0000px;
 }
 .type-caption {
   font-family: var(--font-sans);
-  font-size: 11px;
-  line-height: 1.3636;
+  font-size: 12px;
+  line-height: 1.3500;
   font-weight: 400;
   letter-spacing: 0.0000px;
 }
 .type-overline {
   font-family: var(--font-sans);
-  font-size: 9px;
-  line-height: 1.3333;
-  font-weight: 700;
-  letter-spacing: 0.7200px;
+  font-size: 11px;
+  line-height: 1.3500;
+  font-weight: 600;
+  letter-spacing: 0.6600px;
   text-transform: uppercase;
 }
 .type-number-lg {
@@ -424,6 +436,21 @@
   font-size: 11px;
   line-height: 1.2727;
   font-weight: 600;
+  letter-spacing: 0.0000px;
+  font-variant-numeric: tabular-nums;
+}
+.type-body-strong {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5000;
+  font-weight: 500;
+  letter-spacing: 0.0000px;
+}
+.type-mono {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.3500;
+  font-weight: 400;
   letter-spacing: 0.0000px;
   font-variant-numeric: tabular-nums;
 }

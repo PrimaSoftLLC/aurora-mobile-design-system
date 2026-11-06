@@ -15,29 +15,29 @@ test('loadBrand читает метаданные', () => {
 test('loadPrimitives сливает все файлы примитивов', () => {
   const p = loadPrimitives();
   assert.equal(p.radius.lg, 12);
-  assert.equal(p.role.body.size, 15);
-  assert.equal(p.duration.base, 200);
-  assert.equal(p.status.alarm.light, '#C7301F');
+  assert.equal(p.role.body.size, 14);
+  assert.equal(p.duration.base, 180);
+  assert.equal(p.status.alarm.light, '#C1291F');
 });
 
 test('resolveColors разворачивает прямую ссылку', () => {
   const c = resolveColors('aurora', 'light');
   assert.equal(c['surface.content'], '#FFFFFF');
-  assert.equal(c['action.primary'], '#0066B8');
+  assert.equal(c['action.primary'], '#2B5F9E');
 });
 
 test('resolveColors разворачивает тёмную тему', () => {
   const c = resolveColors('aurora', 'dark');
-  assert.equal(c['surface.content'], '#101220');
-  assert.equal(c['action.primary'], '#3E9BE0');
-  assert.equal(c['border.hairline'], '#20243A');
+  assert.equal(c['surface.content'], '#15191F');
+  assert.equal(c['action.primary'], '#5B92D4');
+  assert.equal(c['border.hairline'], '#272D37');
 });
 
-test('resolveColors разворачивает mix()', () => {
+test('resolveColors сохраняет выбранную поверхность каждого бренда', () => {
   // Выделенная строка подмешивается к surface.content (neutral.0), а не к хрому:
   // выбранная строка — это та же строка списка с подсветкой, и она обязана
   // остаться светлее хрома, иначе вторичный текст на ней уходит под AA.
-  assert.equal(resolveColors('aurora', 'light')['surface.selected'], '#F5F9FC');
+  assert.equal(resolveColors('aurora', 'light')['surface.selected'], '#EEF3FA');
   assert.equal(resolveColors('mts', 'light')['surface.selected'], '#FDF5F5');
 });
 

@@ -42,12 +42,13 @@ class AuroraButton extends StatelessWidget {
     if (!_enabled) return c.textDisabled;
     switch (kind) {
       case AuroraButtonKind.primary:
-      case AuroraButtonKind.danger:
         return c.textOnBrand;
+      case AuroraButtonKind.danger:
+        return c.textOnSolid;
       case AuroraButtonKind.secondary:
         return c.textPrimary;
       case AuroraButtonKind.ghost:
-        return c.actionPrimary;
+        return c.actionText;
     }
   }
 

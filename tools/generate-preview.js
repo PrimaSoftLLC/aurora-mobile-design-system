@@ -123,7 +123,7 @@ const BASE_CSS = String.raw`
 html{-webkit-text-size-adjust:100%}
 body{
   margin:0;background:var(--content);color:var(--fg);
-  font:400 15px/1.55 Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  font:400 15px/1.55 'Inter Tight',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   font-feature-settings:'cv05','ss01';
 }
 code,.mono,.hex{font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
@@ -308,8 +308,8 @@ function semanticTable(d) {
   const groups = [
     ['Поверхности', ['surface.ground', 'surface.content', 'surface.chrome', 'surface.selected', 'surface.overlay', 'surface.scrim']],
     ['Границы', ['border.hairline', 'border.strong']],
-    ['Текст', ['text.primary', 'text.secondary', 'text.disabled', 'text.onBrand']],
-    ['Действие', ['action.primary', 'action.pressed', 'action.subtle', 'focus.indicator']],
+    ['Текст', ['text.primary', 'text.secondary', 'text.disabled', 'text.onBrand', 'text.onSolid']],
+    ['Действие', ['action.primary', 'action.text', 'action.pressed', 'action.subtle', 'focus.indicator']],
     ['Статусы', ['status.moving', 'status.parked', 'status.warning', 'status.alarm', 'status.offline']],
     ['Подложки статусов', ['status.movingSubtle', 'text.onMovingSubtle', 'status.warningSubtle', 'text.onWarningSubtle', 'status.alarmSubtle', 'text.onAlarmSubtle']],
     ['Карта', ['map.trackDefault', 'map.trackSpeeding', 'map.trackSelected', 'map.markerFill', 'map.markerStroke', 'map.clusterFill', 'map.clusterText']],
@@ -373,6 +373,8 @@ function typographyBlock(role) {
     display: 'Расход топлива',
     title: 'Поездки за неделю',
     section: 'Пн, 8 сентября',
+    bodyStrong: 'МАЗ 5440 · AB 1234-7',
+    mono: '62.4 км/ч · 53.9045, 27.5615',
     body: 'Объект вышел за границу геозоны «Склад №3» и вернулся через 42 минуты.',
     label: 'Склад №3 → Заводская',
     caption: 'обновлено 2 минуты назад',
@@ -383,6 +385,7 @@ function typographyBlock(role) {
   };
   return Object.entries(role).map(([name, r]) => {
     const style = [
+      `font-family:'${r.family === 'mono' ? 'JetBrains Mono' : 'Inter Tight'}'`,
       `font-size:${r.size}px`,
       `line-height:${(r.lineHeight / r.size).toFixed(4)}`,
       `font-weight:${Math.round(r.weight / 100) * 100}`,
@@ -587,7 +590,7 @@ export function generatePreview() {
 
   return `<title>Дизайн-система Aurora</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
 <style>
 ${paletteCss(d)}
 ${gates}
@@ -613,8 +616,8 @@ ${BASE_CSS}
   <section>
     <header>
       <h2>Основа <span>·</span> четыре решения</h2>
-      <p>Индивидуальность живёт в форме и поведении, а не в цвете — потому что цвет бренд заменяет целиком. Интерфейс нейтральный, цветными остаются только данные. Разделение поверхностей идёт тоном и волосяной границей: <strong>теней в системе нет вообще</strong>. Шрифт один на обеих платформах, числа набираются табличными цифрами внутри него, отдельной моноширинной гарнитуры нет.</p>
-      <p class="note">Моноширинный шрифт на этой странице — голос документации: им набраны имена токенов и hex-коды. В самом приложении его нет.</p>
+      <p>Индивидуальность живёт в форме и поведении, а не в цвете — потому что цвет бренд заменяет целиком. Интерфейс нейтральный, цветными остаются только данные. Разделение поверхностей идёт тоном и волосяной границей: <strong>теней в системе нет вообще</strong>. Интерфейс обеих платформ использует Inter Tight. Числовые мобильные роли набраны табличными цифрами; телеметрия — JetBrains Mono.</p>
+      <p class="note">Роль mono предназначена для координат, IMEI и временных меток. Имена токенов и hex-коды в документации используют то же семейство.</p>
     </header>
   </section>
 
@@ -630,7 +633,7 @@ ${BASE_CSS}
   <section>
     <header>
       <h2>Цвет <span>·</span> шкалы</h2>
-      <p>Их рисует дизайнер, а не генератор. <span class="mono">neutralHue</span> и <span class="mono">seed</span> записывают замысел: холодные нейтрали у Aurora, тёплые у МТС. Набор ступеней менять нельзя — за этим следит автоматика. Ступень <span class="mono">850</span> выглядит лишней ровно до того момента, когда её уберут: без неё тёмная волосяная граница сливается с фоном панели.</p>
+      <p>Шкалы сохранены для совместимости со старыми ссылками и scrim. Актуальная палитра интерфейса задаётся семантическими ролями выше и color.roles в файле бренда; значения этих ролей Aurora согласованы с веб-темой DEFAULT.</p>
     </header>
     ${rampSections}
   </section>
@@ -645,8 +648,8 @@ ${BASE_CSS}
 
   <section>
     <header>
-      <h2>Типографика <span>·</span> десять ролей</h2>
-      <p>Показано в реальном размере. Вес <span class="mono">550</span> у роли <span class="mono">label</span> округляется до 600 — у Flutter начертания идут шагом 100, и это стоит знать заранее, чтобы не рисовать то, чего код не отрисует.</p>
+      <h2>Типографика <span>·</span> ${Object.keys(p.role).length} ролей</h2>
+      <p>Inter Tight — интерфейс и мобильные числовые роли; JetBrains Mono — телеметрия. Размеры и начертания интерфейсных ролей согласованы с веб-системой.</p>
     </header>
     <div>${typographyBlock(p.role)}</div>
   </section>
@@ -707,26 +710,14 @@ ${BASE_CSS}
         <h3>Графикам нечем красить серии</h3>
         <p>Сегодняшний экран графиков рисует до семи серий сырыми цветами. В токенах есть только <span class="mono">action.primary</span> и пять статусов, категориальной палитры для данных нет. Нужен набор <span class="mono">chart.series.*</span>, общий для брендов, как и статусы: это данные, а не оформление.</p>
       </div>
-      <div class="open-item">
-        <h3>У статусов нет подложек, а бейдж с заливкой не пройдёт AA</h3>
-        <p>Белый текст на <span class="mono">status.moving</span> даёт 3.37, на <span class="mono">status.offline</span> 3.20, на <span class="mono">status.warning</span> 3.64 в светлой теме, всё ниже 4.5. Сегодняшнее приложение красит ореол объекта и фон карточки 12-процентным тинтом статуса. Либо <span class="mono">status.*Subtle</span> по образцу <span class="mono">action.subtle</span> с текстом цветом статуса, либо бейдж только контурный.</p>
-      </div>
+
       <div class="open-item">
         <h3>Ошибка формы и тревога объекта — один цвет</h3>
         <p>Ошибка валидации в логине сейчас берёт <span class="mono">status.alarm</span>, а на МТС это ещё и цвет primary-кнопки. Три разных вещи одним цветом. Если нужен отдельный токен ошибки, это <span class="mono">feedback.error</span> или подобный; если нет, решение стоит записать явно.</p>
       </div>
-      <div class="open-item">
-        <h3>Вес 550 ничем не рисуется</h3>
-        <p>JSON говорит 550, код рисует 600, и <span class="mono">label</span> выходит того же веса, что <span class="mono">section</span>. Либо записать в JSON то, что рендерится, либо положить переменный Inter, и тогда код сможет отрисовать 550 буквально.</p>
-      </div>
-      <div class="open-item">
-        <h3>Подсветка выбранной строки стала слабее</h3>
-        <p>Чтобы текст на выделенной строке взял AA, её фон пересобрали от белого. Побочный эффект: сама подсветка сблизилась с фоном — тональный шаг упал с 1.147 до <strong>1.059</strong> у Aurora и с 1.161 до <strong>1.074</strong> у МТС. В системе без теней тон — единственный разделитель, и этот шаг сейчас самый слабый из всех. Либо зафиксировать как есть, либо усилить подсветку.</p>
-      </div>
-      <div class="open-item">
-        <h3>Порог волосяной границы держится на 0.00006</h3>
-        <p>Он выставлен ровно по сегодняшнему значению, то есть фактически закрепляет два светлых серых Aurora. Как защита от сплющивания шкалы это работает, но первый, кто тронет эти серые по другому поводу, увидит падение сборки и прочтёт его как «я что-то сломал».</p>
-      </div>
+
+
+
     </div>
   </section>
 

@@ -29,12 +29,13 @@ export const CONTRAST_PAIRS = [
   { fg: 'border.hairline', bg: 'surface.content', min: 1.13, note: 'волосяная граница строки: без теней это единственный разделитель' },
   { fg: 'border.hairline', bg: 'surface.chrome',  min: 1.04, note: 'волосяная граница внутри хрома: без теней это единственный разделитель' },
   { fg: 'surface.chrome',  bg: 'surface.content', min: 1.07, note: 'ступень тона между хромом и контентом: без теней это единственный разделитель' },
-  // Подложка статуса и текст на ней — пара, а не два независимых цвета: бейдж
-  // «Выполнено» читается только вместе. Пары для moving и warning здесь, для
-  // alarm — нет: сегодня она даёт 4.42 в тёмной теме, ниже AA, и это решение
-  // дизайнера, а не порог, который можно опустить (Приложение Б спека).
+  // Подложка статуса и текст проверяются как пара во всех брендах и темах.
   { fg: 'text.onMovingSubtle',  bg: 'status.movingSubtle',  min: 4.5, note: 'подпись на подложке «в движении»' },
   { fg: 'text.onWarningSubtle', bg: 'status.warningSubtle', min: 4.5, note: 'подпись на подложке предупреждения' },
+  { fg: 'action.text', bg: 'surface.content', min: 4.5, note: 'брендовый текст на контенте' },
+  { fg: 'action.text', bg: 'action.subtle', min: 4.5, note: 'брендовый текст на выбранной подложке' },
+  { fg: 'text.onSolid', bg: 'status.alarm', min: 4.5, note: 'подпись опасного действия' },
+  { fg: 'text.onAlarmSubtle', bg: 'status.alarmSubtle', min: 4.5, note: 'подпись на подложке тревоги' },
   { fg: 'text.primary',    bg: 'surface.ground',  min: 4.5, note: 'текст на фоне под карточками' },
 ];
 

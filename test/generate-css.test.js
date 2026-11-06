@@ -52,24 +52,24 @@ test('размеры, движение и шрифты лежат в общем 
   assert.match(css, /--radius-md: 8px;/);
   assert.match(css, /--row-default: 52px;/);
   assert.match(css, /--touch-target: 44px;/);
-  assert.match(css, /--duration-base: 200ms;/);
+  assert.match(css, /--duration-base: 180ms;/);
   assert.match(css, /--duration-data-interp: 500ms;/);
   assert.match(css, /--ease-enter: cubic-bezier\(\.215,\.61,\.355,1\);/);
-  assert.match(css, /--font-sans: 'Inter'/);
+  assert.match(css, /--font-sans: 'Inter Tight'/);
   assert.match(css, /--font-arabic: 'Noto Sans Arabic'/);
 });
 
-test('десять ролей типографики — классами, с теми же числами, что в Dart', () => {
+test('роли типографики — классами, с теми же числами, что в Dart', () => {
   const roles = Object.keys(loadPrimitives().role);
   for (const r of roles) assert.match(css, new RegExp(`\\.type-${cssName(r)} \\{`), r);
   const label = /\.type-label \{[^}]*\}/.exec(css)[0];
-  assert.match(label, /font-weight: 600; \/\* авторский 550 \*\//);
+  assert.match(label, /font-weight: 500;/);
   const numberMd = /\.type-number-md \{[^}]*\}/.exec(css)[0];
   assert.match(numberMd, /font-variant-numeric: tabular-nums;/);
   assert.match(numberMd, /line-height: 1\.2857;/);
   const overline = /\.type-overline \{[^}]*\}/.exec(css)[0];
   assert.match(overline, /text-transform: uppercase;/);
-  assert.match(overline, /letter-spacing: 0\.7200px;/);
+  assert.match(overline, /letter-spacing: 0\.6600px;/);
 });
 
 test('теней нет и в CSS-токенах', () => {

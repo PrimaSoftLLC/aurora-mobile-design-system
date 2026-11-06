@@ -1,14 +1,49 @@
 {
   "status": {
-    "moving":  { "light": "#12A150", "dark": "#2BD47A" },
-    "parked":  { "light": "#6E7480", "dark": "#9CA2AE" },
-    "warning": { "light": "#B7791F", "dark": "#F0B429" },
-    "alarm":   { "light": "#C7301F", "dark": "#F0554F" },
-    "offline": { "light": "#8D9096", "dark": "#606677" },
-
-    "onSubtle": {
-      "moving":  "#0B7A3C",
-      "warning": "#8A5A0F"
+    "moving": {
+      "light": "#157A45",
+      "dark": "#38B076"
+    },
+    "parked": {
+      "light": "#5E6676",
+      "dark": "#8C94A3"
+    },
+    "warning": {
+      "light": "#9A6400",
+      "dark": "#D69E2E"
+    },
+    "alarm": {
+      "light": "#C1291F",
+      "dark": "#E76256"
+    },
+    "offline": {
+      "light": "#C1291F",
+      "dark": "#E76256"
+    },
+    "textOnSolid": {
+      "light": "#FFFFFF",
+      "dark": "#12151C"
+    },
+    "textOnMovingSubtle": {
+      "light": "#12653A",
+      "dark": "#7ED4A6"
+    },
+    "textOnWarningSubtle": {
+      "light": "#8A5A00",
+      "dark": "#E8C477"
+    },
+    "textOnAlarmSubtle": {
+      "light": "#B3261E",
+      "dark": "#F0A39A"
+    },
+    "statusMovingSubtle": {
+      "light": "#E7F4EC"
+    },
+    "statusWarningSubtle": {
+      "light": "#FDF3E0"
+    },
+    "statusAlarmSubtle": {
+      "light": "#FDECEA"
     }
   }
 }

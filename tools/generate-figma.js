@@ -32,20 +32,20 @@ export function generateFigma() {
   dimensionVars['hairlineWidth'] = p.hairlineWidth;
 
   // Типографика и движение — те же числа, что уезжают в Dart. Без них
-  // дизайнер набивает десять текстовых стилей в Figma руками из таблицы
+  // дизайнер набивает текстовые стили в Figma руками из таблицы
   // спека, то есть воспроизводит на стороне Figma ровно то расхождение,
   // ради предотвращения которого типографика вообще генерируется.
   const typographyVars = {
     'fontFamily.sans': p.fontFamily.sans,
+    'fontFamily.mono': p.fontFamily.mono,
     'fontFamily.arabic': p.fontFamily.arabic,
   };
   for (const [name, r] of Object.entries(p.role)) {
+    typographyVars[`role.${name}.fontFamily`] = p.fontFamily[r.family ?? 'sans'];
     typographyVars[`role.${name}.size`] = r.size;
     typographyVars[`role.${name}.lineHeight`] = r.lineHeight;
     typographyVars[`role.${name}.lineHeightRatio`] = Number(lineHeightRatio(r));
-    // Авторский вес и вес, который реально нарисует код: у Flutter FontWeight
-    // идёт шагом 100, поэтому 550 у роли `label` рендерится как 600. Дизайнер
-    // должен видеть это расхождение в том инструменте, где он рисует.
+    // Исходное и платформенное начертание для потребителей Figma.
     typographyVars[`role.${name}.weight`] = r.weight;
     typographyVars[`role.${name}.weightRendered`] = renderedWeight(r.weight);
     typographyVars[`role.${name}.tracking`] = r.tracking;

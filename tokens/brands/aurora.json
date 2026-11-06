@@ -6,18 +6,93 @@
   "baseUrl": "https://api.aurora-soft.by/",
   "defaultLocale": "en",
   "neutralHue": 232,
-  "seed": "#0066B8",
+  "seed": "#2B5F9E",
   "color": {
     "neutral": {
-      "0": "#FFFFFF", "50": "#F4F6FA", "100": "#EFF1F6", "200": "#E0E3EC",
-      "300": "#C4C9D8", "400": "#949AB4", "500": "#666C85", "600": "#4A5069",
-      "700": "#343A50", "800": "#292D42", "850": "#20243A", "900": "#191C2E",
-      "950": "#141624", "1000": "#101220"
+      "0": "#FFFFFF",
+      "50": "#F4F6FA",
+      "100": "#EFF1F6",
+      "200": "#E0E3EC",
+      "300": "#C4C9D8",
+      "400": "#949AB4",
+      "500": "#666C85",
+      "600": "#4A5069",
+      "700": "#343A50",
+      "800": "#292D42",
+      "850": "#20243A",
+      "900": "#191C2E",
+      "950": "#141624",
+      "1000": "#101220"
     },
     "brand": {
-      "50": "#E8F2FB", "100": "#CBE3F6", "200": "#9BC9EC", "300": "#6BAEE0",
-      "400": "#3E9BE0", "500": "#1478C6", "600": "#0066B8", "700": "#005493",
-      "800": "#124272", "900": "#143253"
+      "50": "#EEF3FA",
+      "100": "#CBE3F6",
+      "200": "#9BC9EC",
+      "300": "#6BAEE0",
+      "400": "#5B92D4",
+      "500": "#1478C6",
+      "600": "#2B5F9E",
+      "700": "#005493",
+      "800": "#124272",
+      "900": "#143253"
+    },
+    "roles": {
+      "surfaceGround": {
+        "light": "#F6F7F9",
+        "dark": "#0D1015"
+      },
+      "surfaceContent": {
+        "light": "#FFFFFF",
+        "dark": "#15191F"
+      },
+      "surfaceChrome": {
+        "light": "#F6F7F9",
+        "dark": "#1C2129"
+      },
+      "surfaceSelected": {
+        "light": "#EEF3FA",
+        "dark": "#1F2A38"
+      },
+      "surfaceOverlay": {
+        "light": "#FFFFFF",
+        "dark": "#1C2129"
+      },
+      "borderHairline": {
+        "light": "#EEF0F4",
+        "dark": "#272D37"
+      },
+      "borderStrong": {
+        "light": "#CDD2DC",
+        "dark": "#363D49"
+      },
+      "textPrimary": {
+        "light": "#1D222C",
+        "dark": "#EEF0F4"
+      },
+      "textSecondary": {
+        "light": "#5E6676",
+        "dark": "#A7AEBD"
+      },
+      "textDisabled": {
+        "light": "#A7AEBD",
+        "dark": "#5E6676"
+      },
+      "textOnBrand": {
+        "light": "#FFFFFF",
+        "dark": "#0D1520"
+      },
+      "actionPrimary": {
+        "light": "#2B5F9E",
+        "dark": "#5B92D4"
+      },
+      "actionText": {
+        "light": "#235081",
+        "dark": "#9DC0EA"
+      },
+      "actionSubtle": {
+        "light": "#EEF3FA",
+        "dark": "#1F2A38"
+      }
     }
   }
 }
