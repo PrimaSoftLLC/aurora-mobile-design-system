@@ -7,6 +7,9 @@
 Aurora использует DEFAULT-палитру веба, Inter Tight и JetBrains Mono;
 МТС сохраняет свой бренд. Снимок веб-эталона проверяется в `npm test`.
 
+[Открыть превью дизайн-системы](https://primasoftllc.github.io/aurora-mobile-design-system/).
+Оно обновляется в GitHub Pages после успешных проверок на каждом пуше в `main`.
+
 ## Инструменты
 
 Node и Flutter ставятся через [mise](https://mise.jdx.dev/), версии закреплены

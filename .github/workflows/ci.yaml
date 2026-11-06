@@ -62,6 +62,34 @@ jobs:
           path: build/
           if-no-files-found: error
 
+      - name: Prepare design system preview for Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          size=$(stat -c%s build/preview.html)
+          test "$size" -gt 300000 || { echo "preview.html is $size bytes - the component gallery is missing"; exit 1; }
+          mkdir -p build/pages
+          cp build/preview.html build/pages/index.html
+      - name: Upload GitHub Pages artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: build/pages
+
+  pages:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy design system preview
+        id: deployment
+        uses: actions/deploy-pages@v4
+
   # Релиз по стандарту «тег — выход CI»: версия в pubspec пакета — единственный
   # источник. Пуш в main с версией, у которой ещё нет тега, создаёт тег и
   # релиз. Руками теги не ставятся.
