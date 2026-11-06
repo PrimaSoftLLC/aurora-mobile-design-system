@@ -38,7 +38,7 @@ Flutter-пакет:
     dependencies:
       aurora_design_system:
         git:
-          url: https://github.com/NikolayNN/aurora-mobile-design-system.git
+          url: https://github.com/PrimaSoftLLC/aurora-mobile-design-system.git
           ref: v0.1.0
           path: packages/aurora_design_system
 
